@@ -1,0 +1,15 @@
+Component,Category,Status,Figma Node ID,Required By Feature,Priority,Notes
+Spinner,Atom,Missing,,All async states,P1,Inline loading indicator — animating circle
+Skeleton,Atom,Missing,,All list and detail views,P1,Content placeholder during data fetch
+EmptyState,Atom,Missing,,All list views,P1,Illustration + heading + CTA when no records exist
+InlineAlert,Molecule,Missing,,All form screens,P1,Inline banner for errors / warnings / success — NOT a dialog
+FormField,Molecule,Missing,,All forms,P1,Label + Input + HelperText + Error state composed into one unit
+Pagination,Molecule,Missing,,List views,P1,Page numbers + prev/next controls
+DataTable,Organism,Partial,,All list views,P1,Existing table.tsx needs sort headers + filter row + pagination slot
+Tag / Chip,Atom,Missing,,Filters and tagging,P2,Dismissible pill; supports icon prefix
+StatCard,Molecule,Missing,,Dashboard screens,P2,Metric value + label + optional trend indicator
+DatePicker,Molecule,Missing,,Scheduling features,P2,Calendar overlay + text input trigger
+Accordion,Molecule,Missing,,Settings pages,P2,Expand/collapse single section with animated chevron
+FileUpload,Molecule,Missing,,Document features,P2,Drag-and-drop zone + file list preview
+Stepper,Molecule,Missing,,Onboarding wizard,P3,Multi-step progress indicator — horizontal and vertical
+CommandPalette,Organism,Missing,,Global search,P3,⌘K overlay with fuzzy search and keyboard navigation
