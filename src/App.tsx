@@ -1,13 +1,14 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
-import { Atom, Combine, Component, Palette, LayoutTemplate } from "lucide-react";
+import { Atom, Combine, Component, Palette, LayoutTemplate, Layers } from "lucide-react";
 import { TopBar } from "@/components/ui/top-bar";
 import { FoundationSection } from "@/sections/FoundationSection";
 import { AtomsSection } from "@/sections/AtomsSection";
 import { MoleculesSection } from "@/sections/MoleculesSection";
 import { OrganismsSection } from "@/sections/OrganismsSection";
 import { TemplatesSection } from "@/sections/TemplatesSection";
+import { FeatureDashboardSection } from "@/sections/FeatureDashboardSection";
 
 function App() {
   return (
@@ -39,19 +40,23 @@ function App() {
               </TabsTrigger>
               <TabsTrigger value="atoms" className="gap-1.5">
                 <Atom className="h-4 w-4" /> Atoms
-                <Badge variant="secondary" className="ml-1 text-[10px] h-5 px-1.5">14</Badge>
+                <Badge variant="subtle" className="ml-1 text-[10px] h-5 px-1.5">14</Badge>
               </TabsTrigger>
               <TabsTrigger value="molecules" className="gap-1.5">
                 <Combine className="h-4 w-4" /> Molecules
-                <Badge variant="secondary" className="ml-1 text-[10px] h-5 px-1.5">10</Badge>
+                <Badge variant="subtle" className="ml-1 text-[10px] h-5 px-1.5">10</Badge>
               </TabsTrigger>
               <TabsTrigger value="organisms" className="gap-1.5">
                 <Component className="h-4 w-4" /> Organisms
-                <Badge variant="secondary" className="ml-1 text-[10px] h-5 px-1.5">12</Badge>
+                <Badge variant="subtle" className="ml-1 text-[10px] h-5 px-1.5">12</Badge>
               </TabsTrigger>
               <TabsTrigger value="templates" className="gap-1.5">
                 <LayoutTemplate className="h-4 w-4" /> Templates
-                <Badge variant="secondary" className="ml-1 text-[10px] h-5 px-1.5">6</Badge>
+                <Badge variant="subtle" className="ml-1 text-[10px] h-5 px-1.5">8</Badge>
+              </TabsTrigger>
+              <TabsTrigger value="features" className="gap-1.5">
+                <Layers className="h-4 w-4" /> Features
+                <Badge variant="subtle" className="ml-1 text-[10px] h-5 px-1.5">1</Badge>
               </TabsTrigger>
             </TabsList>
 
@@ -73,6 +78,10 @@ function App() {
 
             <TabsContent value="templates">
               <TemplatesSection />
+            </TabsContent>
+
+            <TabsContent value="features">
+              <FeatureDashboardSection />
             </TabsContent>
           </Tabs>
         </main>

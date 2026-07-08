@@ -11,7 +11,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { ContentSwitcher } from "@/components/ui/content-switcher";
 import { Notes } from "@/components/ui/notes";
 import { Badge } from "@/components/ui/badge";
-import { ChevronRight, MoreHorizontal, Settings, User, LogOut, CreditCard, Keyboard, Phone, X } from "lucide-react";
+import { MoreHorizontal, Settings, User, LogOut, CreditCard, Keyboard, Phone, X } from "lucide-react";
 
 export function MoleculesSection() {
   return (
@@ -393,9 +393,9 @@ export function MoleculesSection() {
         </CardHeader>
         <CardContent className="max-w-md">
           <div className="flex flex-wrap items-center gap-2 rounded-[var(--cds-radius-r)] border border-input p-2 min-h-[40px]">
-            <Badge variant="secondary" className="gap-1">React <X className="h-3 w-3 cursor-pointer" /></Badge>
-            <Badge variant="secondary" className="gap-1">TypeScript <X className="h-3 w-3 cursor-pointer" /></Badge>
-            <Badge variant="secondary" className="gap-1">Tailwind <X className="h-3 w-3 cursor-pointer" /></Badge>
+            <Badge variant="subtle" className="gap-1">React <X className="h-3 w-3 cursor-pointer" /></Badge>
+            <Badge variant="subtle" className="gap-1">TypeScript <X className="h-3 w-3 cursor-pointer" /></Badge>
+            <Badge variant="subtle" className="gap-1">Tailwind <X className="h-3 w-3 cursor-pointer" /></Badge>
             <input className="flex-1 min-w-[80px] border-0 bg-transparent text-sm outline-none placeholder:text-muted-foreground" placeholder="Add tag..." />
           </div>
         </CardContent>

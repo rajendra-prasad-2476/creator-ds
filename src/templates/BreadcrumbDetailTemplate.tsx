@@ -391,7 +391,7 @@ function TableContent({ config }: { config: TableConfig }) {
               </span>
               <Select
                 defaultValue={filter.defaultValue ?? filter.options[0]?.value}
-                onValueChange={filter.onChange}
+                onValueChange={(val) => val && filter.onChange?.(val)}
               >
                 <SelectTrigger style={{ width: 200 }}>
                   <SelectValue />

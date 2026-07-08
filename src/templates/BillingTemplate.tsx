@@ -35,7 +35,7 @@ export interface PlanSummary {
   /** e.g. "ENTERPRISE" */
   planName: string
   /** Badge variant to use for the plan name badge */
-  planBadgeVariant?: "default" | "secondary" | "destructive" | "outline"
+  planBadgeVariant?: "prominent" | "subtle"
   /** e.g. "Classic" */
   supportPlan: string
   /** e.g. "Yearly" */
@@ -78,7 +78,7 @@ export interface BillingTemplateProps {
 
 const DEMO_PLAN: PlanSummary = {
   planName: "ENTERPRISE",
-  planBadgeVariant: "secondary",
+  planBadgeVariant: "subtle",
   supportPlan: "Classic",
   subscriptionCycle: "Yearly",
   renewalDate: "26 Jun 2027",
@@ -165,7 +165,7 @@ function PlanSummaryCard({ plan }: { plan: PlanSummary }) {
         >
           Current Plan
         </div>
-        <Badge variant={plan.planBadgeVariant ?? "secondary"}>
+        <Badge variant={plan.planBadgeVariant ?? "subtle"}>
           {plan.planName}
         </Badge>
       </div>

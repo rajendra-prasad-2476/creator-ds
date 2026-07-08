@@ -16,7 +16,6 @@
  *   defaultTabId   — which tab is active on mount
  */
 
-import * as React from "react"
 import { TopBar } from "@/components/ui/top-bar"
 import { LeftNav } from "@/components/ui/left-nav"
 import { Button } from "@/components/ui/button"

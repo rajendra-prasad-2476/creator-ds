@@ -1,11 +1,12 @@
 import * as React from "react"
-import { ContentSwitcher } from "@/components/ui/content-switcher"
 import CardGridTemplate from "@/templates/CardGridTemplate"
 import TabbedSectionsTemplate from "@/templates/TabbedSectionsTemplate"
 import SplitPanelTemplate from "@/templates/SplitPanelTemplate"
 import LinkCategoryTemplate from "@/templates/LinkCategoryTemplate"
 import BreadcrumbDetailTemplate from "@/templates/BreadcrumbDetailTemplate"
 import BillingTemplate from "@/templates/BillingTemplate"
+import ZiaSettingsScreen from "@/screens/zia-configuration/ZiaSettingsScreen"
+import ZiaProviderDetailScreen from "@/screens/zia-configuration/ZiaProviderDetailScreen"
 
 const TEMPLATES = [
   {
@@ -43,6 +44,18 @@ const TEMPLATES = [
     label: "Billing",
     description: "Subscription page with plan summary, stat tiles, and usage details",
     component: <BillingTemplate />,
+  },
+  {
+    id: "zia-settings",
+    label: "Zia Settings",
+    description: "001 · Zia Config — LLM Providers tab (4 provider cards) + Features tab (mapping + toggle)",
+    component: <ZiaSettingsScreen />,
+  },
+  {
+    id: "zia-provider-detail",
+    label: "Zia Provider Detail",
+    description: "001 · Zia Config — Provider detail with key management (Configuration tab) + Usage tab",
+    component: <ZiaProviderDetailScreen />,
   },
 ]
 

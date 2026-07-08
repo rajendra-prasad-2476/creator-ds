@@ -65,12 +65,6 @@ const SIZE_PX: Record<AvatarSize, string> = {
 }
 
 /** Font size for initials inside each avatar size */
-const INITIALS_FONT: Record<AvatarSize, { fontSize: string; lineHeight: string }> = {
-  xl: { fontSize: "14px", lineHeight: "18px" },
-  lg: { fontSize: "11px", lineHeight: "14px" },
-  sm: { fontSize: "6px",  lineHeight: "8px"  },
-  xs: { fontSize: "6px",  lineHeight: "8px"  },
-}
 
 // ─── Avatar root ─────────────────────────────────────────────────────────────
 

@@ -35,7 +35,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Search, ChevronDown, MoreHorizontal, Pencil } from "lucide-react"
+import { Search, ChevronDown, Pencil } from "lucide-react"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -204,11 +204,7 @@ function AppTile({ item }: { item: CardGridItem }) {
           {/* More dropdown */}
           {item.moreActions && item.moreActions.length > 0 && (
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="xs" className="gap-1">
-                  More <ChevronDown size={12} />
-                </Button>
-              </DropdownMenuTrigger>
+              <DropdownMenuTrigger style={{ background:"none", border:"none", cursor:"pointer", display:"inline-flex", alignItems:"center", gap:4, fontSize:"var(--cds-text-p2)", padding:"2px 8px", borderRadius:"var(--cds-radius-s)" }}>More <ChevronDown size={12} /></DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 {item.moreActions.map((a) => (
                   <DropdownMenuItem key={a.label} onSelect={a.onSelect}>

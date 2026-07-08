@@ -274,11 +274,7 @@ export default function SplitPanelTemplate({
               {headerActions.map((action) =>
                 action.dropdownItems ? (
                   <DropdownMenu key={action.label}>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant={action.variant ?? "default"} className="gap-1">
-                        {action.label} <ChevronDown size={12} />
-                      </Button>
-                    </DropdownMenuTrigger>
+                    <DropdownMenuTrigger style={{ border:"none", cursor:"pointer", display:"inline-flex", alignItems:"center", gap:4, fontSize:"var(--cds-text-p2)", padding:"4px 12px", borderRadius:"var(--cds-radius-r)", background:"var(--cds-primary-surface-default)", color:"var(--cds-white)" }}>{action.label} <ChevronDown size={12} /></DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       {action.dropdownItems.map((di) => (
                         <DropdownMenuItem key={di.label} onSelect={di.onSelect}>
