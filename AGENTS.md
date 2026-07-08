@@ -285,3 +285,4 @@ Do not generate a custom implementation — flag the gap in a code comment inste
 - It is copied verbatim to `creator-features/AGENTS.md` by the GitHub Actions sync workflow
 - Update this file whenever: a new component is added, a component is deprecated, or a naming convention changes
 - After updating, merge to `main` — the sync runs automatically
+# sync test — Wed Jul  8 14:43:53 IST 2026
