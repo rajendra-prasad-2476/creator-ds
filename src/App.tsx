@@ -1,14 +1,13 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
-import { Atom, Combine, Component, Palette, LayoutTemplate, Layers } from "lucide-react";
+import { Atom, Combine, Component, Palette, LayoutTemplate } from "lucide-react";
 import { TopBar } from "@/components/ui/top-bar";
 import { FoundationSection } from "@/sections/FoundationSection";
 import { AtomsSection } from "@/sections/AtomsSection";
 import { MoleculesSection } from "@/sections/MoleculesSection";
 import { OrganismsSection } from "@/sections/OrganismsSection";
 import { TemplatesSection } from "@/sections/TemplatesSection";
-import { FeatureDashboardSection } from "@/sections/FeatureDashboardSection";
 
 function App() {
   return (
@@ -54,10 +53,6 @@ function App() {
                 <LayoutTemplate className="h-4 w-4" /> Templates
                 <Badge variant="subtle" className="ml-1 text-[10px] h-5 px-1.5">8</Badge>
               </TabsTrigger>
-              <TabsTrigger value="features" className="gap-1.5">
-                <Layers className="h-4 w-4" /> Features
-                <Badge variant="subtle" className="ml-1 text-[10px] h-5 px-1.5">1</Badge>
-              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="foundation">
@@ -79,18 +74,13 @@ function App() {
             <TabsContent value="templates">
               <TemplatesSection />
             </TabsContent>
-
-            <TabsContent value="features">
-              <FeatureDashboardSection />
-            </TabsContent>
           </Tabs>
         </main>
 
         {/* Footer */}
         <footer className="border-t border-border bg-card px-8 py-6 mt-12">
           <div className="mx-auto max-w-7xl flex items-center justify-between text-sm text-muted-foreground">
-            <p>CTS Design System — Built from Figma with Shadcn/ui + Tailwind CSS</p>
-            <p>Font: Zoho Puvi • Theme: Creator</p>
+            <p>CTS Design System — Built from Figma with Shadcn/ui + Tailwind CSS</p>            <a href="/features.html" style={{ color: "var(--cds-primary-text-default)", fontSize: 14 }}>Feature Previews →</a>            <p>Font: Zoho Puvi • Theme: Creator</p>
           </div>
         </footer>
       </div>

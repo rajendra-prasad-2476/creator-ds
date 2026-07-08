@@ -462,7 +462,7 @@ export default function ZiaSettingsScreen() {
     <div className="flex flex-col h-screen">
       <TopBar />
       <div className="flex flex-1 overflow-hidden">
-        <LeftNav />
+        <LeftNav activeId="operations" />
         <main
           className="flex-1 overflow-y-auto"
           style={{

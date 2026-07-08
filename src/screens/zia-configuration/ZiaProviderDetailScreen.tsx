@@ -51,6 +51,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
+  AlertDialogIcon,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import {
@@ -283,8 +284,7 @@ function DeleteKeyDialog({
   return (
     <AlertDialog open={open}>
       <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Delete API Key</AlertDialogTitle>
+        <AlertDialogHeader>          <AlertDialogIcon variant="alert" />          <AlertDialogTitle>Delete API Key</AlertDialogTitle>
           <AlertDialogDescription>
             You are about to delete <strong>{keyName}</strong>.
             <br />
@@ -482,7 +482,7 @@ export default function ZiaProviderDetailScreen({
     <div className="flex flex-col h-screen">
       <TopBar />
       <div className="flex flex-1 overflow-hidden">
-        <LeftNav />
+        <LeftNav activeId="operations" />
         <main
           className="flex-1 overflow-y-auto"
           style={{
