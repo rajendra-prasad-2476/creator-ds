@@ -433,7 +433,6 @@ export default function ZiaSettingsScreen() {
   const [features, setFeatures] = React.useState<ZiaFeature[]>(INITIAL_FEATURES)
 
   const { navigate, goBack, canGoBack } = useNavigation()
-  const { goBack, canGoBack } = useNavigation()
 
   function handleMappingChange(featureId: string, value: string) {
     setFeatures((prev) =>

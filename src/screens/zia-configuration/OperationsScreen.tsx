@@ -8,7 +8,7 @@
  * to ZiaSettingsScreen via the prototype NavigationContext.
  */
 
-import { LinkCategoryTemplate } from "@/templates/LinkCategoryTemplate"
+import LinkCategoryTemplate from "@/templates/LinkCategoryTemplate"
 import { useNavigation } from "@/screens/navigation"
 
 export default function OperationsScreen() {
