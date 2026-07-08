@@ -67,6 +67,7 @@ Never put page-level navigation inside `<main>`. Never skip `TopBar` or `LeftNav
 | `Badge` | `badge.tsx` | Status labels, counts, tags |
 | `Progress` | `progress.tsx` | Linear progress bars |
 | `Separator` | `separator.tsx` | Horizontal/vertical dividers |
+| `Blanket` | `blanket.tsx` | Scrim/overlay backdrop behind Sheets, Dialogs, Sliders & custom overlays |
 
 ### Molecules
 | Component | Import | Use for |
@@ -113,6 +114,7 @@ When a design intent could map to multiple components, follow this table.
 | Action overflow menu | `DropdownMenu` | bare `<ul>` |
 | Contextual help text | `Tooltip` | `title` attribute |
 | Slide-in detail pane | `Sheet` | `Dialog` |
+| Dimmed scrim behind an overlay / panel | `Blanket` | custom `<div>` with a background color |
 | Page-level loading state | future `Skeleton` or `Spinner` | `<div className="animate-spin">` |
 | Empty list / zero-data state | future `EmptyState` | raw centred `<p>` text |
 | User / entity photo | `Avatar` | `<img>` with manual border-radius |
@@ -147,6 +149,7 @@ Colors
   Success:         var(--cds-success-surface-default)    #078841
   Warning:         var(--cds-warning-surface-default)    #D25704
   Border default:  var(--border)                         #E5E5E7
+  Blanket scrim:   var(--cds-blanket-overlay)            rgba(1,3,10,0.1)
 
 Spacing
   4px:   var(--cds-space-4)
@@ -333,6 +336,7 @@ export default function OperationsScreen() {
 - Do not use `className="text-blue-500"` or any Tailwind color utility — use `--cds-*` tokens
 - Do not use `style={{ fontFamily: "Inter" }}` or any font override
 - Do not create a custom modal, drawer, or tooltip — use `Dialog`, `Sheet`, `Tooltip`
+- Do not build a custom overlay/scrim backdrop — use `Blanket` (Dialog/Sheet already render it automatically)
 - Do not add `console.log` or debug output to production screen files
 - Do not generate placeholder images with external URLs (use `Avatar` or `Tile` components)
 - Do not skip the `TopBar` + `LeftNav` shell for full-page screen outputs
@@ -362,7 +366,35 @@ Do not generate a custom implementation — flag the gap in a code comment inste
 
 ---
 
-## 11. Sync Notes for Maintainers
+## 11. Promoting a New Component or Variant (Living Guideline)
+
+When screen generation legitimately needs UI that the DS doesn't yet have, and it is
+approved to become part of the system, **promote** it by updating every surface below.
+A component is only a "living guideline" once all applicable boxes are ticked — otherwise
+the next generation run won't know it exists.
+
+### New component
+- [ ] **Source** — create `src/components/ui/<name>.tsx` (import path `@/components/ui/<name>`)
+- [ ] **Showcase** — add a live demo to the relevant section (`AtomsSection` / `MoleculesSection` / `OrganismsSection.tsx`)
+- [ ] **§2 Available Components** — add a row (Atom / Molecule / Organism table)
+- [ ] **§3 Use-Case Mapping** — add a row if it replaces a common anti-pattern (raw `<div>`, custom modal, etc.)
+- [ ] **§9 Must NOT Do** — add a "use `<X>` instead of a custom …" line if relevant
+- [ ] **§5 Token Quick Reference** — add any new `--cds-*` token the component introduces
+- [ ] **`docs/ds-parity.csv`** — add the row (or flip status to `Done`) with the Figma node id
+- [ ] **§10 Missing Components** — remove its row if it was previously listed as Missing
+
+### New variant of an existing component
+- [ ] **Source** — add the variant to the component's variant map / union (e.g. a new `size`, `colour`, `variant`)
+- [ ] **Showcase** — demo the new variant alongside the existing ones
+- [ ] **§2 / §3** — update the component's row/notes only if the variant changes its intended use
+- [ ] No `ds-parity.csv` change needed — the component already exists
+
+> Rule of thumb: **usage** of existing props (e.g. `<Badge size="xs">` with an icon) is *not*
+> a new variant and needs no promotion. Only changes to `src/components/ui/` source count.
+
+---
+
+## 12. Sync Notes for Maintainers
 
 - This file lives in `creator-ds-react/AGENTS.md` (source of truth)
 - It is copied verbatim to `creator-features/AGENTS.md` by the GitHub Actions sync workflow
