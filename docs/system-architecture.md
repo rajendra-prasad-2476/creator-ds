@@ -279,5 +279,5 @@ Key rules it will contain:
 - [x] **GitHub Org name** — `rajendra-prasad-2476` · repos: `creator-ds` and `creator-features`
 - [ ] **Who sets up the sync token?** — needs admin access to both repos
 - [ ] **PRD format** — free-form text first, structured template later (agreed)
-- [ ] **Who owns `ds-parity.csv`** — designer lead? PM lead?
-- [ ] **Review process for AI-generated screens** — who approves before moving to "Done"?
+- [x] **Who owns `ds-parity.csv`** — Designer lead
+- [x] **Review process for AI-generated screens** — Designer + PM must both approve before moving to "Done"
