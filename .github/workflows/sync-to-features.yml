@@ -8,13 +8,12 @@
 #
 # What it does:
 #   1. Checks out both repos
-#   2. Rsyncs the relevant folders into creator-features
-#   3. Opens a PR in creator-features so the team can review changes
+#   2. Rsyncs the relevant folders into creator-features/
+#   3. Uses peter-evans/create-pull-request to stage, commit, branch, and open PR
+#      (the action handles all of that atomically — do NOT manually commit before it)
 #
-# Setup required (one-time, by a repo admin):
-#   1. Create a GitHub PAT with `repo` scope
-#   2. Add it as a secret called SYNC_TOKEN in creator-ds-react repo settings
-#   3. Update TARGET_REPO below with your actual org/repo name
+# Setup required (one-time):
+#   Add a GitHub PAT (repo scope) as secret SYNC_TOKEN in creator-ds settings
 
 name: Sync Components to creator-features
 
@@ -27,120 +26,80 @@ on:
       - 'src/patterns/**'
       - 'AGENTS.md'
 
-env:
-  # ── GitHub org and target repo ───────────────────────────────────────────
-  TARGET_REPO: rajendra-prasad-2476/creator-features
-  # ──────────────────────────────────────────────────────────────────────────
-  BRANCH_NAME: sync/components-${{ github.sha }}
-
 jobs:
   sync:
     name: Sync DS artifacts to creator-features
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout this repo (creator-ds-react)
-      - name: Checkout creator-ds-react
+      # 1. Checkout creator-ds (this repo)
+      - name: Checkout creator-ds
         uses: actions/checkout@v4
         with:
-          path: creator-ds-react
+          path: creator-ds
 
       # 2. Checkout creator-features using the sync token
       - name: Checkout creator-features
         uses: actions/checkout@v4
         with:
-          repository: ${{ env.TARGET_REPO }}
+          repository: rajendra-prasad-2476/creator-features
           token: ${{ secrets.SYNC_TOKEN }}
           path: creator-features
 
-      # 3. Sync components
-      - name: Sync src/components/ui/
+      # 3. Rsync components, templates, lib, and AGENTS.md into creator-features
+      - name: Sync files
         run: |
           mkdir -p creator-features/components/ui
-          rsync -av --delete \
-            creator-ds-react/src/components/ui/ \
+          mkdir -p creator-features/templates
+          mkdir -p creator-features/lib
+
+          rsync -a --delete \
+            creator-ds/src/components/ui/ \
             creator-features/components/ui/
 
-      # 4. Sync templates
-      - name: Sync src/templates/
-        run: |
-          mkdir -p creator-features/templates
-          rsync -av --delete \
-            creator-ds-react/src/templates/ \
+          rsync -a --delete \
+            creator-ds/src/templates/ \
             creator-features/templates/
 
-      # 5. Sync lib/utils (needed by components)
-      - name: Sync src/lib/
-        run: |
-          mkdir -p creator-features/lib
-          rsync -av --delete \
-            creator-ds-react/src/lib/ \
+          rsync -a --delete \
+            creator-ds/src/lib/ \
             creator-features/lib/
 
-      # 6. Sync AGENTS.md
-      - name: Sync AGENTS.md
-        run: |
-          cp creator-ds-react/AGENTS.md creator-features/AGENTS.md
+          cp creator-ds/AGENTS.md creator-features/AGENTS.md
 
-      # 7. Check if there are any actual changes
-      - name: Check for changes
-        id: check_changes
-        working-directory: creator-features
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet && git diff --cached --quiet; then
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-          else
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-          fi
-
-      # 8. Commit and push to a new branch
-      - name: Commit synced files
-        if: steps.check_changes.outputs.has_changes == 'true'
-        working-directory: creator-features
-        run: |
-          git checkout -b ${{ env.BRANCH_NAME }}
-          git add -A
-          git commit -m "sync: DS components from creator-ds-react@${{ github.sha }}
-
-          Changed files:
-          $(cd ../creator-ds-react && git diff --name-only HEAD~1 HEAD -- src/components/ui/ src/templates/ src/patterns/ AGENTS.md 2>/dev/null || echo 'See commit for details')"
-          git push origin ${{ env.BRANCH_NAME }}
-
-      # 9. Open a Pull Request in creator-features
-      - name: Create Pull Request
-        if: steps.check_changes.outputs.has_changes == 'true'
+      # 4. Create a PR in creator-features with all changes
+      #    The action handles: git add -A → commit → branch → push → PR
+      - name: Open sync PR in creator-features
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.SYNC_TOKEN }}
           path: creator-features
-          branch: ${{ env.BRANCH_NAME }}
+          branch: sync/ds-${{ github.sha }}
           base: main
-          title: "sync: DS component update from creator-ds-react"
+          commit-message: |
+            sync: DS update from creator-ds@${{ github.sha }}
+          title: "sync: DS component update from creator-ds"
           body: |
             ## Automated DS Sync
 
-            This PR was automatically generated by the `sync-to-features` workflow
-            in `creator-ds-react`.
+            Triggered by push to `creator-ds` main by @${{ github.actor }}.
 
-            **Source commit:** `creator-ds-react@${{ github.sha }}`
-            **Triggered by:** @${{ github.actor }}
+            **Source commit:** [`${{ github.sha }}`](https://github.com/rajendra-prasad-2476/creator-ds/commit/${{ github.sha }})
 
-            ### What changed
-            Files synced from `creator-ds-react`:
-            - `components/ui/` — DS component source files
-            - `templates/` — Page-level template shells
-            - `lib/` — Shared utilities
-            - `AGENTS.md` — AI coding instructions
+            ### Files synced
+            | Folder | Source |
+            |---|---|
+            | `components/ui/` | `creator-ds/src/components/ui/` |
+            | `templates/` | `creator-ds/src/templates/` |
+            | `lib/` | `creator-ds/src/lib/` |
+            | `AGENTS.md` | `creator-ds/AGENTS.md` |
 
             ### Review checklist
             - [ ] No unexpected component regressions
-            - [ ] New components appear in the components table in AGENTS.md
+            - [ ] New components appear in the AGENTS.md component table
             - [ ] Template props are documented correctly
 
-            > Auto-merge is safe if all checks pass and no conflicts exist.
+            > Safe to auto-merge if all checks pass and no conflicts exist.
           labels: |
             automated
             ds-sync
-          draft: false
