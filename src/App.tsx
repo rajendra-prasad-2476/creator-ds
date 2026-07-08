@@ -3,6 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
 import { Atom, Combine, Component, Palette, LayoutTemplate } from "lucide-react";
 import { TopBar } from "@/components/ui/top-bar";
+import { DS_VERSION } from "@/ds-changelog";
 import { FoundationSection } from "@/sections/FoundationSection";
 import { AtomsSection } from "@/sections/AtomsSection";
 import { MoleculesSection } from "@/sections/MoleculesSection";
@@ -14,7 +15,7 @@ function App() {
     <TooltipProvider>
       <div className="min-h-screen bg-background">
         {/* Top Bar */}
-        <TopBar docTitle="CTS Design System" docVersion="v1.0" docType="HTML" userInitials="RJ" />
+        <TopBar docTitle="CTS Design System" docVersion={`v${DS_VERSION}`} docType="HTML" userInitials="RJ" />
 
         <main className="mx-auto max-w-7xl px-8 py-8">
           <div className="mb-8">

@@ -1,0 +1,24 @@
+# CODEOWNERS — formal sign-off gate for Creator DS changes
+#
+# Any PR that touches a design-system surface below REQUIRES a review approval
+# from a listed owner before it can merge. This is the "Approved" gate in
+# AGENTS.md §11 (Proposal → Approval → Promotion).
+#
+# Replace / extend the handles below with your real DS-owner + designer team.
+# Tip: a GitHub team handle (e.g. @rajendra-prasad-2476/design-system) is better
+# than individuals once the team grows.
+
+# DS components (source of truth)
+/src/components/ui/        @rajendra-prasad-2476
+
+# Page templates (also synced downstream)
+/src/templates/            @rajendra-prasad-2476
+
+# Design tokens
+/src/index.css             @rajendra-prasad-2476
+
+# Living-guideline surfaces: rulebook, parity ledger, changelog
+/AGENTS.md                 @rajendra-prasad-2476
+/docs/ds-parity.csv        @rajendra-prasad-2476
+/src/ds-changelog.ts       @rajendra-prasad-2476
+/CHANGELOG.md              @rajendra-prasad-2476

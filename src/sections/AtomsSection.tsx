@@ -6,6 +6,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Progress } from "@/components/ui/progress";
 import { Toggle } from "@/components/ui/toggle";
 import { Separator } from "@/components/ui/separator";
@@ -656,6 +657,32 @@ export function AtomsSection() {
               <Badge colour="primary" variant="prominent" size="md">Medium 14px</Badge>
               <Badge colour="primary" variant="prominent" size="sm">Small 12px</Badge>
               <Badge colour="primary" variant="prominent" size="xs">XSmall 11px</Badge>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* StatusBadge */}
+      <Card>
+        <CardHeader>
+          <CardTitle>StatusBadge</CardTitle>
+          <CardDescription>Semantic status pill — locks the status → colour + icon + label mapping so every screen renders a state identically. Built on <code>Badge</code>.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <p className="text-xs text-[var(--cds-neutral-text-default)] mb-2 font-medium">Statuses</p>
+            <div className="flex flex-wrap items-center gap-2">
+              <StatusBadge status="configured" />
+              <StatusBadge status="not-configured" />
+              <StatusBadge status="error" />
+              <StatusBadge status="pending" />
+            </div>
+          </div>
+          <div>
+            <p className="text-xs text-[var(--cds-neutral-text-default)] mb-2 font-medium">Custom label</p>
+            <div className="flex flex-wrap items-center gap-2">
+              <StatusBadge status="error" label="Failed" />
+              <StatusBadge status="pending" label="In review" />
             </div>
           </div>
         </CardContent>

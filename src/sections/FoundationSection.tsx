@@ -1,9 +1,61 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Badge, type BadgeColour } from "@/components/ui/badge";
+import { DS_VERSION, LATEST_RELEASE, type DSChangeType } from "@/ds-changelog";
+
+const CHANGE_COLOUR: Record<DSChangeType, BadgeColour> = {
+  added: "success",
+  changed: "primary",
+  fixed: "warning",
+};
+
+const CHANGE_LABEL: Record<DSChangeType, string> = {
+  added: "Added",
+  changed: "Changed",
+  fixed: "Fixed",
+};
 
 export function FoundationSection() {
   return (
     <div className="space-y-8">
+      {/* What's New — driven by src/ds-changelog.ts */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <CardTitle>What's New</CardTitle>
+            <Badge colour="primary" size="xs" style={{ borderRadius: "var(--cds-radius-full)" }}>
+              v{DS_VERSION}
+            </Badge>
+          </div>
+          <CardDescription>
+            Latest components, variants, and tokens added to the design system · released {LATEST_RELEASE.date}. Full history in <code>CHANGELOG.md</code>.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ul className="space-y-3">
+            {LATEST_RELEASE.changes.map((change, i) => (
+              <li key={i} className="flex items-start gap-3">
+                <Badge
+                  colour={CHANGE_COLOUR[change.type]}
+                  variant="subtle"
+                  size="xs"
+                  style={{ borderRadius: "var(--cds-radius-full)", flexShrink: 0, minWidth: 62, justifyContent: "center" }}
+                >
+                  {CHANGE_LABEL[change.type]}
+                </Badge>
+                <p className="text-[var(--cds-text-p2)] leading-[var(--cds-leading-p2)]" style={{ color: "var(--cds-huegrey-text-dark)" }}>
+                  <span className="font-semibold">{change.scope}</span>
+                  <span style={{ color: "var(--cds-huegrey-text-default)" }}> — {change.summary}</span>
+                  {change.parity && (
+                    <span style={{ color: "var(--cds-success-text-default)" }}> · fills ds-parity gap</span>
+                  )}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </CardContent>
+      </Card>
+
       {/* Color Palette */}
       <Card>
         <CardHeader>

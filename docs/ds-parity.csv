@@ -1,5 +1,6 @@
 Component,Category,Status,Figma Node ID,Required By Feature,Priority,Notes
 Blanket,Atom,Done,6670:16098,Overlay backdrops (Sheet/Dialog/Slider),P2,Scrim overlay — uses --cds-blanket-overlay (primary-surface-bold-alpha10) rgba(1,3,10,0.1); no backdrop blur per Figma
+StatusBadge,Atom,Done,,Zia Settings (configured/not-configured pills),P2,Semantic status pill mapping status->colour+icon+label (configured/not-configured/error/pending). Built on Badge. Approved 2026-07-08
 Spinner,Atom,Missing,,All async states,P1,Inline loading indicator — animating circle
 Skeleton,Atom,Missing,,All list and detail views,P1,Content placeholder during data fetch
 EmptyState,Atom,Missing,,All list views,P1,Illustration + heading + CTA when no records exist

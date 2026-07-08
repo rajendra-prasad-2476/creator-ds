@@ -65,6 +65,8 @@ Never put page-level navigation inside `<main>`. Never skip `TopBar` or `LeftNav
 | `InputOTP` | `input-otp.tsx` | One-time password entry |
 | `Avatar` | `avatar.tsx` | User/entity portraits |
 | `Badge` | `badge.tsx` | Status labels, counts, tags |
+| `StatusBadge` | `status-badge.tsx` | Semantic status pills (configured / not-configured / error / pending) with fixed colour + icon |
+| `Blanket` | `blanket.tsx` | Overlay/scrim backdrop behind Sliders, Sheets, Dialogs (never build a custom scrim) |
 | `Progress` | `progress.tsx` | Linear progress bars |
 | `Separator` | `separator.tsx` | Horizontal/vertical dividers |
 | `Blanket` | `blanket.tsx` | Scrim/overlay backdrop behind Sheets, Dialogs, Sliders & custom overlays |
@@ -111,6 +113,7 @@ When a design intent could map to multiple components, follow this table.
 | Filter a list between 2–6 views | `ContentSwitcher` | `Tabs`, custom radio buttons |
 | Navigate between page sections | `Tabs` | `ContentSwitcher`, `NavigationMenu` |
 | Inline inline error / success message | `Badge` variant destructive/success on field, or future `InlineAlert` | custom styled `<p>` |
+| Show a configured/enabled/error status | `StatusBadge` | hand-composed `Badge` + icon per screen |
 | Action overflow menu | `DropdownMenu` | bare `<ul>` |
 | Contextual help text | `Tooltip` | `title` attribute |
 | Slide-in detail pane | `Sheet` | `Dialog` |
@@ -368,12 +371,38 @@ Do not generate a custom implementation — flag the gap in a code comment inste
 
 ## 11. Promoting a New Component or Variant (Living Guideline)
 
-When screen generation legitimately needs UI that the DS doesn't yet have, and it is
-approved to become part of the system, **promote** it by updating every surface below.
-A component is only a "living guideline" once all applicable boxes are ticked — otherwise
-the next generation run won't know it exists.
+When screen generation legitimately needs UI that the DS doesn't yet have, it goes through
+a **Proposal → Approval → Promotion** gate. Nothing is added to `src/components/ui/` until a
+designer / DS owner has approved it. A component is only a "living guideline" once it is
+**approved** and all applicable promotion boxes are ticked.
 
-### New component
+### 11.0 Approval gate (do this FIRST)
+
+```
+Gap found → PROPOSED → (designer/DS-owner review) → APPROVED → PROMOTE → DONE → Rejected↩
+```
+
+Status vocabulary (tracked in the `Status` column of `docs/ds-parity.csv`):
+
+| Status | Meaning | May build source? |
+|---|---|---|
+| `Proposed` | Candidate logged, awaiting review | ❌ No — screen uses the `{/* TODO … ds-parity */}` placeholder (§10) |
+| `Approved` | Designer / DS owner signed off | ✅ Yes — begin the §11 promotion |
+| `Done` | Built + fully promoted (all boxes ticked) | ✅ Shipped |
+| `Rejected` | Stays as one-off usage, not promoted | ❌ No |
+
+Rules:
+1. **Propose, don't build.** When a gap is found, add a `Proposed` row to `docs/ds-parity.csv`
+   (name, category, why, requesting screen) and, if helpful, sketch the proposed API in the PR.
+   Do **not** create the `src/components/ui/` file yet.
+2. **Two sign-offs are required before `Done`:**
+   - the `Status` moves `Proposed → Approved` in `docs/ds-parity.csv`, **and**
+   - the promotion PR is approved by a code owner (see `.github/CODEOWNERS`).
+3. **Only after `Approved`** do you run the promotion checklist below and set `Status = Done`.
+4. The **changelog entry + version bump happen at promotion time only** — so the showcase
+   "What's New" panel only ever advertises approved, shipped changes.
+
+### New component (run only after status is `Approved`)
 - [ ] **Source** — create `src/components/ui/<name>.tsx` (import path `@/components/ui/<name>`)
 - [ ] **Showcase** — add a live demo to the relevant section (`AtomsSection` / `MoleculesSection` / `OrganismsSection.tsx`)
 - [ ] **§2 Available Components** — add a row (Atom / Molecule / Organism table)
@@ -382,11 +411,13 @@ the next generation run won't know it exists.
 - [ ] **§5 Token Quick Reference** — add any new `--cds-*` token the component introduces
 - [ ] **`docs/ds-parity.csv`** — add the row (or flip status to `Done`) with the Figma node id
 - [ ] **§10 Missing Components** — remove its row if it was previously listed as Missing
+- [ ] **Changelog + version** — add an entry to `src/ds-changelog.ts`, bump `DS_VERSION` (minor for a new component), and run `npm run ds:changelog`. This is what surfaces the change to designers via the showcase "What's New" panel.
 
-### New variant of an existing component
+### New variant of an existing component (run only after status is `Approved`)
 - [ ] **Source** — add the variant to the component's variant map / union (e.g. a new `size`, `colour`, `variant`)
 - [ ] **Showcase** — demo the new variant alongside the existing ones
 - [ ] **§2 / §3** — update the component's row/notes only if the variant changes its intended use
+- [ ] **Changelog + version** — add an entry to `src/ds-changelog.ts`, bump `DS_VERSION` (minor for a new variant), and run `npm run ds:changelog`
 - [ ] No `ds-parity.csv` change needed — the component already exists
 
 > Rule of thumb: **usage** of existing props (e.g. `<Badge size="xs">` with an icon) is *not*
