@@ -13,6 +13,7 @@
  */
 
 import * as React from "react"
+import OperationsScreen from "@/screens/zia-configuration/OperationsScreen"
 import ZiaSettingsScreen from "@/screens/zia-configuration/ZiaSettingsScreen"
 import ZiaProviderDetailScreen from "@/screens/zia-configuration/ZiaProviderDetailScreen"
 import { type ScreenParams } from "@/screens/navigation"
@@ -59,6 +60,13 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
     owner: "rajendra.prasad",
     lastUpdated: "2026-07-08",
     screens: [
+      {
+        id: "operations",
+        name: "Operations (Entry)",
+        factory: () => <OperationsScreen />,
+        sourcePath: "src/screens/zia-configuration/OperationsScreen.tsx",
+        destPath: "features/001-zia-configuration/screens/OperationsScreen.tsx",
+      },
       {
         id: "zia-settings",
         name: "Zia Settings",

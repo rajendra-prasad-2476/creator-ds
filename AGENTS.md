@@ -220,7 +220,7 @@ export default function MySolutionsScreen() {
 
 ---
 
-## 7. File Naming for Generated Screens
+## 7. File Naming & Registration for Generated Screens
 
 When an AI agent produces a new screen file, follow this convention:
 
@@ -231,9 +231,8 @@ src/screens/<feature-slug>/<ScreenName>.tsx
 Examples:
 ```
 src/screens/crm/ContactListScreen.tsx
-src/screens/crm/ContactDetailScreen.tsx
 src/screens/leave-management/LeaveRequestFormScreen.tsx
-src/screens/reports/ReportDashboardScreen.tsx
+src/screens/zia-configuration/ZiaSettingsScreen.tsx
 ```
 
 Rules:
@@ -242,9 +241,93 @@ Rules:
 - One screen per file — do not combine multiple screens in one file
 - The file must export a single default export: `export default function ContactListScreen()`
 
+### MANDATORY: Register every screen in the Feature Registry
+
+After creating a screen, **always** add it to `src/screens/feature-registry.tsx`.
+Screens not in the registry will not appear in the Feature Dashboard or be previewable.
+
+```tsx
+// src/screens/feature-registry.tsx
+import MyNewScreen from "@/screens/my-feature/MyNewScreen"
+
+export const FEATURE_REGISTRY: FeatureEntry[] = [
+  {
+    id: "002",
+    name: "My Feature Name",
+    prdRef: "#002",
+    version: "v1.0",
+    status: "draft",
+    owner: "pm.name",           // PM's login name
+    lastUpdated: "2026-07-08",
+    screens: [
+      {
+        id: "my-screen",
+        name: "My Screen",
+        factory: () => <MyNewScreen />,
+        sourcePath: "src/screens/my-feature/MyNewScreen.tsx",
+        destPath: "features/002-my-feature/screens/MyNewScreen.tsx",
+      },
+    ],
+    versionHistory: [],
+  },
+]
+```
+
 ---
 
-## 8. What Agents Must NOT Do
+## 8. Screen-to-Screen Navigation
+
+Screens rendered inside the Feature Dashboard preview use a lightweight `NavigationContext`.
+Use `useNavigation()` for all navigation — never use `href`, `window.location`, or `console.log`.
+
+```tsx
+import { useNavigation } from "@/screens/navigation"
+
+export default function MyScreen() {
+  const { navigate, goBack, canGoBack, params } = useNavigation()
+
+  // Navigate to another screen (must be registered in same feature's screens[])
+  navigate("target-screen-id", { someParam: "value" })
+
+  // Go back to the previous screen in the navigation stack
+  if (canGoBack) goBack()
+
+  // Read params passed from the previous screen
+  const id = params.someParam as string
+}
+```
+
+### Navigation rules
+- Every `onClick` that changes screens must call `navigate(screenId, params?)`
+- Breadcrumb links must use `canGoBack ? goBack() : undefined` — never hardcode `href="#"`
+- The first screen in a feature's `screens[]` array is the entry point
+- Link category items (e.g. Operations menu) use `onClick: () => navigate("target-screen-id")`
+- `screenId` must exactly match an `id` in the same feature's `screens[]` array
+
+### Full navigation pattern (Operations → feature → detail → back)
+```tsx
+// OperationsScreen.tsx — entry point
+import { LinkCategoryTemplate } from "@/templates/LinkCategoryTemplate"
+import { useNavigation } from "@/screens/navigation"
+
+export default function OperationsScreen() {
+  const { navigate } = useNavigation()
+  return (
+    <LinkCategoryTemplate
+      categories={[{
+        heading: "Applications",
+        links: [
+          { label: "Zia", onClick: () => navigate("zia-settings") },
+        ]
+      }]}
+    />
+  )
+}
+```
+
+---
+
+## 9. What Agents Must NOT Do
 
 - Do not install or import any UI library other than the components in `src/components/ui/`
 - Do not use `className="text-blue-500"` or any Tailwind color utility — use `--cds-*` tokens
@@ -256,7 +339,7 @@ Rules:
 
 ---
 
-## 9. Missing Components (Do Not Stub)
+## 10. Missing Components (Do Not Stub)
 
 These components appear in `docs/ds-parity.csv` as **Missing** or **In Progress**.
 Do not generate a custom implementation — flag the gap in a code comment instead.
@@ -279,7 +362,7 @@ Do not generate a custom implementation — flag the gap in a code comment inste
 
 ---
 
-## 10. Sync Notes for Maintainers
+## 11. Sync Notes for Maintainers
 
 - This file lives in `creator-ds-react/AGENTS.md` (source of truth)
 - It is copied verbatim to `creator-features/AGENTS.md` by the GitHub Actions sync workflow

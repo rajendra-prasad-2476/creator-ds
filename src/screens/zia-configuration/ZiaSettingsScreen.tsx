@@ -432,7 +432,8 @@ function FeaturesTable({
 export default function ZiaSettingsScreen() {
   const [features, setFeatures] = React.useState<ZiaFeature[]>(INITIAL_FEATURES)
 
-  const { navigate } = useNavigation()
+  const { navigate, goBack, canGoBack } = useNavigation()
+  const { goBack, canGoBack } = useNavigation()
 
   function handleMappingChange(featureId: string, value: string) {
     setFeatures((prev) =>
@@ -474,7 +475,16 @@ export default function ZiaSettingsScreen() {
           <Breadcrumb style={{ marginBottom: "var(--cds-space-16)" }}>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href="#">Operations</BreadcrumbLink>
+                {canGoBack ? (
+                  <BreadcrumbLink
+                    href="#"
+                    onClick={(e) => { e.preventDefault(); goBack() }}
+                  >
+                    Operations
+                  </BreadcrumbLink>
+                ) : (
+                  <BreadcrumbLink href="#">Operations</BreadcrumbLink>
+                )}
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
