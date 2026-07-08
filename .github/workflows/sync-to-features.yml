@@ -100,6 +100,3 @@ jobs:
             - [ ] Template props are documented correctly
 
             > Safe to auto-merge if all checks pass and no conflicts exist.
-          labels: |
-            automated
-            ds-sync
