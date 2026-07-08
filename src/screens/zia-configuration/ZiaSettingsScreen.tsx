@@ -53,6 +53,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { CircleCheckIcon, AlertCircle } from "lucide-react"
 import { useNavigation } from "@/screens/navigation"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -194,20 +195,28 @@ function ProviderCard({
           {/* Status badge */}
           {isConfigured ? (
             <Badge
+              colour="success"
+              variant="subtle"
+              size="xs"
               style={{
-                background: "var(--cds-success-surface-subtle, #F0FAF4)",
-                color: "var(--cds-success-text-default, #078841)",
-                border: "1px solid var(--cds-success-border-default, #078841)",
                 borderRadius: "var(--cds-radius-full)",
+                gap: "var(--cds-space-4)",
               }}
             >
+              <CircleCheckIcon size={12} aria-hidden />
               Configured
             </Badge>
           ) : (
             <Badge
+              colour="warning"
               variant="subtle"
-              style={{ borderRadius: "var(--cds-radius-full)" }}
+              size="xs"
+              style={{
+                borderRadius: "var(--cds-radius-full)",
+                gap: "var(--cds-space-4)",
+              }}
             >
+              <AlertCircle size={12} aria-hidden />
               Not configured
             </Badge>
           )}

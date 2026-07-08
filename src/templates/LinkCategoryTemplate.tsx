@@ -43,6 +43,8 @@ export interface LinkCategoryTemplateProps {
   categories?: LinkCategory[]
   showSearch?: boolean
   onSearch?: (query: string) => void
+  /** Left-nav item id to highlight as active (e.g. "operations") */
+  activeNavId?: string
 }
 
 // ─── Default data ─────────────────────────────────────────────────────────────
@@ -170,6 +172,7 @@ export default function LinkCategoryTemplate({
   categories = DEFAULT_CATEGORIES,
   showSearch = true,
   onSearch,
+  activeNavId,
 }: LinkCategoryTemplateProps) {
   const [search, setSearch] = React.useState("")
 
@@ -182,7 +185,7 @@ export default function LinkCategoryTemplate({
     <div className="flex flex-col h-screen">
       <TopBar />
       <div className="flex flex-1 overflow-hidden">
-        <LeftNav />
+        <LeftNav activeId={activeNavId} />
         <main
           className="flex-1 overflow-y-auto"
           style={{

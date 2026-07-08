@@ -19,6 +19,7 @@ export default function OperationsScreen() {
       title="Operations"
       description="Define and manage various operations of your account using this centralised management system."
       showSearch
+      activeNavId="operations"
       categories={[
         {
           heading: "Applications",
