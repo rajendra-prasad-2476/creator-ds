@@ -333,6 +333,10 @@
     --cds-black: #000000;
     --cds-white: #FFFFFF;
 
+    /* Alpha / Overlay — Blanket scrim (primary-surface-bold-alpha10) */
+    --cds-primary-surface-bold-alpha10: rgba(1, 3, 10, 0.1);
+    --cds-blanket-overlay: var(--cds-primary-surface-bold-alpha10);
+
     /* ===== Typography Tokens ===== */
     --cds-font-family-default: 'Zoho Puvi', system-ui, sans-serif;
     --cds-font-family-mono: 'PT Mono', ui-monospace, monospace;

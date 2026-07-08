@@ -13,9 +13,36 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tile, TileIcon, TileTitle, TileDescription } from "@/components/ui/tile";
 import { Notes } from "@/components/ui/notes";
+import { Blanket } from "@/components/ui/blanket";
 import { TopBar } from "@/components/ui/top-bar";
 import { LeftNav } from "@/components/ui/left-nav";
 import { BarChart3, Plus, Filter, ArrowUpDown, Eye, Edit, Trash2, Database, Layers, Globe } from "lucide-react";
+import { useState } from "react";
+
+function BlanketDemo() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="space-y-4">
+      <Button variant="outline" onClick={() => setOpen(true)}>Show Blanket</Button>
+      <div className="relative h-64 overflow-hidden rounded-[var(--cds-radius-r)] border bg-[var(--cds-huegrey-surface-subtle)]">
+        <div className="p-6 space-y-2">
+          <h4 className="text-[var(--cds-text-h6)] font-medium leading-[var(--cds-leading-h6)]">Underlying content</h4>
+          <p className="text-sm text-muted-foreground">The blanket dims this content while an overlay panel is active. Click the button to toggle it.</p>
+        </div>
+        {open && (
+          <>
+            <Blanket className="absolute z-10" onClick={() => setOpen(false)} />
+            <div className="absolute inset-y-0 right-0 z-20 flex w-64 flex-col gap-3 border-l bg-white p-6 shadow-[-4px_4px_10px_rgba(0,0,0,0.25)]">
+              <h4 className="text-[var(--cds-text-h6)] font-medium leading-[var(--cds-leading-h6)]">Overlay Panel</h4>
+              <p className="text-sm text-muted-foreground">Sits above the blanket scrim.</p>
+              <Button variant="outline" size="sm" className="mt-auto self-start" onClick={() => setOpen(false)}>Close</Button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export function OrganismsSection() {
   return (
@@ -271,10 +298,11 @@ export function OrganismsSection() {
       <Card>
         <CardHeader>
           <CardTitle>Blanket / Overlay</CardTitle>
-          <CardDescription>Full-screen overlay backdrop used behind modals, sheets, and dialogs.</CardDescription>
+          <CardDescription>Scrim backdrop rendered behind Slider panels, sheets, dialogs, and other overlays. Uses the <code>--cds-blanket-overlay</code> token (primary-surface-bold-alpha10).</CardDescription>
         </CardHeader>
-        <CardContent>
-          <Notes variant="neutral" title="Blanket">The blanket/overlay is automatically rendered by Dialog, Sheet, and AlertDialog components as a semi-transparent backdrop.</Notes>
+        <CardContent className="space-y-4">
+          <BlanketDemo />
+          <Notes variant="neutral" title="Blanket">Dialog, Sheet, and AlertDialog render the blanket automatically. For custom overlays, use the <code>&lt;Blanket /&gt;</code> component instead of a hardcoded rectangle.</Notes>
         </CardContent>
       </Card>
 
