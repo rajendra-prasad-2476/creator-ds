@@ -13,6 +13,7 @@ import { Notes } from "@/components/ui/notes";
 import { Badge } from "@/components/ui/badge";
 import { InputSuffix } from "@/components/ui/input-suffix";
 import { InputPrefix } from "@/components/ui/input-prefix";
+import { InputAffixed } from "@/components/ui/input-affixed";
 import { MoreHorizontal, Settings, User, LogOut, CreditCard, Keyboard, Phone, X, Copy, Search, ArrowRight, Globe, ChevronDown } from "lucide-react";
 
 export function MoleculesSection() {
@@ -562,6 +563,81 @@ export function MoleculesSection() {
               disabled
               placeholder="Unavailable"
               suffixLabel="Action"
+              onSuffixClick={() => {}}
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Input Affixed */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Input Affixed</CardTitle>
+          <CardDescription>
+            A text field with a leading CTA on the left AND a trailing CTA on the
+            right. The right CTA always stays grey — only the left CTA + input
+            adopt error / success colours.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4 max-w-sm">
+          {/* Currency + unit */}
+          <div className="space-y-2">
+            <Label>Currency amount</Label>
+            <InputAffixed
+              prefixIcon={<ArrowRight />}
+              prefixLabel="USD"
+              placeholder="0.00"
+              suffixLabel=".00"
+              onSuffixClick={() => {}}
+            />
+          </div>
+
+          {/* Country code + extension */}
+          <div className="space-y-2">
+            <Label>Phone number</Label>
+            <InputAffixed
+              prefixLabel="+91"
+              prefixTrailingIcon={<ChevronDown />}
+              onPrefixClick={() => {}}
+              placeholder="98765 43210"
+              suffixIcon={<Phone />}
+              suffixLabel="Call"
+              onSuffixClick={() => {}}
+            />
+          </div>
+
+          {/* Error — left + input get error; right stays default */}
+          <div className="space-y-2">
+            <Label>Error</Label>
+            <InputAffixed
+              status="error"
+              prefixLabel="$"
+              placeholder="Invalid amount"
+              suffixLabel="Add"
+              onSuffixClick={() => {}}
+            />
+          </div>
+
+          {/* Success */}
+          <div className="space-y-2">
+            <Label>Success</Label>
+            <InputAffixed
+              status="success"
+              prefixLabel="$"
+              defaultValue="250.00"
+              suffixLabel="Add"
+              onSuffixClick={() => {}}
+            />
+          </div>
+
+          {/* Disabled */}
+          <div className="space-y-2">
+            <Label>Disabled</Label>
+            <InputAffixed
+              disabled
+              prefixLabel="USD"
+              placeholder="Unavailable"
+              suffixLabel=".00"
               onSuffixClick={() => {}}
             />
           </div>

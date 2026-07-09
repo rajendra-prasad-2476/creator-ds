@@ -2,7 +2,12 @@
 
 > Generated from `src/ds-changelog.ts` — do not edit by hand. Run `npm run ds:changelog`.
 
-Current version: **v1.4.0**
+Current version: **v1.5.0**
+
+## v1.5.0 — 2026-07-09
+
+### Added
+- **InputAffixed** — New molecule — text field with leading AND trailing interactive CTAs. Status (error/success) applies to the prefix CTA + input only; the right suffix CTA always stays in default grey. Use instead of two raw <span> elements flanking an <input>. _(ds-parity: InputAffixed)_
 
 ## v1.4.0 — 2026-07-09
 

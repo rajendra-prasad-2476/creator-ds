@@ -87,6 +87,7 @@ Never put page-level navigation inside `<main>`. Never skip `TopBar` or `LeftNav
 | `Notes` | `notes.tsx` | Inline annotation / comment blocks |
 | `InputSuffix` | `input-suffix.tsx` | Text field with trailing CTA (icon, label, or clear button) |
 | `InputPrefix` | `input-prefix.tsx` | Text field with leading CTA (icon, label) and optional trailing icon / clear |
+| `InputAffixed` | `input-affixed.tsx` | Text field with leading AND trailing CTAs on both sides |
 | `Tile` | `tile.tsx` | Clickable card tiles in a grid |
 | `Sonner` | `sonner.tsx` | Toast notifications |
 
@@ -113,6 +114,7 @@ When a design intent could map to multiple components, follow this table.
 | User fills in a form field | `Label` + `Input` (or `Textarea`) | raw `<input>` / `<textarea>` |
 | Input needs a trailing action (copy, search, clear) | `InputSuffix` | raw `<div>` wrapper + `<button>` beside `<input>` |
 | Input needs a leading context label/icon (currency, country code, URL scheme) | `InputPrefix` | raw `<span>` + `<input>` side by side |
+| Input needs context on BOTH sides (currency + unit, code + extension) | `InputAffixed` | two raw `<span>` elements flanking an `<input>` |
 | Show a temporary status message | `Sonner` (toast) | raw `<div>` alert banners |
 | Filter a list between 2–6 views | `ContentSwitcher` | `Tabs`, custom radio buttons |
 | Navigate between page sections | `Tabs` | `ContentSwitcher`, `NavigationMenu` |
