@@ -85,6 +85,7 @@ Never put page-level navigation inside `<main>`. Never skip `TopBar` or `LeftNav
 | `Collapsible` | `collapsible.tsx` | Expand/collapse a single section |
 | `ScrollArea` | `scroll-area.tsx` | Scrollable region with styled scrollbar |
 | `Notes` | `notes.tsx` | Inline annotation / comment blocks |
+| `InputSuffix` | `input-suffix.tsx` | Text field with trailing CTA (icon, label, or clear button) |
 | `Tile` | `tile.tsx` | Clickable card tiles in a grid |
 | `Sonner` | `sonner.tsx` | Toast notifications |
 
@@ -109,6 +110,7 @@ When a design intent could map to multiple components, follow this table.
 |---|---|---|
 | User confirms a destructive action | `AlertDialog` | `Dialog`, `window.confirm()` |
 | User fills in a form field | `Label` + `Input` (or `Textarea`) | raw `<input>` / `<textarea>` |
+| Input needs a trailing action (copy, search, clear) | `InputSuffix` | raw `<div>` wrapper + `<button>` beside `<input>` |
 | Show a temporary status message | `Sonner` (toast) | raw `<div>` alert banners |
 | Filter a list between 2–6 views | `ContentSwitcher` | `Tabs`, custom radio buttons |
 | Navigate between page sections | `Tabs` | `ContentSwitcher`, `NavigationMenu` |
