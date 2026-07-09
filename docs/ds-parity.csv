@@ -21,3 +21,4 @@ Accordion,Molecule,Missing,,Settings pages,P2,Expand/collapse single section wit
 FileUpload,Molecule,Missing,,Document features,P2,Drag-and-drop zone + file list preview
 Stepper,Molecule,Missing,,Onboarding wizard,P3,Multi-step progress indicator — horizontal and vertical
 CommandPalette,Organism,Missing,,Global search,P3,⌘K overlay with fuzzy search and keyboard navigation
+Toggle,Atom,Done,2435:645,Any feature needing on/off settings with semantic colour,P1,Sliding on/off switch: 2 sizes (sm 14px / default 16px) × 3 variants (fill/border/subtle) × 6 colour states (primary/success/info/warning/error/huegrey). Fully accessible: role=switch aria-checked. Controlled + uncontrolled. Optional label inside track. Replaces legacy toolbar-button implementation.

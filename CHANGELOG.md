@@ -2,7 +2,12 @@
 
 > Generated from `src/ds-changelog.ts` — do not edit by hand. Run `npm run ds:changelog`.
 
-Current version: **v1.8.0**
+Current version: **v1.9.0**
+
+## v1.9.0 — 2026-07-09
+
+### Changed
+- **Toggle** — Rebuilt as a DS-aligned sliding on/off switch (Figma: Toggle_Base ✦ 2435:645). 2 sizes (sm 14 px / default 16 px) × 3 variants (fill / border / subtle) × 6 colour states (primary / success / info / warning / error / huegrey). Fully accessible role=switch with aria-checked. Supports controlled & uncontrolled modes and an optional label inside the track. Replaces the legacy toolbar-button implementation. _(ds-parity: Toggle)_
 
 ## v1.8.0 — 2026-07-09
 

@@ -36,15 +36,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  Bold,
-  Italic,
-  Underline,
   Info,
   Plus,
   Search,
   Mail,
-  Star,
-  Heart,
   ArrowRight,
   Download,
   Trash2,
@@ -54,6 +49,9 @@ import {
   Bell,
   Check,
   AlertTriangle,
+  Wifi,
+  Zap,
+  Volume2,
 } from "lucide-react";
 
 export function AtomsSection() {
@@ -338,18 +336,147 @@ export function AtomsSection() {
       <Card>
         <CardHeader>
           <CardTitle>Toggle</CardTitle>
-          <CardDescription>A two-state button that can be toggled on or off.</CardDescription>
+          <CardDescription>
+            Sliding on/off switch — 3 sizes (14 / 16 / 18 px) × 3 variants (fill / border / subtle) × 6 colour states. Supports text label and icon inside the track.
+          </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center gap-2">
-            <Toggle aria-label="Toggle bold"><Bold className="h-4 w-4" /></Toggle>
-            <Toggle aria-label="Toggle italic"><Italic className="h-4 w-4" /></Toggle>
-            <Toggle aria-label="Toggle underline"><Underline className="h-4 w-4" /></Toggle>
+        <CardContent className="space-y-6">
+
+          {/* Sizes */}
+          <div>
+            <p className="text-xs font-medium text-muted-foreground mb-3">Sizes — sm (14 px) · default (16 px) · lg (18 px)</p>
+            <div className="flex items-center gap-6">
+              <div className="flex flex-col items-center gap-1.5">
+                <Toggle size="sm" defaultChecked color="primary" aria-label="sm on" />
+                <Toggle size="sm" color="primary" aria-label="sm off" />
+                <span style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>sm · 14 px</span>
+              </div>
+              <div className="flex flex-col items-center gap-1.5">
+                <Toggle size="default" defaultChecked color="primary" aria-label="default on" />
+                <Toggle size="default" color="primary" aria-label="default off" />
+                <span style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>default · 16 px</span>
+              </div>
+              <div className="flex flex-col items-center gap-1.5">
+                <Toggle size="lg" defaultChecked color="primary" aria-label="lg on" />
+                <Toggle size="lg" color="primary" aria-label="lg off" />
+                <span style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>lg · 18 px</span>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Toggle aria-label="Star"><Star className="h-4 w-4" /></Toggle>
-            <Toggle aria-label="Heart"><Heart className="h-4 w-4" /></Toggle>
+          <Separator />
+
+          {/* Fill — all 6 colour states (on + off) */}
+          <div>
+            <p className="text-xs font-medium text-muted-foreground mb-3">Fill — all colour states</p>
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-3">
+                <Toggle defaultChecked variant="fill" color="primary" aria-label="Primary on" />
+                <Toggle defaultChecked variant="fill" color="success" aria-label="Success on" />
+                <Toggle defaultChecked variant="fill" color="info" aria-label="Info on" />
+                <Toggle defaultChecked variant="fill" color="warning" aria-label="Warning on" />
+                <Toggle defaultChecked variant="fill" color="error" aria-label="Error on" />
+                <Toggle defaultChecked variant="fill" color="huegrey" aria-label="HueGrey on" />
+              </div>
+              <div className="flex flex-wrap items-center gap-3">
+                <Toggle variant="fill" color="primary" aria-label="Primary off" />
+                <Toggle variant="fill" color="success" aria-label="Success off" />
+                <Toggle variant="fill" color="info" aria-label="Info off" />
+                <Toggle variant="fill" color="warning" aria-label="Warning off" />
+                <Toggle variant="fill" color="error" aria-label="Error off" />
+                <Toggle variant="fill" color="huegrey" aria-label="HueGrey off" />
+              </div>
+            </div>
           </div>
+          <Separator />
+
+          {/* Border */}
+          <div>
+            <p className="text-xs font-medium text-muted-foreground mb-3">Border</p>
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-3">
+                <Toggle defaultChecked variant="border" color="primary" aria-label="Primary border on" />
+                <Toggle defaultChecked variant="border" color="success" aria-label="Success border on" />
+                <Toggle defaultChecked variant="border" color="info" aria-label="Info border on" />
+                <Toggle defaultChecked variant="border" color="warning" aria-label="Warning border on" />
+                <Toggle defaultChecked variant="border" color="error" aria-label="Error border on" />
+                <Toggle defaultChecked variant="border" color="huegrey" aria-label="HueGrey border on" />
+              </div>
+              <div className="flex flex-wrap items-center gap-3">
+                <Toggle variant="border" color="primary" aria-label="Primary border off" />
+                <Toggle variant="border" color="success" aria-label="Success border off" />
+                <Toggle variant="border" color="info" aria-label="Info border off" />
+                <Toggle variant="border" color="warning" aria-label="Warning border off" />
+                <Toggle variant="border" color="error" aria-label="Error border off" />
+                <Toggle variant="border" color="huegrey" aria-label="HueGrey border off" />
+              </div>
+            </div>
+          </div>
+          <Separator />
+
+          {/* Subtle */}
+          <div>
+            <p className="text-xs font-medium text-muted-foreground mb-3">Subtle</p>
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-3">
+                <Toggle defaultChecked variant="subtle" color="primary" aria-label="Primary subtle on" />
+                <Toggle defaultChecked variant="subtle" color="success" aria-label="Success subtle on" />
+                <Toggle defaultChecked variant="subtle" color="info" aria-label="Info subtle on" />
+                <Toggle defaultChecked variant="subtle" color="warning" aria-label="Warning subtle on" />
+                <Toggle defaultChecked variant="subtle" color="error" aria-label="Error subtle on" />
+                <Toggle defaultChecked variant="subtle" color="huegrey" aria-label="HueGrey subtle on" />
+              </div>
+              <div className="flex flex-wrap items-center gap-3">
+                <Toggle variant="subtle" color="primary" aria-label="Primary subtle off" />
+                <Toggle variant="subtle" color="success" aria-label="Success subtle off" />
+                <Toggle variant="subtle" color="info" aria-label="Info subtle off" />
+                <Toggle variant="subtle" color="warning" aria-label="Warning subtle off" />
+                <Toggle variant="subtle" color="error" aria-label="Error subtle off" />
+                <Toggle variant="subtle" color="huegrey" aria-label="HueGrey subtle off" />
+              </div>
+            </div>
+          </div>
+          <Separator />
+
+          {/* With text label */}
+          <div>
+            <p className="text-xs font-medium text-muted-foreground mb-3">With text label inside track</p>
+            <div className="flex flex-wrap items-center gap-4">
+              <Toggle defaultChecked label="On" color="primary" aria-label="Label on" />
+              <Toggle label="Off" color="primary" aria-label="Label off" />
+              <Toggle defaultChecked variant="border" color="success" label="Active" aria-label="Success active" />
+              <Toggle defaultChecked variant="subtle" color="warning" label="Live" aria-label="Warning live" />
+              <Toggle size="sm" defaultChecked label="On" aria-label="sm label" />
+              <Toggle size="lg" defaultChecked label="On" aria-label="lg label" />
+            </div>
+          </div>
+          <Separator />
+
+          {/* With icon */}
+          <div>
+            <p className="text-xs font-medium text-muted-foreground mb-3">With icon inside track</p>
+            <div className="flex flex-wrap items-center gap-4">
+              <Toggle defaultChecked color="primary" label={<Wifi size={9} />} aria-label="WiFi on" />
+              <Toggle color="primary" label={<Wifi size={9} />} aria-label="WiFi off" />
+              <Toggle defaultChecked variant="fill" color="success" label={<Check size={9} />} aria-label="Check on" />
+              <Toggle defaultChecked variant="border" color="warning" label={<Zap size={9} />} aria-label="Zap on" />
+              <Toggle defaultChecked variant="subtle" color="error" label={<Volume2 size={9} />} aria-label="Volume on" />
+              <Toggle size="sm" defaultChecked color="huegrey" label={<Bell size={8} />} aria-label="Bell sm" />
+              <Toggle size="lg" defaultChecked variant="border" color="info" label={<Wifi size={10} />} aria-label="WiFi lg" />
+            </div>
+          </div>
+          <Separator />
+
+          {/* Disabled */}
+          <div>
+            <p className="text-xs font-medium text-muted-foreground mb-3">Disabled</p>
+            <div className="flex items-center gap-4">
+              <Toggle disabled aria-label="Disabled off" />
+              <Toggle defaultChecked disabled aria-label="Disabled on" />
+              <Toggle defaultChecked disabled variant="border" color="success" aria-label="Disabled border on" />
+              <Toggle defaultChecked disabled label="On" aria-label="Disabled with label" />
+            </div>
+          </div>
+
         </CardContent>
       </Card>
 
