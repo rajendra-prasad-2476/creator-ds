@@ -2,7 +2,12 @@
 
 > Generated from `src/ds-changelog.ts` — do not edit by hand. Run `npm run ds:changelog`.
 
-Current version: **v1.2.0**
+Current version: **v1.3.0**
+
+## v1.3.0 — 2026-07-09
+
+### Added
+- **InputSuffix** — New molecule — text field with a trailing interactive CTA (icon, label, or clear ×). Supports default / error / success / disabled states. Use instead of composing a raw <div> + <button> beside an <input>. _(ds-parity: InputSuffix)_
 
 ## v1.2.0 — 2026-07-08
 

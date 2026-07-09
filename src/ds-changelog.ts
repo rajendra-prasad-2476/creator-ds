@@ -33,10 +33,23 @@ export interface DSChangeEntry {
 }
 
 /** Current DS version — surfaced as the version badge in the showcase TopBar. */
-export const DS_VERSION = "1.2.0"
+export const DS_VERSION = "1.3.0"
 
 /** Newest entry first. */
 export const DS_CHANGELOG: DSChangeEntry[] = [
+  {
+    version: "1.3.0",
+    date: "2026-07-09",
+    changes: [
+      {
+        type: "added",
+        scope: "InputSuffix",
+        summary:
+          "New molecule — text field with a trailing interactive CTA (icon, label, or clear ×). Supports default / error / success / disabled states. Use instead of composing a raw <div> + <button> beside an <input>.",
+        parity: "InputSuffix",
+      },
+    ],
+  },
   {
     version: "1.2.0",
     date: "2026-07-08",
