@@ -59,8 +59,8 @@ Never put page-level navigation inside `<main>`. Never skip `TopBar` or `LeftNav
 | `Label` | `label.tsx` | Form field labels |
 | `Checkbox` | `checkbox.tsx` | Boolean / multi-select options |
 | `RadioGroup` + `RadioGroupItem` | `radio-group.tsx` | Mutually exclusive options |
-| `Switch` | `switch.tsx` | On/off toggles |
-| `Toggle` | `toggle.tsx` | Toolbar/icon toggle buttons |
+| `Switch` | `switch.tsx` | Simple on/off toggles (binary, no colour variants) |
+| `Toggle` | `toggle.tsx` | DS sliding on/off switch — 2 sizes × 3 variants (fill/border/subtle) × 6 colour states (primary/success/info/warning/error/huegrey) |
 | `Slider` | `slider.tsx` | Range input |
 | `InputOTP` | `input-otp.tsx` | One-time password entry |
 | `Avatar` | `avatar.tsx` | User/entity portraits |
@@ -132,6 +132,8 @@ When a design intent could map to multiple components, follow this table.
 | Intent | Use this | Never use |
 |---|---|---|
 | User confirms a destructive action | `AlertDialog` | `Dialog`, `window.confirm()` |
+| User enables/disables a setting with semantic colour (e.g. success on, error off) | `Toggle` | custom `<div>` switch or `Switch` |
+| Simple binary on/off toggle, no colour variant needed | `Switch` | `Toggle`, custom `<div>` |
 | User fills in a form field | `Label` + `Input` (or `Textarea`) | raw `<input>` / `<textarea>` |
 | Input needs a trailing action (copy, search, clear) | `InputSuffix` | raw `<div>` wrapper + `<button>` beside `<input>` |
 | Input needs a leading context label/icon (currency, country code, URL scheme) | `InputPrefix` | raw `<span>` + `<input>` side by side |

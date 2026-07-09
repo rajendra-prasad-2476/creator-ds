@@ -33,10 +33,23 @@ export interface DSChangeEntry {
 }
 
 /** Current DS version — surfaced as the version badge in the showcase TopBar. */
-export const DS_VERSION = "1.8.0"
+export const DS_VERSION = "1.9.0"
 
 /** Newest entry first. */
 export const DS_CHANGELOG: DSChangeEntry[] = [
+  {
+    version: "1.9.0",
+    date: "2026-07-09",
+    changes: [
+      {
+        type: "changed",
+        scope: "Toggle",
+        summary:
+          "Rebuilt as a DS-aligned sliding on/off switch (Figma: Toggle_Base ✦ 2435:645). 2 sizes (sm 14 px / default 16 px) × 3 variants (fill / border / subtle) × 6 colour states (primary / success / info / warning / error / huegrey). Fully accessible role=switch with aria-checked. Supports controlled & uncontrolled modes and an optional label inside the track. Replaces the legacy toolbar-button implementation.",
+        parity: "Toggle",
+      },
+    ],
+  },
   {
     version: "1.8.0",
     date: "2026-07-09",
