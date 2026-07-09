@@ -352,41 +352,7 @@ export function MoleculesSection() {
         </CardContent>
       </Card>
 
-      {/* Input Prefixed / Suffixed / Affixed */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Input Prefixed / Suffixed / Affixed</CardTitle>
-          <CardDescription>Input fields with prefix, suffix, or both attached elements.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4 max-w-md">
-          <div className="space-y-2">
-            <Label>Prefixed (URL)</Label>
-            <div className="flex">
-              <span className="inline-flex items-center px-3 rounded-l-[var(--cds-radius-r)] border border-r-0 border-input bg-muted text-sm text-muted-foreground">https://</span>
-              <Input className="rounded-l-none" placeholder="example.com" />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <Label>Suffixed (Email)</Label>
-            <div className="flex">
-              <Input className="rounded-r-none" placeholder="username" />
-              <span className="inline-flex items-center px-3 rounded-r-[var(--cds-radius-r)] border border-l-0 border-input bg-muted text-sm text-muted-foreground">@zoho.com</span>
-            </div>
-          </div>
-          <div className="space-y-2">
-            <Label>Affixed (Phone)</Label>
-            <div className="flex">
-              <span className="inline-flex items-center px-3 rounded-l-[var(--cds-radius-r)] border border-r-0 border-input bg-muted text-sm text-muted-foreground">+91</span>
-              <Input className="rounded-none border-x-0" placeholder="98765 43210" />
-              <span className="inline-flex items-center px-2 rounded-r-[var(--cds-radius-r)] border border-l-0 border-input bg-muted text-muted-foreground"><Phone className="h-4 w-4" /></span>
-            </div>
-          </div>
-          <div className="space-y-2">
-            <Label>Input Number</Label>
-            <Input type="number" placeholder="0" min={0} max={100} />
-          </div>
-        </CardContent>
-      </Card>
+      {/* Input Prefixed / Suffixed / Affixed — legacy raw compositions replaced by DS components below */}
 
       {/* Input Prefix */}
       <Card>
