@@ -328,6 +328,10 @@
     --cds-huegrey-border-low-hover: #e5e6e8;
     --cds-huegrey-border-minimal: #d5d6d9;
     --cds-huegrey-border-minimal-hover: #c3c5c9;
+    --cds-huegrey-border-fairish: #b0b2b8;
+    --cds-huegrey-border-fairish-hover: #9ea0a7;
+    --cds-huegrey-text-fairish: #9ea0a7;
+    --cds-huegrey-text-fairish-hover: #8b8d93;
 
     /* Black & White */
     --cds-black: #000000;

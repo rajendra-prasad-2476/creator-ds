@@ -388,16 +388,36 @@ export function AtomsSection() {
       <Card>
         <CardHeader>
           <CardTitle>Input TextArea</CardTitle>
-          <CardDescription>Multi-line text input.</CardDescription>
+          <CardDescription>Multi-line text input — all DS states.</CardDescription>
         </CardHeader>
         <CardContent className="max-w-md space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="textarea-1">Description</Label>
-            <Textarea id="textarea-1" placeholder="Type your message here..." />
+          <div className="space-y-[var(--cds-gap-small)]">
+            <Label htmlFor="textarea-default">Default</Label>
+            <Textarea id="textarea-default" placeholder="Type your message here..." />
+            <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-fairish)" }}>Helper text</p>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="textarea-disabled">Disabled</Label>
-            <Textarea id="textarea-disabled" placeholder="Disabled textarea" disabled />
+          <div className="space-y-[var(--cds-gap-small)]">
+            <Label htmlFor="textarea-filled">Filled</Label>
+            <Textarea id="textarea-filled" defaultValue="This is some filled content that the user has already typed into the textarea field." />
+          </div>
+          <div className="space-y-[var(--cds-gap-small)]">
+            <Label htmlFor="textarea-error">Error</Label>
+            <Textarea id="textarea-error" status="error" placeholder="Something went wrong..." />
+            <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-error-text-default)" }}>This field is required.</p>
+          </div>
+          <div className="space-y-[var(--cds-gap-small)]">
+            <Label htmlFor="textarea-success">Success</Label>
+            <Textarea id="textarea-success" status="success" defaultValue="Looks great!" />
+            <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-success-text-default)" }}>Saved successfully.</p>
+          </div>
+          <div className="space-y-[var(--cds-gap-small)]">
+            <Label htmlFor="textarea-disabled" style={{ color: "var(--cds-huegrey-text-fairish)" }}>Disabled</Label>
+            <Textarea id="textarea-disabled" placeholder="Not editable" disabled />
+            <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-fairish)" }}>This field is locked.</p>
+          </div>
+          <div className="space-y-[var(--cds-gap-small)]">
+            <Label htmlFor="textarea-disabled-filled" style={{ color: "var(--cds-huegrey-text-fairish)" }}>Disabled (with content)</Label>
+            <Textarea id="textarea-disabled-filled" defaultValue="Read-only content that cannot be edited." disabled />
           </div>
         </CardContent>
       </Card>
