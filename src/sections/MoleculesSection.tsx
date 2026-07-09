@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "@/components/ui/input-otp";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -14,7 +15,32 @@ import { Badge } from "@/components/ui/badge";
 import { InputSuffix } from "@/components/ui/input-suffix";
 import { InputPrefix } from "@/components/ui/input-prefix";
 import { InputAffixed } from "@/components/ui/input-affixed";
+import { TagInput } from "@/components/ui/tag-input";
 import { MoreHorizontal, Settings, User, LogOut, CreditCard, Keyboard, Phone, X, Copy, Search, ArrowRight, Globe, ChevronDown } from "lucide-react";
+
+/* Small stateful sub-component so the showcase can use useState */
+function CreatableSelectDemo() {
+  const [tags, setTags] = React.useState(["Creator", "QEngine", "Bookings"])
+  const [value, setValue] = React.useState("")
+  return (
+    <Select value={value} onValueChange={setValue}>
+      <SelectTrigger><SelectValue placeholder="Select or create a tag" /></SelectTrigger>
+      <SelectContent
+        searchable
+        searchPlaceholder="Search or type a new tag…"
+        createLabel="Create tag"
+        onCreate={(val) => {
+          const name = val.trim() || `Tag ${tags.length + 1}`
+          if (!tags.includes(name)) setTags(prev => [...prev, name])
+        }}
+      >
+        {tags.map(t => (
+          <SelectItem key={t} value={t.toLowerCase()}>{t}</SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
+}
 
 export function MoleculesSection() {
   return (
@@ -278,7 +304,7 @@ export function MoleculesSection() {
       <Card>
         <CardHeader>
           <CardTitle>Input Dropdown</CardTitle>
-          <CardDescription>Select dropdowns for choosing from predefined options.</CardDescription>
+          <CardDescription>36 px trigger — Default · Hover · Active · Selected · Disabled · Error · Success. Pass <code>searchable</code> to enable in-list search. Pass <code>onCreate</code> for a creatable dropdown with a Create footer button.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4 max-w-md">
           <div className="space-y-2">
@@ -294,14 +320,51 @@ export function MoleculesSection() {
             </Select>
           </div>
           <div className="space-y-2">
-            <Label>Country</Label>
+            <Label>Country (searchable)</Label>
             <Select>
               <SelectTrigger><SelectValue placeholder="Select country" /></SelectTrigger>
+              <SelectContent searchable searchPlaceholder="Search countries…">
+                <SelectItem value="in">India</SelectItem>
+                <SelectItem value="us">United States</SelectItem>
+                <SelectItem value="uk">United Kingdom</SelectItem>
+                <SelectItem value="jp">Japan</SelectItem>
+                <SelectItem value="de">Germany</SelectItem>
+                <SelectItem value="fr">France</SelectItem>
+                <SelectItem value="au">Australia</SelectItem>
+                <SelectItem value="ca">Canada</SelectItem>
+                <SelectItem value="br">Brazil</SelectItem>
+                <SelectItem value="sg">Singapore</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Tag (creatable)</Label>
+            <CreatableSelectDemo />
+          </div>
+          <div className="space-y-2">
+            <Label>Region (grouped / optgroup)</Label>
+            <Select>
+              <SelectTrigger><SelectValue placeholder="Select region" /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="in">🇮🇳 India</SelectItem>
-                <SelectItem value="us">🇺🇸 United States</SelectItem>
-                <SelectItem value="uk">🇬🇧 United Kingdom</SelectItem>
-                <SelectItem value="jp">🇯🇵 Japan</SelectItem>
+                <SelectGroup>
+                  <SelectLabel>Asia Pacific</SelectLabel>
+                  <SelectItem value="in">India</SelectItem>
+                  <SelectItem value="jp">Japan</SelectItem>
+                  <SelectItem value="sg">Singapore</SelectItem>
+                  <SelectItem value="au">Australia</SelectItem>
+                </SelectGroup>
+                <SelectGroup>
+                  <SelectLabel>Europe</SelectLabel>
+                  <SelectItem value="de">Germany</SelectItem>
+                  <SelectItem value="fr">France</SelectItem>
+                  <SelectItem value="uk">United Kingdom</SelectItem>
+                </SelectGroup>
+                <SelectGroup>
+                  <SelectLabel>Americas</SelectLabel>
+                  <SelectItem value="us">United States</SelectItem>
+                  <SelectItem value="ca">Canada</SelectItem>
+                  <SelectItem value="br">Brazil</SelectItem>
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>
@@ -315,15 +378,41 @@ export function MoleculesSection() {
         </CardContent>
       </Card>
 
+      {/* Tag Input */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Tag Input</CardTitle>
+          <CardDescription>Type and press Enter or comma to add tags. Backspace on empty input removes the last tag. Supports error, disabled, and maxTags limit.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4 max-w-md">
+          <div className="space-y-2">
+            <Label>Technologies</Label>
+            <TagInput defaultValue={["React", "TypeScript"]} placeholder="Add technology…" />
+          </div>
+          <div className="space-y-2">
+            <Label>Tags (max 4)</Label>
+            <TagInput defaultValue={["Creator", "QEngine"]} placeholder="Add tag…" maxTags={4} />
+          </div>
+          <div className="space-y-2">
+            <Label>Error state</Label>
+            <TagInput defaultValue={["invalid-tag"]} placeholder="Add tag…" error />
+          </div>
+          <div className="space-y-2">
+            <Label>Disabled</Label>
+            <TagInput defaultValue={["locked-tag"]} placeholder="Add tag…" disabled />
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Input OTP */}
       <Card>
         <CardHeader>
           <CardTitle>Input OTP</CardTitle>
-          <CardDescription>One-time password input with individual digit slots.</CardDescription>
+          <CardDescription>36 px individually-bordered cells \u2014 Default \u00b7 Active \u00b7 Filled \u00b7 Error \u00b7 Success \u00b7 Disabled. Pass <code>state</code> on InputOTPGroup for semantic colours.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label>6-Digit OTP</Label>
+            <Label>6-Digit OTP (default)</Label>
             <InputOTP maxLength={6}>
               <InputOTPGroup>
                 <InputOTPSlot index={0} />
@@ -339,8 +428,30 @@ export function MoleculesSection() {
             </InputOTP>
           </div>
           <div className="space-y-2">
-            <Label>4-Digit PIN</Label>
-            <InputOTP maxLength={4}>
+            <Label>4-Digit PIN (error)</Label>
+            <InputOTP maxLength={4} defaultValue="3221">
+              <InputOTPGroup state="error">
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+                <InputOTPSlot index={2} />
+                <InputOTPSlot index={3} />
+              </InputOTPGroup>
+            </InputOTP>
+          </div>
+          <div className="space-y-2">
+            <Label>4-Digit PIN (success)</Label>
+            <InputOTP maxLength={4} defaultValue="3221">
+              <InputOTPGroup state="success">
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+                <InputOTPSlot index={2} />
+                <InputOTPSlot index={3} />
+              </InputOTPGroup>
+            </InputOTP>
+          </div>
+          <div className="space-y-2">
+            <Label>Disabled</Label>
+            <InputOTP maxLength={4} disabled>
               <InputOTPGroup>
                 <InputOTPSlot index={0} />
                 <InputOTPSlot index={1} />
@@ -610,22 +721,6 @@ export function MoleculesSection() {
         </CardContent>
       </Card>
 
-      {/* Input Tag */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Input Tag</CardTitle>
-          <CardDescription>Tag input for multi-value entries.</CardDescription>
-        </CardHeader>
-        <CardContent className="max-w-md">
-          <div className="flex flex-wrap items-center gap-2 rounded-[var(--cds-radius-r)] border border-input p-2 min-h-[40px]">
-            <Badge variant="subtle" className="gap-1">React <X className="h-3 w-3 cursor-pointer" /></Badge>
-            <Badge variant="subtle" className="gap-1">TypeScript <X className="h-3 w-3 cursor-pointer" /></Badge>
-            <Badge variant="subtle" className="gap-1">Tailwind <X className="h-3 w-3 cursor-pointer" /></Badge>
-            <input className="flex-1 min-w-[80px] border-0 bg-transparent text-sm outline-none placeholder:text-muted-foreground" placeholder="Add tag..." />
-          </div>
-        </CardContent>
-      </Card>
-
       {/* Popover */}
       <Card>
         <CardHeader>
@@ -684,6 +779,8 @@ export function MoleculesSection() {
           <Notes variant="warning" title="Warning">Please review before proceeding.</Notes>
           <Notes variant="error" title="Error">Something went wrong. Please try again.</Notes>
           <Notes variant="neutral" title="Note">A general note for the user's reference.</Notes>
+          <Notes variant="info" title="With CTA" cta={{ label: "Learn more", onClick: () => {} }}>Notes can include an optional bottom CTA bar for a contextual action.</Notes>
+          <Notes variant="warning" title="With leading icon CTA" cta={{ label: "Review settings", leadingIcon: undefined, onClick: () => {} }}>Use the cta prop to surface a hyperlink-style call-to-action.</Notes>
         </CardContent>
       </Card>
 

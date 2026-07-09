@@ -2,9 +2,9 @@
 
 import * as React from "react"
 import { OTPInput, OTPInputContext } from "input-otp"
+import { MinusIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { MinusIcon } from "lucide-react"
 
 function InputOTP({
   className,
@@ -17,7 +17,7 @@ function InputOTP({
     <OTPInput
       data-slot="input-otp"
       containerClassName={cn(
-        "cn-input-otp flex items-center has-disabled:opacity-50",
+        "flex items-center has-disabled:opacity-50",
         containerClassName
       )}
       spellCheck={false}
@@ -27,14 +27,19 @@ function InputOTP({
   )
 }
 
-function InputOTPGroup({ className, ...props }: React.ComponentProps<"div">) {
+function InputOTPGroup({
+  className,
+  state = "default",
+  ...props
+}: React.ComponentProps<"div"> & {
+  /** Applies semantic colour to all child slots: default | error | success */
+  state?: "default" | "error" | "success"
+}) {
   return (
     <div
       data-slot="input-otp-group"
-      className={cn(
-        "flex items-center rounded-lg has-aria-invalid:border-destructive has-aria-invalid:ring-3 has-aria-invalid:ring-destructive/20 dark:has-aria-invalid:ring-destructive/40",
-        className
-      )}
+      data-state={state}
+      className={cn("group flex items-center gap-[10px]", className)}
       {...props}
     />
   )
@@ -55,31 +60,67 @@ function InputOTPSlot({
       data-slot="input-otp-slot"
       data-active={isActive}
       className={cn(
-        "relative flex size-8 items-center justify-center border-y border-r border-input text-sm transition-all outline-none first:rounded-l-lg first:border-l last:rounded-r-lg aria-invalid:border-destructive data-[active=true]:z-10 data-[active=true]:border-ring data-[active=true]:ring-3 data-[active=true]:ring-ring/50 data-[active=true]:aria-invalid:border-destructive data-[active=true]:aria-invalid:ring-destructive/20 dark:bg-input/30 dark:data-[active=true]:aria-invalid:ring-destructive/40",
+        // Base — 36×36 px, individually bordered cell (not connected)
+        "relative flex size-[36px] shrink-0 items-center justify-center",
+        "rounded-[var(--cds-radius-r)] border border-[var(--cds-huegrey-border-fairish)]",
+        "bg-white transition-colors outline-none",
+        // Typography — P2 Semibold (600 weight)
+        "text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] font-semibold",
+        "text-[var(--cds-huegrey-text-dark)]",
+        // Hover
+        "hover:border-[var(--cds-primary-border-default)]",
+        // Active (user is typing into this cell)
+        "data-[active=true]:border-[var(--cds-primary-border-default)]",
+        "data-[active=true]:shadow-[var(--cds-shadow-primary-subtle)]",
+        "data-[active=true]:z-10",
+        // Error — whole group turns red (triggered by parent group's data-state)
+        "group-data-[state=error]:border-[var(--cds-error-border-default)]",
+        "group-data-[state=error]:bg-[var(--cds-error-surface-subtle)]",
+        "group-data-[state=error]:text-[var(--cds-error-text-default)]",
+        // Success — whole group turns green
+        "group-data-[state=success]:border-[var(--cds-success-border-default)]",
+        "group-data-[state=success]:bg-[var(--cds-success-surface-subtle)]",
+        "group-data-[state=success]:text-[var(--cds-success-text-default)]",
         className
       )}
       {...props}
     >
-      {char}
+      {/* Digit or placeholder */}
+      {char ? (
+        char
+      ) : hasFakeCaret ? null : (
+        // Empty-cell placeholder dot — muted, non-interactive
+        <span
+          aria-hidden
+          className="font-normal text-[var(--cds-huegrey-text-fairish)] select-none"
+        >
+          ·
+        </span>
+      )}
+
+      {/* Blinking cursor */}
       {hasFakeCaret && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="h-4 w-px animate-caret-blink bg-foreground duration-1000" />
+          <div className="h-[18px] w-px animate-caret-blink bg-[var(--cds-primary-surface-default)] duration-1000" />
         </div>
       )}
     </div>
   )
 }
 
-function InputOTPSeparator({ ...props }: React.ComponentProps<"div">) {
+function InputOTPSeparator({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="input-otp-separator"
-      className="flex items-center [&_svg:not([class*='size-'])]:size-4"
       role="separator"
+      className={cn(
+        "mx-[4px] flex shrink-0 items-center",
+        "text-[var(--cds-huegrey-text-fairish)] [&_svg]:size-[14px]",
+        className
+      )}
       {...props}
     >
-      <MinusIcon
-      />
+      <MinusIcon />
     </div>
   )
 }
