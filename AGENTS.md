@@ -70,8 +70,29 @@ Never put page-level navigation inside `<main>`. Never skip `TopBar` or `LeftNav
 | `Progress` | `progress.tsx` | Linear progress bars |
 | `Separator` | `separator.tsx` | Horizontal/vertical dividers |
 | `Blanket` | `blanket.tsx` | Scrim/overlay backdrop behind Sheets, Dialogs, Sliders & custom overlays |
+| `RadioCard` | `radio-card.tsx` | Selectable card for mutually-exclusive choices (use inside RadioGroup) |
+| `Tag` | `tag.tsx` | Dismissible chip/pill (4 style variants × 2 sizes) — use `closeable` + `onClose` for interactive tags |
 
 ### Molecules
+| Component | Import | Use for |
+|---|---|---|
+| `Breadcrumb` | `breadcrumb.tsx` | Page hierarchy navigation |
+| `ContentSwitcher` | `content-switcher.tsx` | Toggle between parallel views (Grid/List, Day/Week/Month) |
+| `Tabs` | `tabs.tsx` | Switching between content panels within a page |
+| `Select` | `select.tsx` | Dropdown single-select (searchable, creatable, grouped variants built-in) |
+| `Popover` | `popover.tsx` | Floating overlay anchored to a trigger |
+| `Tooltip` | `tooltip.tsx` | Short hover hints on interactive elements |
+| `DropdownMenu` | `dropdown-menu.tsx` | Action menus triggered from a button |
+| `NavigationMenu` | `navigation-menu.tsx` | Multi-level nav links |
+| `Collapsible` | `collapsible.tsx` | Expand/collapse a single section |
+| `ScrollArea` | `scroll-area.tsx` | Scrollable region with styled scrollbar |
+| `Notes` | `notes.tsx` | Inline annotation / comment blocks |
+| `InputSuffix` | `input-suffix.tsx` | Text field with trailing CTA (icon, label, or clear button) |
+| `InputPrefix` | `input-prefix.tsx` | Text field with leading CTA (icon, label) and optional trailing icon / clear |
+| `InputAffixed` | `input-affixed.tsx` | Text field with leading AND trailing CTAs on both sides |
+| `Tile` | `tile.tsx` | Clickable card tiles in a grid |
+| `Sonner` | `sonner.tsx` | Toast notifications |
+| `TagInput` | `tag-input.tsx` | Multi-tag input field — type + Enter/comma to add tags, × to dismiss |
 | Component | Import | Use for |
 |---|---|---|
 | `Breadcrumb` | `breadcrumb.tsx` | Page hierarchy navigation |
@@ -115,6 +136,9 @@ When a design intent could map to multiple components, follow this table.
 | Input needs a trailing action (copy, search, clear) | `InputSuffix` | raw `<div>` wrapper + `<button>` beside `<input>` |
 | Input needs a leading context label/icon (currency, country code, URL scheme) | `InputPrefix` | raw `<span>` + `<input>` side by side |
 | Input needs context on BOTH sides (currency + unit, code + extension) | `InputAffixed` | two raw `<span>` elements flanking an `<input>` |
+| Mutually exclusive choice displayed as a card (with description) | `RadioCard` inside `RadioGroup` | custom card `<div>` with manual radio indicator |
+| Display a label, category, or keyword as a pill | `Tag` | hand-styled `<span>` or `<div>` badge |
+| Allow users to enter multiple values as dismissible chips | `TagInput` | raw `<input>` beside custom chip divs |
 | Show a temporary status message | `Sonner` (toast) | raw `<div>` alert banners |
 | Filter a list between 2–6 views | `ContentSwitcher` | `Tabs`, custom radio buttons |
 | Navigate between page sections | `Tabs` | `ContentSwitcher`, `NavigationMenu` |
@@ -349,6 +373,8 @@ export default function OperationsScreen() {
 - Do not add `console.log` or debug output to production screen files
 - Do not generate placeholder images with external URLs (use `Avatar` or `Tile` components)
 - Do not skip the `TopBar` + `LeftNav` shell for full-page screen outputs
+- Do not compose raw `<span>` or `<div>` chips/pills — use `Tag`
+- Do not build a custom multi-value chip input — use `TagInput`
 
 ---
 
@@ -367,7 +393,6 @@ Do not generate a custom implementation — flag the gap in a code comment inste
 | `Pagination` | `{/* TODO: replace with <Pagination /> once built — ds-parity P1 */}` |
 | `DatePicker` | `{/* TODO: replace with <DatePicker /> once built — ds-parity P2 */}` |
 | `Accordion` | `{/* TODO: replace with <Accordion /> once built — ds-parity P2 */}` |
-| `Tag / Chip` | `{/* TODO: replace with <Tag /> once built — ds-parity P2 */}` |
 | `StatCard` | `{/* TODO: replace with <StatCard /> once built — ds-parity P2 */}` |
 | `FileUpload` | `{/* TODO: replace with <FileUpload /> once built — ds-parity P2 */}` |
 | `Stepper` | `{/* TODO: replace with <Stepper /> once built — ds-parity P3 */}` |

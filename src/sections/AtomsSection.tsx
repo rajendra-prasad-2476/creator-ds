@@ -3,6 +3,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { RadioCard } from "@/components/ui/radio-card";
+import { Tag } from "@/components/ui/tag";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
@@ -437,24 +439,36 @@ export function AtomsSection() {
       <Card>
         <CardHeader>
           <CardTitle>Input CheckBox</CardTitle>
-          <CardDescription>Checkbox for binary selection.</CardDescription>
+          <CardDescription>14 px checkbox — Default · Checked · Indeterminate · Disabled · Error states.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="flex items-center gap-2">
             <Checkbox id="cb-1" />
-            <Label htmlFor="cb-1" className="font-normal">Default checkbox</Label>
+            <Label htmlFor="cb-1" className="font-normal">Default</Label>
           </div>
           <div className="flex items-center gap-2">
             <Checkbox id="cb-2" defaultChecked />
-            <Label htmlFor="cb-2" className="font-normal">Checked checkbox</Label>
+            <Label htmlFor="cb-2" className="font-normal">Checked</Label>
           </div>
           <div className="flex items-center gap-2">
-            <Checkbox id="cb-3" disabled />
-            <Label htmlFor="cb-3" className="font-normal text-muted-foreground">Disabled checkbox</Label>
+            <Checkbox id="cb-3" indeterminate />
+            <Label htmlFor="cb-3" className="font-normal">Indeterminate</Label>
           </div>
           <div className="flex items-center gap-2">
-            <Checkbox id="cb-4" disabled defaultChecked />
-            <Label htmlFor="cb-4" className="font-normal text-muted-foreground">Disabled checked</Label>
+            <Checkbox id="cb-4" disabled />
+            <Label htmlFor="cb-4" className="font-normal text-muted-foreground">Disabled</Label>
+          </div>
+          <div className="flex items-center gap-2">
+            <Checkbox id="cb-5" disabled defaultChecked />
+            <Label htmlFor="cb-5" className="font-normal text-muted-foreground">Disabled + Checked</Label>
+          </div>
+          <div className="flex items-center gap-2">
+            <Checkbox id="cb-6" aria-invalid />
+            <Label htmlFor="cb-6" className="font-normal">Error</Label>
+          </div>
+          <div className="flex items-center gap-2">
+            <Checkbox id="cb-7" aria-invalid defaultChecked />
+            <Label htmlFor="cb-7" className="font-normal">Error + Checked</Label>
           </div>
         </CardContent>
       </Card>
@@ -463,13 +477,13 @@ export function AtomsSection() {
       <Card>
         <CardHeader>
           <CardTitle>Input Radio</CardTitle>
-          <CardDescription>Radio group for single-select options.</CardDescription>
+          <CardDescription>14 px radio — Default · Checked · Disabled · Error states.</CardDescription>
         </CardHeader>
         <CardContent>
           <RadioGroup defaultValue="opt-a" className="space-y-2">
             <div className="flex items-center gap-2">
               <RadioGroupItem value="opt-a" id="radio-a" />
-              <Label htmlFor="radio-a" className="font-normal">Option A</Label>
+              <Label htmlFor="radio-a" className="font-normal">Option A (checked)</Label>
             </div>
             <div className="flex items-center gap-2">
               <RadioGroupItem value="opt-b" id="radio-b" />
@@ -481,13 +495,56 @@ export function AtomsSection() {
             </div>
             <div className="flex items-center gap-2">
               <RadioGroupItem value="opt-d" id="radio-d" disabled />
-              <Label htmlFor="radio-d" className="font-normal text-muted-foreground">Disabled Option</Label>
+              <Label htmlFor="radio-d" className="font-normal text-muted-foreground">Disabled</Label>
             </div>
           </RadioGroup>
         </CardContent>
       </Card>
 
-      {/* Switch / Toggle Switch */}
+      {/* Radio Card */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Radio Card</CardTitle>
+          <CardDescription>Selectable card tiles for mutually-exclusive choices. Use inside a RadioGroup.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <RadioGroup defaultValue="card-a" className="space-y-2 max-w-sm">
+            <RadioCard value="card-a" label="Option A" description="Short description text that explains this choice in more detail." />
+            <RadioCard value="card-b" label="Option B" description="Short description text that explains this choice in more detail." />
+            <RadioCard value="card-c" label="Option C (disabled)" description="This option is currently unavailable." disabled />
+          </RadioGroup>
+        </CardContent>
+      </Card>
+
+      {/* Tag / Chip */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Tag / Chip</CardTitle>
+          <CardDescription>Dismissible tag pill — 4 style variants × 2 sizes. Use <code>closeable</code> + <code>onClose</code> for interactive chips.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex flex-wrap gap-[6px]">
+            <Tag>Creator</Tag>
+            <Tag>QEngine</Tag>
+            <Tag>Bookings</Tag>
+          </div>
+          <div className="flex flex-wrap gap-[6px]">
+            <Tag variant="default" closeable onClose={() => {}}>Default ×</Tag>
+            <Tag variant="bold" closeable onClose={() => {}}>Bold ×</Tag>
+            <Tag variant="outlined" closeable onClose={() => {}}>Outlined ×</Tag>
+            <Tag variant="ghost" closeable onClose={() => {}}>Ghost ×</Tag>
+          </div>
+          <div className="flex flex-wrap gap-[6px] items-center">
+            <Tag size="base">Base (26 px)</Tag>
+            <Tag size="small">Small (18 px)</Tag>
+            <Tag size="small" closeable onClose={() => {}}>Small ×</Tag>
+          </div>
+          <div className="flex flex-wrap gap-[6px]">
+            <Tag disabled>Disabled</Tag>
+            <Tag disabled closeable onClose={() => {}}>Disabled ×</Tag>
+          </div>
+        </CardContent>
+      </Card>
       <Card>
         <CardHeader>
           <CardTitle>Switch (Toggle)</CardTitle>

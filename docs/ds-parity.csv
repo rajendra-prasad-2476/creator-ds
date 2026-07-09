@@ -1,4 +1,7 @@
 Component,Category,Status,Figma Node ID,Required By Feature,Priority,Notes
+RadioCard,Atom,Done,2352:2858,Forms with card-style radio options,P1,Selectable card with radio indicator + label + description. Works inside RadioGroup via value prop. States: Default / Hover / Checked / Disabled Before / Disabled After.
+Tag,Atom,Done,3121:14484,All tagging and categorisation UIs,P2,Dismissible chip: 4 variants (default/bold/outlined/ghost) × 2 sizes (base 26px / small 18px). Use closeable+onClose for interactive tags. Replaced Tag/Chip placeholder.
+TagInput,Molecule,Done,3121:14485,All multi-value tag entry forms,P2,Multi-tag input field: type + Enter/comma to add, × to dismiss, Backspace removes last tag. Supports error / disabled / maxTags.
 InputSuffix,Molecule,Done,3007:320,All forms needing trailing action (copy/search/clear),P1,Text field with trailing CTA (icon + label) or clear (×) button. Supports default/error/success/disabled states.
 InputPrefix,Molecule,Done,3037:1040,All forms needing a leading context (URL scheme / currency / country code),P1,Text field with leading CTA (icon + label) and optional trailing icon or clear (×) button. Mirrors InputSuffix. Supports default/error/success/disabled.
 InputAffixed,Molecule,Done,3079:8161,Forms needing context on both sides (currency + unit / country code + extension),P1,Text field with leading AND trailing CTAs. Status (error/success) applies to prefix + input only; right CTA stays default grey.
@@ -11,7 +14,7 @@ InlineAlert,Molecule,Missing,,All form screens,P1,Inline banner for errors / war
 FormField,Molecule,Missing,,All forms,P1,Label + Input + HelperText + Error state composed into one unit
 Pagination,Molecule,Missing,,List views,P1,Page numbers + prev/next controls
 DataTable,Organism,Partial,,All list views,P1,Existing table.tsx needs sort headers + filter row + pagination slot
-Tag / Chip,Atom,Missing,,Filters and tagging,P2,Dismissible pill; supports icon prefix
+Tag / Chip,Atom,Done,3121:14484,Filters and tagging,P2,Shipped as Tag component (tag.tsx). See Tag row above.
 StatCard,Molecule,Missing,,Dashboard screens,P2,Metric value + label + optional trend indicator
 DatePicker,Molecule,Missing,,Scheduling features,P2,Calendar overlay + text input trigger
 Accordion,Molecule,Missing,,Settings pages,P2,Expand/collapse single section with animated chevron

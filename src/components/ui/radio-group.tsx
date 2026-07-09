@@ -20,16 +20,32 @@ function RadioGroupItem({ className, ...props }: RadioPrimitive.Root.Props) {
     <RadioPrimitive.Root
       data-slot="radio-group-item"
       className={cn(
-        "group/radio-group-item peer relative flex aspect-square size-4 shrink-0 rounded-full border border-input outline-none after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 aria-invalid:aria-checked:border-primary dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary",
+        // Base — 14 px circle matching Figma
+        "peer relative flex aspect-square size-[14px] shrink-0 rounded-full outline-none",
+        "border border-[var(--cds-huegrey-border-fairish)] bg-white transition-colors",
+        // Hover
+        "hover:border-[var(--cds-primary-border-default)] hover:bg-[var(--cds-primary-surface-subtle)]",
+        // Focus ring
+        "focus-visible:ring-2 focus-visible:ring-[var(--cds-primary-border-default)]/30 focus-visible:border-[var(--cds-primary-border-default)]",
+        // Checked — filled primary blue
+        "data-checked:border-[var(--cds-primary-border-default)] data-checked:bg-[var(--cds-primary-surface-default)]",
+        "data-checked:hover:bg-[var(--cds-primary-surface-default-hover)]",
+        // Disabled
+        "disabled:cursor-not-allowed disabled:opacity-50",
+        // Error (aria-invalid)
+        "aria-invalid:border-[var(--cds-error-border-default)]",
+        "aria-invalid:hover:border-[var(--cds-error-border-default)]",
+        "aria-invalid:data-checked:bg-[var(--cds-error-surface-default)] aria-invalid:data-checked:border-[var(--cds-error-border-default)]",
         className
       )}
       {...props}
     >
       <RadioPrimitive.Indicator
         data-slot="radio-group-indicator"
-        className="flex size-4 items-center justify-center"
+        className="flex size-[14px] items-center justify-center"
       >
-        <span className="absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-foreground" />
+        {/* 5 px white centre dot */}
+        <span className="size-[5px] rounded-full bg-white" />
       </RadioPrimitive.Indicator>
     </RadioPrimitive.Root>
   )
