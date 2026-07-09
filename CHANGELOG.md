@@ -2,7 +2,12 @@
 
 > Generated from `src/ds-changelog.ts` — do not edit by hand. Run `npm run ds:changelog`.
 
-Current version: **v1.3.0**
+Current version: **v1.4.0**
+
+## v1.4.0 — 2026-07-09
+
+### Added
+- **InputPrefix** — New molecule — text field with a leading interactive CTA (icon, label) and optional trailing icon or clear ×. Supports default / error / success / disabled states. Use instead of composing a raw <span> + <input> side by side. _(ds-parity: InputPrefix)_
 
 ## v1.3.0 — 2026-07-09
 

@@ -86,6 +86,7 @@ Never put page-level navigation inside `<main>`. Never skip `TopBar` or `LeftNav
 | `ScrollArea` | `scroll-area.tsx` | Scrollable region with styled scrollbar |
 | `Notes` | `notes.tsx` | Inline annotation / comment blocks |
 | `InputSuffix` | `input-suffix.tsx` | Text field with trailing CTA (icon, label, or clear button) |
+| `InputPrefix` | `input-prefix.tsx` | Text field with leading CTA (icon, label) and optional trailing icon / clear |
 | `Tile` | `tile.tsx` | Clickable card tiles in a grid |
 | `Sonner` | `sonner.tsx` | Toast notifications |
 
@@ -111,6 +112,7 @@ When a design intent could map to multiple components, follow this table.
 | User confirms a destructive action | `AlertDialog` | `Dialog`, `window.confirm()` |
 | User fills in a form field | `Label` + `Input` (or `Textarea`) | raw `<input>` / `<textarea>` |
 | Input needs a trailing action (copy, search, clear) | `InputSuffix` | raw `<div>` wrapper + `<button>` beside `<input>` |
+| Input needs a leading context label/icon (currency, country code, URL scheme) | `InputPrefix` | raw `<span>` + `<input>` side by side |
 | Show a temporary status message | `Sonner` (toast) | raw `<div>` alert banners |
 | Filter a list between 2–6 views | `ContentSwitcher` | `Tabs`, custom radio buttons |
 | Navigate between page sections | `Tabs` | `ContentSwitcher`, `NavigationMenu` |

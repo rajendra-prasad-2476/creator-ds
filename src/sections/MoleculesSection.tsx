@@ -12,7 +12,8 @@ import { ContentSwitcher } from "@/components/ui/content-switcher";
 import { Notes } from "@/components/ui/notes";
 import { Badge } from "@/components/ui/badge";
 import { InputSuffix } from "@/components/ui/input-suffix";
-import { MoreHorizontal, Settings, User, LogOut, CreditCard, Keyboard, Phone, X, Copy, Search, ArrowRight } from "lucide-react";
+import { InputPrefix } from "@/components/ui/input-prefix";
+import { MoreHorizontal, Settings, User, LogOut, CreditCard, Keyboard, Phone, X, Copy, Search, ArrowRight, Globe, ChevronDown } from "lucide-react";
 
 export function MoleculesSection() {
   return (
@@ -382,6 +383,99 @@ export function MoleculesSection() {
           <div className="space-y-2">
             <Label>Input Number</Label>
             <Input type="number" placeholder="0" min={0} max={100} />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Input Prefix */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Input Prefix</CardTitle>
+          <CardDescription>
+            A text field with a leading interactive CTA (icon, text) and an optional
+            trailing icon / clear button. Use{" "}
+            <code>showClear</code> when the field has a value.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4 max-w-sm">
+          {/* Text prefix */}
+          <div className="space-y-2">
+            <Label>URL</Label>
+            <InputPrefix
+              prefixLabel="https://"
+              placeholder="example.com"
+              trailingIcon={<Globe />}
+            />
+          </div>
+
+          {/* Icon + label prefix */}
+          <div className="space-y-2">
+            <Label>Search</Label>
+            <InputPrefix
+              prefixIcon={<Search />}
+              prefixLabel="Search"
+              prefixTrailingIcon={<ChevronDown />}
+              placeholder="Type to search…"
+              trailingIcon={<Search />}
+              onTrailingClick={() => {}}
+            />
+          </div>
+
+          {/* With clear (has value) */}
+          <div className="space-y-2">
+            <Label>Phone number</Label>
+            <InputPrefix
+              prefixLabel="+91"
+              defaultValue="98765 43210"
+              showClear
+              onClear={() => {}}
+            />
+          </div>
+
+          {/* Error state */}
+          <div className="space-y-2">
+            <Label>Error</Label>
+            <InputPrefix
+              status="error"
+              prefixLabel="$"
+              placeholder="Invalid amount"
+              trailingIcon={<Search />}
+            />
+          </div>
+
+          {/* Error with value */}
+          <div className="space-y-2">
+            <Label>Error after</Label>
+            <InputPrefix
+              status="error"
+              prefixLabel="$"
+              defaultValue="-999"
+              showClear
+              onClear={() => {}}
+            />
+          </div>
+
+          {/* Success */}
+          <div className="space-y-2">
+            <Label>Success</Label>
+            <InputPrefix
+              status="success"
+              prefixLabel="$"
+              defaultValue="250.00"
+              showClear
+              onClear={() => {}}
+            />
+          </div>
+
+          {/* Disabled */}
+          <div className="space-y-2">
+            <Label>Disabled</Label>
+            <InputPrefix
+              disabled
+              prefixLabel="https://"
+              placeholder="Unavailable"
+              trailingIcon={<Globe />}
+            />
           </div>
         </CardContent>
       </Card>
