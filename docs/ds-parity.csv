@@ -1,5 +1,6 @@
 Component,Category,Status,Figma Node ID,Required By Feature,Priority,Notes
 InputSuffix,Molecule,Done,3007:320,All forms needing trailing action (copy/search/clear),P1,Text field with trailing CTA (icon + label) or clear (×) button. Supports default/error/success/disabled states.
+InputPrefix,Molecule,Done,3037:1040,All forms needing a leading context (URL scheme / currency / country code),P1,Text field with leading CTA (icon + label) and optional trailing icon or clear (×) button. Mirrors InputSuffix. Supports default/error/success/disabled.
 Blanket,Atom,Done,6670:16098,Overlay backdrops (Sheet/Dialog/Slider),P2,Scrim overlay — uses --cds-blanket-overlay (primary-surface-bold-alpha10) rgba(1,3,10,0.1); no backdrop blur per Figma
 StatusBadge,Atom,Done,,Zia Settings (configured/not-configured pills),P2,Semantic status pill mapping status->colour+icon+label (configured/not-configured/error/pending). Built on Badge. Approved 2026-07-08
 Spinner,Atom,Missing,,All async states,P1,Inline loading indicator — animating circle
