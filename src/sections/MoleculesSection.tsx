@@ -11,7 +11,8 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { ContentSwitcher } from "@/components/ui/content-switcher";
 import { Notes } from "@/components/ui/notes";
 import { Badge } from "@/components/ui/badge";
-import { MoreHorizontal, Settings, User, LogOut, CreditCard, Keyboard, Phone, X } from "lucide-react";
+import { InputSuffix } from "@/components/ui/input-suffix";
+import { MoreHorizontal, Settings, User, LogOut, CreditCard, Keyboard, Phone, X, Copy, Search, ArrowRight } from "lucide-react";
 
 export function MoleculesSection() {
   return (
@@ -381,6 +382,94 @@ export function MoleculesSection() {
           <div className="space-y-2">
             <Label>Input Number</Label>
             <Input type="number" placeholder="0" min={0} max={100} />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Input Suffix */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Input Suffix</CardTitle>
+          <CardDescription>
+            A text field with a trailing interactive CTA (icon, text, or clear). Use{" "}
+            <code>showClear</code> when the field has a value.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4 max-w-sm">
+          {/* Default — text + icon CTA */}
+          <div className="space-y-2">
+            <Label>Copy link</Label>
+            <InputSuffix
+              placeholder="https://example.com"
+              suffixIcon={<Copy />}
+              suffixLabel="Copy"
+              onSuffixClick={() => {}}
+            />
+          </div>
+
+          {/* Icon-only CTA */}
+          <div className="space-y-2">
+            <Label>Search</Label>
+            <InputSuffix
+              placeholder="Search…"
+              suffixIcon={<Search />}
+              onSuffixClick={() => {}}
+            />
+          </div>
+
+          {/* Text-only CTA */}
+          <div className="space-y-2">
+            <Label>Go to page</Label>
+            <InputSuffix
+              placeholder="Page number"
+              type="number"
+              suffixLabel="Go"
+              suffixIcon={<ArrowRight />}
+              onSuffixClick={() => {}}
+            />
+          </div>
+
+          {/* Selected — clear button */}
+          <div className="space-y-2">
+            <Label>With value (clear)</Label>
+            <InputSuffix
+              defaultValue="zoho.com"
+              showClear
+              onClear={() => {}}
+            />
+          </div>
+
+          {/* Error state */}
+          <div className="space-y-2">
+            <Label>Error</Label>
+            <InputSuffix
+              status="error"
+              placeholder="Invalid domain"
+              suffixLabel="Retry"
+              onSuffixClick={() => {}}
+            />
+          </div>
+
+          {/* Success state — clear shown */}
+          <div className="space-y-2">
+            <Label>Success</Label>
+            <InputSuffix
+              status="success"
+              defaultValue="rajendra@zoho.com"
+              showClear
+              onClear={() => {}}
+            />
+          </div>
+
+          {/* Disabled */}
+          <div className="space-y-2">
+            <Label>Disabled</Label>
+            <InputSuffix
+              disabled
+              placeholder="Unavailable"
+              suffixLabel="Action"
+              onSuffixClick={() => {}}
+            />
           </div>
         </CardContent>
       </Card>

@@ -85,6 +85,7 @@ Never put page-level navigation inside `<main>`. Never skip `TopBar` or `LeftNav
 | `Collapsible` | `collapsible.tsx` | Expand/collapse a single section |
 | `ScrollArea` | `scroll-area.tsx` | Scrollable region with styled scrollbar |
 | `Notes` | `notes.tsx` | Inline annotation / comment blocks |
+| `InputSuffix` | `input-suffix.tsx` | Text field with trailing CTA (icon, label, or clear button) |
 | `Tile` | `tile.tsx` | Clickable card tiles in a grid |
 | `Sonner` | `sonner.tsx` | Toast notifications |
 
@@ -109,6 +110,7 @@ When a design intent could map to multiple components, follow this table.
 |---|---|---|
 | User confirms a destructive action | `AlertDialog` | `Dialog`, `window.confirm()` |
 | User fills in a form field | `Label` + `Input` (or `Textarea`) | raw `<input>` / `<textarea>` |
+| Input needs a trailing action (copy, search, clear) | `InputSuffix` | raw `<div>` wrapper + `<button>` beside `<input>` |
 | Show a temporary status message | `Sonner` (toast) | raw `<div>` alert banners |
 | Filter a list between 2–6 views | `ContentSwitcher` | `Tabs`, custom radio buttons |
 | Navigate between page sections | `Tabs` | `ContentSwitcher`, `NavigationMenu` |
@@ -425,11 +427,86 @@ Rules:
 
 ---
 
-## 12. Sync Notes for Maintainers
+## 13. DS Audit Checklist — Default Steps for Every Change
+
+Any time a DS audit results in a component, variant, token, or template being
+**added**, **modified**, or **deleted**, an AI agent must execute the full
+checklist for the relevant operation below — without being asked.
+No step is optional unless the column explicitly marks it N/A.
+
+> Semver rule: **minor** bump for Added · **patch** bump for Modified/Fixed · **major** for breaking
+
+---
+
+### 13.1 ADDED — new component or template
+
+| # | File / Action | Notes |
+|---|---|---|
+| 1 | `src/components/ui/<name>.tsx` | Create the source file |
+| 2 | `src/sections/<Category>Section.tsx` | Add a live showcase demo |
+| 3 | `AGENTS.md` §2 table | Add a row (Atom / Molecule / Organism) |
+| 4 | `AGENTS.md` §3 use-case mapping | Add row if it replaces a raw-HTML anti-pattern |
+| 5 | `AGENTS.md` §9 Must NOT Do | Add "use `<X>` instead of custom …" if relevant |
+| 6 | `AGENTS.md` §10 Missing list | Remove its row if it was previously listed there |
+| 7 | `docs/ds-parity.csv` | Add row — `Status = Done`, include Figma node ID |
+| 8 | `src/ds-changelog.ts` | Add entry `type: "added"`, bump `DS_VERSION` (minor) |
+| 9 | Run `npx tsx scripts/gen-changelog.ts` | Regenerates `CHANGELOG.md` |
+| 10 | Commit → branch → `gh pr create` → `gh pr merge` | PR title: `feat(<scope>): add <ComponentName>` |
+
+---
+
+### 13.2 MODIFIED — existing component, variant, or token changed
+
+| # | File / Action | Notes |
+|---|---|---|
+| 1 | `src/components/ui/<name>.tsx` | Edit the source file |
+| 2 | `src/sections/<Category>Section.tsx` | Update showcase demo if the visual changes |
+| 3 | `AGENTS.md` §2 / §3 / §5 | Update rows only if usage intent or tokens change |
+| 4 | `docs/ds-parity.csv` | Update `Notes` column; keep `Status = Done` |
+| 5 | `src/ds-changelog.ts` | Add entry `type: "changed"` or `"fixed"`, bump `DS_VERSION` (patch or minor for new variant) |
+| 6 | Run `npx tsx scripts/gen-changelog.ts` | Regenerates `CHANGELOG.md` |
+| 7 | Commit → branch → `gh pr create` → `gh pr merge` | PR title: `fix(<scope>): …` or `feat(<scope>): add <variant>` |
+
+---
+
+### 13.3 DELETED / DEPRECATED — component removed or retired
+
+| # | File / Action | Notes |
+|---|---|---|
+| 1 | `src/components/ui/<name>.tsx` | Delete file (or add `@deprecated` JSDoc and keep for one release) |
+| 2 | `src/sections/<Category>Section.tsx` | Remove the showcase demo block |
+| 3 | `AGENTS.md` §2 table | Remove the row |
+| 4 | `AGENTS.md` §3 use-case mapping | Remove or update the row |
+| 5 | `AGENTS.md` §9 Must NOT Do | Remove any rule that referenced this component |
+| 6 | `docs/ds-parity.csv` | Set `Status = Deprecated` |
+| 7 | `src/ds-changelog.ts` | Add entry `type: "changed"` noting deprecation/removal, bump `DS_VERSION` (patch) |
+| 8 | Run `npx tsx scripts/gen-changelog.ts` | Regenerates `CHANGELOG.md` |
+| 9 | Grep repo for import references | Fix or remove all `import { X } from "@/components/ui/x"` usages |
+| 10 | Commit → branch → `gh pr create` → `gh pr merge` | PR title: `chore(<scope>): deprecate <ComponentName>` |
+
+---
+
+### 13.4 Version bump quick reference
+
+```
+DS_VERSION lives in src/ds-changelog.ts
+  New component or template  →  minor bump  (e.g. 1.2.0 → 1.3.0)
+  New variant / API addition →  minor bump  (e.g. 1.3.0 → 1.4.0)
+  Bug fix / token correction →  patch bump  (e.g. 1.3.0 → 1.3.1)
+  Breaking API change        →  major bump  (e.g. 1.3.0 → 2.0.0)
+```
+
+After bumping, always run:
+```bash
+npx tsx scripts/gen-changelog.ts
+```
+
+---
+
+## 14. Sync Notes for Maintainers
 
 - This file lives in `creator-ds-react/AGENTS.md` (source of truth)
 - It is copied verbatim to `creator-features/AGENTS.md` by the GitHub Actions sync workflow
 - Update this file whenever: a new component is added, a component is deprecated, or a naming convention changes
 - After updating, merge to `main` — the sync runs automatically
-# sync test — Wed Jul  8 14:43:53 IST 2026
 
