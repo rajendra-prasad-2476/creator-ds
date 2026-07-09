@@ -355,31 +355,42 @@ export function AtomsSection() {
       <Card>
         <CardHeader>
           <CardTitle>Input Text</CardTitle>
-          <CardDescription>Standard text input field with variants.</CardDescription>
+          <CardDescription>Single-line text input — all DS states.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4 max-w-md">
-          <div className="space-y-2">
+          <div className="space-y-[var(--cds-gap-small)]">
             <Label htmlFor="default-input">Default</Label>
             <Input id="default-input" placeholder="Enter text..." />
+            <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-fairish)" }}>Helper text</p>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="email-input">Email</Label>
-            <Input id="email-input" type="email" placeholder="you@example.com" />
+          <div className="space-y-[var(--cds-gap-small)]">
+            <Label htmlFor="filled-input">Filled</Label>
+            <Input id="filled-input" defaultValue="rajendra.prasad@zoho.com" />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="password-input">Password</Label>
-            <Input id="password-input" type="password" placeholder="••••••••" />
-          </div>
-          <div className="space-y-2">
+          <div className="space-y-[var(--cds-gap-small)]">
             <Label htmlFor="search-input">Search (with icon)</Label>
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 pointer-events-none" style={{ color: "var(--cds-huegrey-text-fairish)" }} />
               <Input id="search-input" placeholder="Search..." className="pl-9" />
             </div>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="disabled-input">Disabled</Label>
-            <Input id="disabled-input" placeholder="Disabled" disabled />
+          <div className="space-y-[var(--cds-gap-small)]">
+            <Label htmlFor="error-input">Error</Label>
+            <Input id="error-input" status="error" defaultValue="invalid-email" />
+            <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-error-text-default)" }}>Enter a valid email address.</p>
+          </div>
+          <div className="space-y-[var(--cds-gap-small)]">
+            <Label htmlFor="success-input">Success</Label>
+            <Input id="success-input" status="success" defaultValue="rajendra.prasad@zoho.com" />
+            <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-success-text-default)" }}>Email verified.</p>
+          </div>
+          <div className="space-y-[var(--cds-gap-small)]">
+            <Label htmlFor="disabled-input" style={{ color: "var(--cds-huegrey-text-fairish)" }}>Disabled</Label>
+            <Input id="disabled-input" placeholder="Not editable" disabled />
+          </div>
+          <div className="space-y-[var(--cds-gap-small)]">
+            <Label htmlFor="disabled-filled-input" style={{ color: "var(--cds-huegrey-text-fairish)" }}>Disabled (with content)</Label>
+            <Input id="disabled-filled-input" defaultValue="locked@zoho.com" disabled />
           </div>
         </CardContent>
       </Card>
