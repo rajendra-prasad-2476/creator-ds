@@ -33,10 +33,23 @@ export interface DSChangeEntry {
 }
 
 /** Current DS version — surfaced as the version badge in the showcase TopBar. */
-export const DS_VERSION = "1.4.0"
+export const DS_VERSION = "1.5.0"
 
 /** Newest entry first. */
 export const DS_CHANGELOG: DSChangeEntry[] = [
+  {
+    version: "1.5.0",
+    date: "2026-07-09",
+    changes: [
+      {
+        type: "added",
+        scope: "InputAffixed",
+        summary:
+          "New molecule — text field with leading AND trailing interactive CTAs. Status (error/success) applies to the prefix CTA + input only; the right suffix CTA always stays in default grey. Use instead of two raw <span> elements flanking an <input>.",
+        parity: "InputAffixed",
+      },
+    ],
+  },
   {
     version: "1.4.0",
     date: "2026-07-09",
