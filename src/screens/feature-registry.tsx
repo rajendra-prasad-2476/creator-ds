@@ -16,6 +16,11 @@ import * as React from "react"
 import OperationsScreen from "@/screens/zia-configuration/OperationsScreen"
 import ZiaSettingsScreen from "@/screens/zia-configuration/ZiaSettingsScreen"
 import ZiaProviderDetailScreen from "@/screens/zia-configuration/ZiaProviderDetailScreen"
+import PortalSecurityLandingScreen from "@/screens/portal-security/PortalSecurityLandingScreen"
+import PortalPasswordPolicyScreen from "@/screens/portal-security/PortalPasswordPolicyScreen"
+import PortalMFAScreen from "@/screens/portal-security/PortalMFAScreen"
+import PortalAllowedIPsScreen from "@/screens/portal-security/PortalAllowedIPsScreen"
+import PortalAdvancedSettingsScreen from "@/screens/portal-security/PortalAdvancedSettingsScreen"
 import { type ScreenParams } from "@/screens/navigation"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -102,4 +107,67 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
   },
 
   // ── Add new features below this line ─────────────────────────────────────
+
+  {
+    id: "002",
+    name: "Portal Security Policies",
+    prdRef: "#002",
+    version: "v1.0",
+    status: "draft",
+    owner: "rajendra.prasad",
+    lastUpdated: "2026-07-10",
+    screens: [
+      {
+        id: "portal-security-landing",
+        name: "Security Policies — Landing",
+        factory: () => <PortalSecurityLandingScreen />,
+        sourcePath: "src/screens/portal-security/PortalSecurityLandingScreen.tsx",
+        destPath: "features/002-portal-security/screens/PortalSecurityLandingScreen.tsx",
+      },
+      {
+        id: "portal-password-policy",
+        name: "Password Policy",
+        factory: () => <PortalPasswordPolicyScreen />,
+        sourcePath: "src/screens/portal-security/PortalPasswordPolicyScreen.tsx",
+        destPath: "features/002-portal-security/screens/PortalPasswordPolicyScreen.tsx",
+      },
+      {
+        id: "portal-mfa",
+        name: "Multi-Factor Authentication",
+        factory: () => <PortalMFAScreen />,
+        sourcePath: "src/screens/portal-security/PortalMFAScreen.tsx",
+        destPath: "features/002-portal-security/screens/PortalMFAScreen.tsx",
+      },
+      {
+        id: "portal-allowed-ips",
+        name: "Allowed IP Addresses",
+        factory: () => <PortalAllowedIPsScreen />,
+        sourcePath: "src/screens/portal-security/PortalAllowedIPsScreen.tsx",
+        destPath: "features/002-portal-security/screens/PortalAllowedIPsScreen.tsx",
+      },
+      {
+        id: "portal-advanced-settings",
+        name: "Advanced Settings",
+        factory: () => <PortalAdvancedSettingsScreen />,
+        sourcePath: "src/screens/portal-security/PortalAdvancedSettingsScreen.tsx",
+        destPath: "features/002-portal-security/screens/PortalAdvancedSettingsScreen.tsx",
+      },
+    ],
+    versionHistory: [
+      {
+        version: "v1.0",
+        date: "2026-07-10",
+        notes: [
+          "Initial generation from PRD + Zoho Creator reference (image 3)",
+          "Landing: empty-state intro card with highlights + Setup CTA",
+          "Password Policy: strength selector (Strong/Good/Fair/Custom) + Complexity + Age",
+          "MFA: method checkboxes + OneAuth nested toggles + lifetime dropdown + backup codes",
+          "Allowed IPs: add/delete IP table (Individual / Range / CIDR)",
+          "Advanced Settings: session management + lock period dropdowns",
+          "Navigation: left sub-nav (4 items) using useNavigation()",
+          "Component gaps flagged: EmptyState (×1)",
+        ],
+      },
+    ],
+  },
 ]
