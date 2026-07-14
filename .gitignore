@@ -15,6 +15,14 @@ dist-ssr
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+!.vscode/mcp.json
+
+# Figma plugin (local only — not part of DS package)
+figma-plugin/
+figma.config.json
+
+# Build artifacts
+dist.zip
 .idea
 .DS_Store
 *.suo

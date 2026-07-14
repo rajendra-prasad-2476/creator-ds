@@ -8,7 +8,9 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "ds:changelog": "node scripts/gen-changelog.ts"
+    "ds:changelog": "node scripts/gen-changelog.ts",
+    "figma:check": "figma connect",
+    "figma:publish": "figma connect publish"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
@@ -28,6 +30,7 @@
     "tw-animate-css": "^1.4.0"
   },
   "devDependencies": {
+    "@figma/code-connect": "^1.4.9",
     "@types/node": "^24.13.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",

@@ -33,10 +33,23 @@ export interface DSChangeEntry {
 }
 
 /** Current DS version — surfaced as the version badge in the showcase TopBar. */
-export const DS_VERSION = "1.9.0"
+export const DS_VERSION = "1.10.0"
 
 /** Newest entry first. */
 export const DS_CHANGELOG: DSChangeEntry[] = [
+  {
+    version: "1.10.0",
+    date: "2026-07-10",
+    changes: [
+      {
+        type: "changed",
+        scope: "Tooltip",
+        summary:
+          "Redesigned to match Figma CDS spec. TooltipContent: dark navy background (--cds-secondary-surface-default-hover), P2 white text, px-8/py-6 spacing, radius-r arrow, new leadingIcon/trailingIcon props. New RichTooltipContent molecule (Figma: Rich_Tooltip_Core 2401:258 / Rich_Tooltip_Base 2402:502): 281 px wide, heading + optional headingIcon, three body layouts — text (paragraph), list (numbered ol), table (label:value rows with primary-minimal blue labels). Tooltip showcase moved from Atoms to Molecules.",
+        parity: "Tooltip",
+      },
+    ],
+  },
   {
     version: "1.9.0",
     date: "2026-07-09",

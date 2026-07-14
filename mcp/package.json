@@ -1,0 +1,24 @@
+{
+  "name": "@creator-ds/mcp",
+  "version": "0.1.0",
+  "description": "Creator Design System MCP server — gives AI tools structured access to components, tokens, templates and coding rules",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "creator-ds-mcp": "./dist/server.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "node --import tsx/esm src/server.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.3",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "~5.5.0"
+  }
+}

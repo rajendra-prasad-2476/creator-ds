@@ -2,7 +2,12 @@
 
 > Generated from `src/ds-changelog.ts` — do not edit by hand. Run `npm run ds:changelog`.
 
-Current version: **v1.9.0**
+Current version: **v1.10.0**
+
+## v1.10.0 — 2026-07-10
+
+### Changed
+- **Tooltip** — Redesigned to match Figma CDS spec. TooltipContent: dark navy background (--cds-secondary-surface-default-hover), P2 white text, px-8/py-6 spacing, radius-r arrow, new leadingIcon/trailingIcon props. New RichTooltipContent molecule (Figma: Rich_Tooltip_Core 2401:258 / Rich_Tooltip_Base 2402:502): 281 px wide, heading + optional headingIcon, three body layouts — text (paragraph), list (numbered ol), table (label:value rows with primary-minimal blue labels). Tooltip showcase moved from Atoms to Molecules. _(ds-parity: Tooltip)_
 
 ## v1.9.0 — 2026-07-09
 

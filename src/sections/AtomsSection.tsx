@@ -23,11 +23,7 @@ import {
   AVATAR_COLORS,
 } from "@/components/ui/avatar";
 import type { AvatarColor } from "@/components/ui/avatar";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+// Tooltip moved to MoleculesSection — see src/components/ui/tooltip.tsx
 import {
   Card,
   CardContent,
@@ -958,19 +954,7 @@ export function AtomsSection() {
         </CardContent>
       </Card>
 
-      {/* Tooltip */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Tooltip</CardTitle>
-          <CardDescription>Informational popup on hover.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center gap-4">
-            <Tooltip><TooltipTrigger><Button variant="outline" size="sm">Hover me</Button></TooltipTrigger><TooltipContent>This is a tooltip</TooltipContent></Tooltip>
-            <Tooltip><TooltipTrigger><Button variant="ghost" size="icon"><Info className="h-4 w-4" /></Button></TooltipTrigger><TooltipContent side="right">More information</TooltipContent></Tooltip>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Tooltip is showcased in the Molecules section */}
     </div>
   );
 }

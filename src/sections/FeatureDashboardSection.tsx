@@ -154,9 +154,11 @@ function FeatureCard({ feature }: { feature: FeatureEntry }) {
                           <div style={{ fontSize: "var(--cds-text-p2)", fontWeight: 600, color: "var(--cds-huegrey-text-dark)", marginBottom: "var(--cds-space-4)" }}>{screen.name}</div>
                           <div style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)", fontFamily: "monospace" }}>{screen.sourcePath}</div>
                         </div>
-                        <Button size="sm" onClick={() => openPreview(screen.id)} style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-tight)", flexShrink: 0 }}>
-                          <ExternalLink size={12} /> Preview
-                        </Button>
+                        <div style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-small)", flexShrink: 0 }}>
+                          <Button size="sm" onClick={() => openPreview(screen.id)} style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-tight)", flexShrink: 0 }}>
+                            <ExternalLink size={12} /> Preview
+                          </Button>
+                        </div>
                       </div>
                     ))}
                   </div>

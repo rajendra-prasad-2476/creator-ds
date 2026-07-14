@@ -62,10 +62,13 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
 function FieldRow({
   label,
   description,
+  isLast = false,
   children,
 }: {
   label: string
   description?: string
+  /** Suppresses the bottom divider on the last row to avoid double-border with the card */
+  isLast?: boolean
   children: React.ReactNode
 }) {
   return (
@@ -75,8 +78,8 @@ function FieldRow({
         alignItems: "flex-start",
         justifyContent: "space-between",
         gap: "var(--cds-gap-large)",
-        padding: "var(--cds-space-16) 0",
-        borderBottom: "1px solid var(--border)",
+        padding: "var(--cds-space-16)",
+        borderBottom: isLast ? "none" : "1px solid var(--border)",
       }}
     >
       <div style={{ flex: 1 }}>
@@ -242,7 +245,7 @@ export default function PortalPasswordPolicyScreen() {
           <FieldRow label="Minimum Special Characters">
             <NumberInput defaultValue={strength === "strong" ? 2 : strength === "good" ? 1 : 0} min={0} />
           </FieldRow>
-          <FieldRow label="Minimum Numeric Digits" description="Minimum number of digits required.">
+          <FieldRow label="Minimum Numeric Digits" description="Minimum number of digits required." isLast>
             <NumberInput defaultValue={strength === "strong" ? 2 : strength === "good" ? 1 : 0} min={0} />
           </FieldRow>
         </div>
@@ -286,7 +289,7 @@ export default function PortalPasswordPolicyScreen() {
               </SelectContent>
             </Select>
           </FieldRow>
-          <FieldRow label="Restrict Previously Used Passwords" description="Number of previous passwords to block reuse.">
+          <FieldRow label="Restrict Previously Used Passwords" description="Number of previous passwords to block reuse." isLast>
             <Select defaultValue="0">
               <SelectTrigger style={{ width: 180 }}>
                 <SelectValue />

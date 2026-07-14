@@ -1,0 +1,12 @@
+{
+  "servers": {
+    "Creator DS": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["--import", "tsx/esm", "${workspaceFolder}/mcp/src/server.ts"],
+      "env": {
+        "NODE_NO_WARNINGS": "1"
+      }
+    }
+  }
+}

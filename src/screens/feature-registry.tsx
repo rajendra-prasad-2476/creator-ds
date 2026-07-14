@@ -23,6 +23,16 @@ import PortalAllowedIPsScreen from "@/screens/portal-security/PortalAllowedIPsSc
 import PortalAdvancedSettingsScreen from "@/screens/portal-security/PortalAdvancedSettingsScreen"
 import { type ScreenParams } from "@/screens/navigation"
 
+// Raw source imports (Vite ?raw) — used by "Copy for Figma" in the Feature Dashboard
+import OperationsScreenRaw from "@/screens/zia-configuration/OperationsScreen.tsx?raw"
+import ZiaSettingsScreenRaw from "@/screens/zia-configuration/ZiaSettingsScreen.tsx?raw"
+import ZiaProviderDetailScreenRaw from "@/screens/zia-configuration/ZiaProviderDetailScreen.tsx?raw"
+import PortalSecurityLandingScreenRaw from "@/screens/portal-security/PortalSecurityLandingScreen.tsx?raw"
+import PortalPasswordPolicyScreenRaw from "@/screens/portal-security/PortalPasswordPolicyScreen.tsx?raw"
+import PortalMFAScreenRaw from "@/screens/portal-security/PortalMFAScreen.tsx?raw"
+import PortalAllowedIPsScreenRaw from "@/screens/portal-security/PortalAllowedIPsScreen.tsx?raw"
+import PortalAdvancedSettingsScreenRaw from "@/screens/portal-security/PortalAdvancedSettingsScreen.tsx?raw"
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export type FeatureStatus = "draft" | "in-review" | "approved" | "pushed"
@@ -33,6 +43,8 @@ export interface ScreenEntry {
   factory: (params: ScreenParams) => React.ReactNode
   sourcePath: string
   destPath: string
+  /** Raw TSX source — imported via Vite ?raw, used by "Copy for Figma" */
+  rawSource: string
 }
 
 export interface VersionNote {
@@ -71,6 +83,7 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
         factory: () => <OperationsScreen />,
         sourcePath: "src/screens/zia-configuration/OperationsScreen.tsx",
         destPath: "features/001-zia-configuration/screens/OperationsScreen.tsx",
+        rawSource: OperationsScreenRaw,
       },
       {
         id: "zia-settings",
@@ -78,6 +91,7 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
         factory: () => <ZiaSettingsScreen />,
         sourcePath: "src/screens/zia-configuration/ZiaSettingsScreen.tsx",
         destPath: "features/001-zia-configuration/screens/ZiaSettingsScreen.tsx",
+        rawSource: ZiaSettingsScreenRaw,
       },
       {
         id: "zia-provider-detail",
@@ -89,6 +103,7 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
         ),
         sourcePath: "src/screens/zia-configuration/ZiaProviderDetailScreen.tsx",
         destPath: "features/001-zia-configuration/screens/ZiaProviderDetailScreen.tsx",
+        rawSource: ZiaProviderDetailScreenRaw,
       },
     ],
     versionHistory: [
@@ -123,6 +138,7 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
         factory: () => <PortalSecurityLandingScreen />,
         sourcePath: "src/screens/portal-security/PortalSecurityLandingScreen.tsx",
         destPath: "features/002-portal-security/screens/PortalSecurityLandingScreen.tsx",
+        rawSource: PortalSecurityLandingScreenRaw,
       },
       {
         id: "portal-password-policy",
@@ -130,6 +146,7 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
         factory: () => <PortalPasswordPolicyScreen />,
         sourcePath: "src/screens/portal-security/PortalPasswordPolicyScreen.tsx",
         destPath: "features/002-portal-security/screens/PortalPasswordPolicyScreen.tsx",
+        rawSource: PortalPasswordPolicyScreenRaw,
       },
       {
         id: "portal-mfa",
@@ -137,6 +154,7 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
         factory: () => <PortalMFAScreen />,
         sourcePath: "src/screens/portal-security/PortalMFAScreen.tsx",
         destPath: "features/002-portal-security/screens/PortalMFAScreen.tsx",
+        rawSource: PortalMFAScreenRaw,
       },
       {
         id: "portal-allowed-ips",
@@ -144,6 +162,7 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
         factory: () => <PortalAllowedIPsScreen />,
         sourcePath: "src/screens/portal-security/PortalAllowedIPsScreen.tsx",
         destPath: "features/002-portal-security/screens/PortalAllowedIPsScreen.tsx",
+        rawSource: PortalAllowedIPsScreenRaw,
       },
       {
         id: "portal-advanced-settings",
@@ -151,6 +170,7 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
         factory: () => <PortalAdvancedSettingsScreen />,
         sourcePath: "src/screens/portal-security/PortalAdvancedSettingsScreen.tsx",
         destPath: "features/002-portal-security/screens/PortalAdvancedSettingsScreen.tsx",
+        rawSource: PortalAdvancedSettingsScreenRaw,
       },
     ],
     versionHistory: [

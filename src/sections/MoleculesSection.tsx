@@ -16,7 +16,8 @@ import { InputSuffix } from "@/components/ui/input-suffix";
 import { InputPrefix } from "@/components/ui/input-prefix";
 import { InputAffixed } from "@/components/ui/input-affixed";
 import { TagInput } from "@/components/ui/tag-input";
-import { MoreHorizontal, Settings, User, LogOut, CreditCard, Keyboard, Phone, X, Copy, Search, ArrowRight, Globe, ChevronDown } from "lucide-react";
+import { MoreHorizontal, Settings, User, LogOut, CreditCard, Keyboard, Phone, X, Copy, Search, ArrowRight, Globe, ChevronDown, Info } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, RichTooltipContent } from "@/components/ui/tooltip";
 
 /* Small stateful sub-component so the showcase can use useState */
 function CreatableSelectDemo() {
@@ -781,6 +782,157 @@ export function MoleculesSection() {
           <Notes variant="neutral" title="Note">A general note for the user's reference.</Notes>
           <Notes variant="info" title="With CTA" cta={{ label: "Learn more", onClick: () => {} }}>Notes can include an optional bottom CTA bar for a contextual action.</Notes>
           <Notes variant="warning" title="With leading icon CTA" cta={{ label: "Review settings", leadingIcon: undefined, onClick: () => {} }}>Use the cta prop to surface a hyperlink-style call-to-action.</Notes>
+        </CardContent>
+      </Card>
+
+      {/* ─── Tooltip ─────────────────────────────────────────────────────── */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Tooltip</CardTitle>
+          <CardDescription>
+            Small floating label on hover. Non-interactive — use Popover for clickable content.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <TooltipProvider>
+
+            {/* Simple tooltip — positions */}
+            <div>
+              <p className="text-[length:var(--cds-text-p3)] text-[var(--cds-huegrey-text-default)] mb-3 font-medium uppercase tracking-wide">
+                Simple — positions
+              </p>
+              <div className="flex flex-wrap gap-6 items-center">
+                {(["top", "bottom", "left", "right"] as const).map((side) => (
+                  <Tooltip key={side}>
+                    <TooltipTrigger asChild>
+                      <Button variant="outline" size="sm" className="capitalize">{side}</Button>
+                    </TooltipTrigger>
+                    <TooltipContent side={side}>Tooltip label</TooltipContent>
+                  </Tooltip>
+                ))}
+              </div>
+            </div>
+
+            {/* Simple tooltip — with icons */}
+            <div>
+              <p className="text-[length:var(--cds-text-p3)] text-[var(--cds-huegrey-text-default)] mb-3 font-medium uppercase tracking-wide">
+                Simple — with icons
+              </p>
+              <div className="flex flex-wrap gap-6 items-center">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="outline" size="sm">Leading icon</Button>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    leadingIcon={<Info className="size-full" />}
+                  >
+                    With left icon
+                  </TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="outline" size="sm">Trailing icon</Button>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    trailingIcon={<ArrowRight className="size-full" />}
+                  >
+                    With right icon
+                  </TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="outline" size="sm">Both icons</Button>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    leadingIcon={<Info className="size-full" />}
+                    trailingIcon={<ArrowRight className="size-full" />}
+                  >
+                    Both icons
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+            </div>
+
+            {/* Rich tooltip — Text type */}
+            <div>
+              <p className="text-[length:var(--cds-text-p3)] text-[var(--cds-huegrey-text-default)] mb-3 font-medium uppercase tracking-wide">
+                Rich — Text
+              </p>
+              <div className="flex flex-wrap gap-6 items-center">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="outline" size="sm">Hover me</Button>
+                  </TooltipTrigger>
+                  <RichTooltipContent heading="Feature overview">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut non dolor vel nulla accumsan congue.
+                  </RichTooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="outline" size="sm">With heading icon</Button>
+                  </TooltipTrigger>
+                  <RichTooltipContent
+                    heading="AI Summary"
+                    headingIcon={<Info className="size-full" />}
+                    side="bottom"
+                  >
+                    Zia analyses your data and surfaces insights automatically.
+                  </RichTooltipContent>
+                </Tooltip>
+              </div>
+            </div>
+
+            {/* Rich tooltip — List type */}
+            <div>
+              <p className="text-[length:var(--cds-text-p3)] text-[var(--cds-huegrey-text-default)] mb-3 font-medium uppercase tracking-wide">
+                Rich — List
+              </p>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="outline" size="sm">Numbered list</Button>
+                </TooltipTrigger>
+                <RichTooltipContent
+                  heading="Steps to get started"
+                  contentType="list"
+                  listItems={[
+                    "Create a new application",
+                    "Configure your data sources",
+                    "Design your forms and reports",
+                    "Set up roles and permissions",
+                    "Publish and share with your team",
+                  ]}
+                  side="right"
+                />
+              </Tooltip>
+            </div>
+
+            {/* Rich tooltip — Table type */}
+            <div>
+              <p className="text-[length:var(--cds-text-p3)] text-[var(--cds-huegrey-text-default)] mb-3 font-medium uppercase tracking-wide">
+                Rich — Table
+              </p>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="outline" size="sm">Key / value table</Button>
+                </TooltipTrigger>
+                <RichTooltipContent
+                  heading="Record details"
+                  contentType="table"
+                  tableRows={[
+                    { label: "Status", value: "Active" },
+                    { label: "Owner", value: "rajendra.prasad" },
+                    { label: "Created", value: "2026-07-10" },
+                    { label: "Version", value: "v1.4.0" },
+                  ]}
+                  side="right"
+                />
+              </Tooltip>
+            </div>
+
+          </TooltipProvider>
         </CardContent>
       </Card>
 
