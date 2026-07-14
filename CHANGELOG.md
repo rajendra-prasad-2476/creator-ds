@@ -2,7 +2,12 @@
 
 > Generated from `src/ds-changelog.ts` — do not edit by hand. Run `npm run ds:changelog`.
 
-Current version: **v1.10.1**
+Current version: **v1.10.2**
+
+## v1.10.2 — 2026-07-14
+
+### Added
+- **MCP Server** — New Creator DS MCP server (mcp/) exposing 7 AI tools: list_components, get_component, find_tokens, list_templates, creator_coding_guidelines, list_screens, validate_component_usage. AI agents (Copilot, Cursor, Claude) can now query the full component catalogue, design tokens, templates, and DS coding rules at code-generation time to always produce DS-compliant screens.
 
 ## v1.10.1 — 2026-07-14
 

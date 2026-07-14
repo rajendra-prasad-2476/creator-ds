@@ -33,10 +33,22 @@ export interface DSChangeEntry {
 }
 
 /** Current DS version — surfaced as the version badge in the showcase TopBar. */
-export const DS_VERSION = "1.10.1"
+export const DS_VERSION = "1.10.2"
 
 /** Newest entry first. */
 export const DS_CHANGELOG: DSChangeEntry[] = [
+  {
+    version: "1.10.2",
+    date: "2026-07-14",
+    changes: [
+      {
+        type: "added",
+        scope: "MCP Server",
+        summary:
+          "New Creator DS MCP server (mcp/) exposing 7 AI tools: list_components, get_component, find_tokens, list_templates, creator_coding_guidelines, list_screens, validate_component_usage. AI agents (Copilot, Cursor, Claude) can now query the full component catalogue, design tokens, templates, and DS coding rules at code-generation time to always produce DS-compliant screens.",
+      },
+    ],
+  },
   {
     version: "1.10.1",
     date: "2026-07-14",
