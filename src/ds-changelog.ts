@@ -33,10 +33,22 @@ export interface DSChangeEntry {
 }
 
 /** Current DS version — surfaced as the version badge in the showcase TopBar. */
-export const DS_VERSION = "1.10.0"
+export const DS_VERSION = "1.10.1"
 
 /** Newest entry first. */
 export const DS_CHANGELOG: DSChangeEntry[] = [
+  {
+    version: "1.10.1",
+    date: "2026-07-14",
+    changes: [
+      {
+        type: "changed",
+        scope: "FeatureDashboard",
+        summary:
+          "Removed 'Copy for Figma' button from the Feature Dashboard screen list. Figma plugin integration is skipped for now; only the Preview action is shown per screen row.",
+      },
+    ],
+  },
   {
     version: "1.10.0",
     date: "2026-07-10",

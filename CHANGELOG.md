@@ -2,7 +2,12 @@
 
 > Generated from `src/ds-changelog.ts` — do not edit by hand. Run `npm run ds:changelog`.
 
-Current version: **v1.10.0**
+Current version: **v1.10.1**
+
+## v1.10.1 — 2026-07-14
+
+### Changed
+- **FeatureDashboard** — Removed 'Copy for Figma' button from the Feature Dashboard screen list. Figma plugin integration is skipped for now; only the Preview action is shown per screen row.
 
 ## v1.10.0 — 2026-07-10
 
