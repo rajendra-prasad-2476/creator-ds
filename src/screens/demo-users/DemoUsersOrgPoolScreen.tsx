@@ -61,7 +61,7 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@/components/ui/radio-group"
-import { Sonner } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
 import { MoreHorizontal, Search, Plus, Sparkles, Users, UserCircle, RefreshCw, ChevronDown } from "lucide-react"
 
@@ -531,7 +531,7 @@ export default function DemoUsersOrgPoolScreen() {
 
   return (
     <>
-      <Sonner richColors position="top-right" />
+      <Toaster richColors position="top-right" />
       <div className="flex flex-col h-screen">
         <TopBar />
         <div className="flex flex-1 overflow-hidden">
