@@ -188,16 +188,18 @@ function AddManuallySheet({ open, onClose, existingEmails, onAdd }: AddManuallyS
 
   return (
     <Sheet open={open} onOpenChange={(o) => !o && handleClose()}>
-      <SheetContent side="right" style={{ width: "min(480px, 95vw)", display: "flex", flexDirection: "column" }}>
-        <SheetHeader style={{ marginBottom: "var(--cds-space-24)" }}>
+      <SheetContent side="right" style={{ width: "min(520px, 95vw)", display: "flex", flexDirection: "column" }}>
+        <SheetHeader>
           <SheetTitle>Add Demo User</SheetTitle>
-          <SheetDescription>
-            Creates a new identity in the org pool. Email is locked after creation.
-          </SheetDescription>
         </SheetHeader>
-
-        <ScrollArea style={{ flex: 1 }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: "var(--cds-space-24)", paddingRight: "var(--cds-space-4)" }}>
+        <div style={{ padding: "var(--cds-space-12) var(--cds-space-24) var(--cds-space-16)", borderBottom: "1px solid var(--border)" }}>
+          <p style={{ margin: 0, fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>
+            Creates a new identity in the org pool. Email is locked after creation.
+          </p>
+        </div>
+        <div style={{ flex: 1, overflow: "hidden", display: "flex", flexDirection: "column", padding: "var(--cds-space-24)" }}>
+          <ScrollArea style={{ flex: 1 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "var(--cds-space-24)" }}>
 
             {/* Type */}
             <div>
@@ -263,16 +265,15 @@ function AddManuallySheet({ open, onClose, existingEmails, onAdd }: AddManuallyS
               </p>
             </div>
 
-            <div style={{ padding: "var(--cds-space-12) var(--cds-padding-card)", borderRadius: "var(--cds-radius-r)", background: "var(--cds-warning-surface-subtle, #FFF8F0)", border: "1px solid var(--cds-warning-border-default, #D25704)", fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-dark)" }}>
-              <strong>Username</strong> is auto-derived from the email local part and locked after creation. It will not be shown here.
+              <div style={{ padding: "var(--cds-space-12) var(--cds-padding-card)", borderRadius: "var(--cds-radius-r)", background: "var(--cds-warning-surface-subtle, #FFF8F0)", border: "1px solid var(--cds-warning-border-default, #D25704)", fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-dark)" }}>
+                <strong>Username</strong> is auto-derived from the email local part and locked after creation. It will not be shown here.
+              </div>
             </div>
+          </ScrollArea>
+          <div style={{ borderTop: "1px solid var(--border)", paddingTop: "var(--cds-space-16)", display: "flex", gap: "var(--cds-gap-small)", justifyContent: "flex-end", flexShrink: 0 }}>
+            <Button variant="outline" onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleSubmit}>Add to Pool</Button>
           </div>
-        </ScrollArea>
-
-        <Separator style={{ margin: "var(--cds-space-16) 0" }} />
-        <div style={{ display: "flex", gap: "var(--cds-gap-small)", justifyContent: "flex-end" }}>
-          <Button variant="outline" onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>Add to Pool</Button>
         </div>
       </SheetContent>
     </Sheet>
