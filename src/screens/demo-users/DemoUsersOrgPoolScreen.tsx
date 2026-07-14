@@ -21,7 +21,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Separator } from "@/components/ui/separator"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import {
   Table,
@@ -55,15 +54,15 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog"
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
-import {
-  RadioGroup,
-  RadioGroupItem,
-} from "@/components/ui/radio-group"
+import { RadioGroup } from "@/components/ui/radio-group"
+import { RadioCard } from "@/components/ui/radio-card"
+import { InputSuffix } from "@/components/ui/input-suffix"
+import { Notes } from "@/components/ui/notes"
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
-import { MoreHorizontal, Search, Plus, Sparkles, Users, UserCircle, RefreshCw, ChevronDown } from "lucide-react"
+import { MoreHorizontal, Search, Plus, Sparkles, Users, UserCircle, RefreshCw } from "lucide-react"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -207,17 +206,18 @@ function AddManuallySheet({ open, onClose, existingEmails, onAdd }: AddManuallyS
                 Type <span style={{ color: "var(--cds-error-text-default, #CC1914)" }}>*</span>
               </Label>
               <RadioGroup value={type} onValueChange={(v) => setType(v as DemoUserType)} style={{ display: "flex", gap: "var(--cds-gap-default)" }}>
-                {(["User", "Portal User"] as DemoUserType[]).map((t) => (
-                  <label key={t} style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-small)", cursor: "pointer", padding: "10px 16px", border: `1px solid ${type === t ? "var(--cds-primary-border-default, #0D4EF2)" : "var(--border)"}`, borderRadius: "var(--cds-radius-r)", background: type === t ? "var(--cds-primary-surface-subtle, #EEF2FE)" : "var(--cds-white)", flex: 1 }}>
-                    <RadioGroupItem value={t} />
-                    <div>
-                      <div style={{ fontSize: "var(--cds-text-p2)", fontWeight: 600, color: "var(--cds-huegrey-text-dark)" }}>{t}</div>
-                      <div style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>
-                        {t === "User" ? "Account-level · Role + Permission" : "App-level · Permission only"}
-                      </div>
-                    </div>
-                  </label>
-                ))}
+                <RadioCard
+                  value="User"
+                  label="User"
+                  description="Account-level · Role + Permission"
+                  style={{ flex: 1 }}
+                />
+                <RadioCard
+                  value="Portal User"
+                  label="Portal User"
+                  description="App-level · Permission only"
+                  style={{ flex: 1 }}
+                />
               </RadioGroup>
             </div>
 
@@ -226,18 +226,14 @@ function AddManuallySheet({ open, onClose, existingEmails, onAdd }: AddManuallyS
               <Label htmlFor="emailLocal" style={{ fontSize: "var(--cds-text-p3)", fontWeight: 600, marginBottom: "var(--cds-space-8)", display: "block" }}>
                 Email <span style={{ color: "var(--cds-error-text-default, #CC1914)" }}>*</span>
               </Label>
-              <div style={{ display: "flex", alignItems: "center", border: `1px solid ${localError && submitted ? "var(--cds-error-border-default, #CC1914)" : localError ? "var(--cds-error-border-default, #CC1914)" : "var(--cds-huegrey-border-fairish, #C8CAD0)"}`, borderRadius: "var(--cds-radius-r)", overflow: "hidden", background: "var(--cds-white)" }}>
-                <Input
-                  id="emailLocal"
-                  placeholder="e.g. sarah.gh"
-                  value={localPart}
-                  onChange={(e) => setLocalPart(e.target.value.toLowerCase())}
-                  style={{ border: "none", borderRadius: 0, flex: 1, outline: "none", boxShadow: "none" }}
-                />
-                <span style={{ padding: "0 12px", fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)", background: "var(--cds-surface-subtle, #F5F5F5)", borderLeft: "1px solid var(--border)", whiteSpace: "nowrap", height: "100%", display: "flex", alignItems: "center" }}>
-                  {domain}
-                </span>
-              </div>
+              <InputSuffix
+                id="emailLocal"
+                placeholder="e.g. sarah.gh"
+                value={localPart}
+                onChange={(e) => setLocalPart(e.target.value.toLowerCase())}
+                suffixLabel={domain}
+                status={localError ? "error" : "default"}
+              />
               {localError && (
                 <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-error-text-default, #CC1914)", marginTop: "var(--cds-space-4)" }}>{localError}</p>
               )}
@@ -265,9 +261,9 @@ function AddManuallySheet({ open, onClose, existingEmails, onAdd }: AddManuallyS
               </p>
             </div>
 
-              <div style={{ padding: "var(--cds-space-12) var(--cds-padding-card)", borderRadius: "var(--cds-radius-r)", background: "var(--cds-warning-surface-subtle, #FFF8F0)", border: "1px solid var(--cds-warning-border-default, #D25704)", fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-dark)" }}>
-                <strong>Username</strong> is auto-derived from the email local part and locked after creation. It will not be shown here.
-              </div>
+              <Notes variant="warning" title="Username is auto-derived">
+                Username is derived from the email local part and locked after creation. It will not be shown here.
+              </Notes>
             </div>
           </ScrollArea>
           <div style={{ borderTop: "1px solid var(--border)", paddingTop: "var(--cds-space-16)", display: "flex", gap: "var(--cds-gap-small)", justifyContent: "flex-end", flexShrink: 0 }}>
@@ -352,7 +348,7 @@ function AiGenerateDialog({ open, onClose, existingEmails, availableUserSlots, a
             {/* Count */}
             <div style={{ flex: 1 }}>
               <Label style={{ fontSize: "var(--cds-text-p3)", fontWeight: 600, marginBottom: "var(--cds-space-8)", display: "block" }}>Count</Label>
-              <Select value={count} onValueChange={setCount}>
+              <Select value={count} onValueChange={(v) => v && setCount(v)}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   {Array.from({ length: Math.min(maxAvailable, 10) }, (_, i) => i + 1).map((n) => (
@@ -404,7 +400,7 @@ function AiGenerateDialog({ open, onClose, existingEmails, availableUserSlots, a
                         </Avatar>
                         <div>
                           <div style={{ fontSize: "var(--cds-text-p2)", fontWeight: 600, color: "var(--cds-huegrey-text-dark)" }}>{p.display}</div>
-                          <div style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)", fontFamily: "monospace" }}>{p.local}{domain}</div>
+                          <div style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>{p.local}{domain}</div>
                         </div>
                       </div>
                     )
@@ -615,7 +611,7 @@ export default function DemoUsersOrgPoolScreen() {
                   style={{ paddingLeft: 32 }}
                 />
               </div>
-              <Select value={filterType} onValueChange={(v) => setFilterType(v as typeof filterType)}>
+              <Select value={filterType} onValueChange={(v) => v && setFilterType(v as typeof filterType)}>
                 <SelectTrigger style={{ width: 150 }}><SelectValue placeholder="All types" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="All">All Types</SelectItem>
@@ -623,7 +619,7 @@ export default function DemoUsersOrgPoolScreen() {
                   <SelectItem value="Portal User">Portal User</SelectItem>
                 </SelectContent>
               </Select>
-              <Select value={filterStatus} onValueChange={(v) => setFilterStatus(v as typeof filterStatus)}>
+              <Select value={filterStatus} onValueChange={(v) => v && setFilterStatus(v as typeof filterStatus)}>
                 <SelectTrigger style={{ width: 140 }}><SelectValue placeholder="All statuses" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="All">All Statuses</SelectItem>
@@ -675,12 +671,12 @@ export default function DemoUsersOrgPoolScreen() {
                           </span>
                         </TableCell>
                         <TableCell>
-                          <span style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)", fontFamily: "monospace" }}>
+                          <span style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>
                             {user.email}
                           </span>
                         </TableCell>
                         <TableCell>
-                          <span style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)", fontFamily: "monospace" }}>
+                          <span style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>
                             {user.username}
                           </span>
                         </TableCell>
@@ -714,7 +710,7 @@ export default function DemoUsersOrgPoolScreen() {
                         </TableCell>
                         <TableCell>
                           <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
+                            <DropdownMenuTrigger>
                               <Button size="sm" variant="ghost" style={{ padding: "4px 8px" }}>
                                 <MoreHorizontal size={15} />
                               </Button>

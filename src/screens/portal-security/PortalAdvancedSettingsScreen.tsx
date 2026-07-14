@@ -51,7 +51,7 @@ function SubHeading({ children, tooltip }: { children: React.ReactNode; tooltip?
       </h3>
       {tooltip && (
         <Tooltip>
-          <TooltipTrigger asChild>
+          <TooltipTrigger>
             <button type="button" style={{ background: "none", border: "none", cursor: "pointer", display: "flex", color: "var(--cds-huegrey-text-default)", padding: 0 }}>
               <Info size={14} />
             </button>

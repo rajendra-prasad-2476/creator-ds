@@ -11,12 +11,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbDropdownItem } from "@/components/ui/breadcrumb";
 import { ContentSwitcher } from "@/components/ui/content-switcher";
 import { Notes } from "@/components/ui/notes";
-import { Badge } from "@/components/ui/badge";
 import { InputSuffix } from "@/components/ui/input-suffix";
 import { InputPrefix } from "@/components/ui/input-prefix";
 import { InputAffixed } from "@/components/ui/input-affixed";
 import { TagInput } from "@/components/ui/tag-input";
-import { MoreHorizontal, Settings, User, LogOut, CreditCard, Keyboard, Phone, X, Copy, Search, ArrowRight, Globe, ChevronDown, Info } from "lucide-react";
+import { MoreHorizontal, Settings, User, LogOut, CreditCard, Keyboard, Phone, Copy, Search, ArrowRight, Globe, ChevronDown, Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, RichTooltipContent } from "@/components/ui/tooltip";
 
 /* Small stateful sub-component so the showcase can use useState */
@@ -24,7 +23,7 @@ function CreatableSelectDemo() {
   const [tags, setTags] = React.useState(["Creator", "QEngine", "Bookings"])
   const [value, setValue] = React.useState("")
   return (
-    <Select value={value} onValueChange={setValue}>
+    <Select value={value} onValueChange={(v) => v && setValue(v)}>
       <SelectTrigger><SelectValue placeholder="Select or create a tag" /></SelectTrigger>
       <SelectContent
         searchable
@@ -802,9 +801,9 @@ export function MoleculesSection() {
                 Simple — positions
               </p>
               <div className="flex flex-wrap gap-6 items-center">
-                {(["top", "bottom", "left", "right"] as const).map((side) => (
+                 {(["top", "bottom", "left", "right"] as const).map((side) => (
                   <Tooltip key={side}>
-                    <TooltipTrigger asChild>
+                    <TooltipTrigger>
                       <Button variant="outline" size="sm" className="capitalize">{side}</Button>
                     </TooltipTrigger>
                     <TooltipContent side={side}>Tooltip label</TooltipContent>
@@ -820,7 +819,7 @@ export function MoleculesSection() {
               </p>
               <div className="flex flex-wrap gap-6 items-center">
                 <Tooltip>
-                  <TooltipTrigger asChild>
+                  <TooltipTrigger>
                     <Button variant="outline" size="sm">Leading icon</Button>
                   </TooltipTrigger>
                   <TooltipContent
@@ -831,7 +830,7 @@ export function MoleculesSection() {
                 </Tooltip>
 
                 <Tooltip>
-                  <TooltipTrigger asChild>
+                  <TooltipTrigger>
                     <Button variant="outline" size="sm">Trailing icon</Button>
                   </TooltipTrigger>
                   <TooltipContent
@@ -842,7 +841,7 @@ export function MoleculesSection() {
                 </Tooltip>
 
                 <Tooltip>
-                  <TooltipTrigger asChild>
+                  <TooltipTrigger>
                     <Button variant="outline" size="sm">Both icons</Button>
                   </TooltipTrigger>
                   <TooltipContent
@@ -862,7 +861,7 @@ export function MoleculesSection() {
               </p>
               <div className="flex flex-wrap gap-6 items-center">
                 <Tooltip>
-                  <TooltipTrigger asChild>
+                  <TooltipTrigger>
                     <Button variant="outline" size="sm">Hover me</Button>
                   </TooltipTrigger>
                   <RichTooltipContent heading="Feature overview">
@@ -871,7 +870,7 @@ export function MoleculesSection() {
                 </Tooltip>
 
                 <Tooltip>
-                  <TooltipTrigger asChild>
+                  <TooltipTrigger>
                     <Button variant="outline" size="sm">With heading icon</Button>
                   </TooltipTrigger>
                   <RichTooltipContent
@@ -891,7 +890,7 @@ export function MoleculesSection() {
                 Rich — List
               </p>
               <Tooltip>
-                <TooltipTrigger asChild>
+                <TooltipTrigger>
                   <Button variant="outline" size="sm">Numbered list</Button>
                 </TooltipTrigger>
                 <RichTooltipContent
@@ -915,7 +914,7 @@ export function MoleculesSection() {
                 Rich — Table
               </p>
               <Tooltip>
-                <TooltipTrigger asChild>
+                <TooltipTrigger>
                   <Button variant="outline" size="sm">Key / value table</Button>
                 </TooltipTrigger>
                 <RichTooltipContent

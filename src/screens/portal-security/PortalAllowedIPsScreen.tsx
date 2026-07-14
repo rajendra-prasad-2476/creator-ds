@@ -206,7 +206,7 @@ export default function PortalAllowedIPsScreen() {
                 {entries.map((entry) => (
                   <TableRow key={entry.id}>
                     <TableCell>
-                      <Badge variant="secondary">{TYPE_LABELS[entry.type]}</Badge>
+                      <Badge variant="subtle" colour="primary">{TYPE_LABELS[entry.type]}</Badge>
                     </TableCell>
                     <TableCell
                       style={{

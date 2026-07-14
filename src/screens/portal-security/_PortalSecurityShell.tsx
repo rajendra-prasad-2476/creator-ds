@@ -159,9 +159,6 @@ export function PortalSecurityShell({ activeNavId, children }: PortalSecurityShe
                     color: isActive
                       ? "var(--cds-primary-text-default)"
                       : "var(--cds-huegrey-text-default)",
-                    borderBottom: isActive
-                      ? "2px solid var(--cds-primary-border-default)"
-                      : "2px solid transparent",
                     background: "none",
                     border: "none",
                     borderBottom: isActive
