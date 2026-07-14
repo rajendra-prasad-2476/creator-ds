@@ -13,6 +13,7 @@
  */
 
 import * as React from "react"
+import DemoUsersOrgPoolScreen from "@/screens/demo-users/DemoUsersOrgPoolScreen"
 import OperationsScreen from "@/screens/zia-configuration/OperationsScreen"
 import ZiaSettingsScreen from "@/screens/zia-configuration/ZiaSettingsScreen"
 import ZiaProviderDetailScreen from "@/screens/zia-configuration/ZiaProviderDetailScreen"
@@ -32,6 +33,7 @@ import PortalPasswordPolicyScreenRaw from "@/screens/portal-security/PortalPassw
 import PortalMFAScreenRaw from "@/screens/portal-security/PortalMFAScreen.tsx?raw"
 import PortalAllowedIPsScreenRaw from "@/screens/portal-security/PortalAllowedIPsScreen.tsx?raw"
 import PortalAdvancedSettingsScreenRaw from "@/screens/portal-security/PortalAdvancedSettingsScreen.tsx?raw"
+import DemoUsersOrgPoolScreenRaw from "@/screens/demo-users/DemoUsersOrgPoolScreen.tsx?raw"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -122,6 +124,39 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
   },
 
   // ── Add new features below this line ─────────────────────────────────────
+
+  {
+    id: "003",
+    name: "Demo Users in Environments",
+    prdRef: "#003",
+    version: "v1.0",
+    status: "draft",
+    owner: "rajendra.prasad",
+    lastUpdated: "2026-07-14",
+    screens: [
+      {
+        id: "demo-users-org-pool",
+        name: "Demo Users — Org Pool",
+        factory: () => <DemoUsersOrgPoolScreen />,
+        sourcePath: "src/screens/demo-users/DemoUsersOrgPoolScreen.tsx",
+        destPath: "features/003-demo-users/screens/DemoUsersOrgPoolScreen.tsx",
+        rawSource: DemoUsersOrgPoolScreenRaw,
+      },
+    ],
+    versionHistory: [
+      {
+        version: "v1.0",
+        date: "2026-07-14",
+        notes: [
+          "Phase 1 — Org Pool management screens",
+          "Screen 1: Demo Users Org Pool — table with capacity banner (40 User + 10 Portal), search/filter, Deactivate/Reactivate",
+          "Screen 2 (inline): Add Manually Sheet — email local part + auto domain suffix + display name + type selector + real-time duplicate check",
+          "Screen 3 (inline): AI Generate Dialog — count + type selectors, preview panel, Regenerate, Confirm",
+          "Component gaps flagged: EmptyState (×1), Pagination (×1)",
+        ],
+      },
+    ],
+  },
 
   {
     id: "002",
