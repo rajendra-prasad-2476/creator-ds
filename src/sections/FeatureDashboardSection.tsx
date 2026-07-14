@@ -113,7 +113,6 @@ function VersionHistory({ feature }: { feature: FeatureEntry }) {
 function FeatureCard({ feature }: { feature: FeatureEntry }) {
   const [expanded, setExpanded] = React.useState(false)
   const [pushOpen, setPushOpen] = React.useState(false)
-
   function openPreview(screenId: string) {
     window.open(`/preview.html?feature=${feature.id}&screen=${screenId}`, "_blank", "noopener")
   }
