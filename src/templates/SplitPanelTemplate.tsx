@@ -388,8 +388,13 @@ export default function SplitPanelTemplate({
                       {/* ··· overflow menu */}
                       {item.menuGroups && item.menuGroups.length > 0 && (
                         <DropdownMenu>
-                          <DropdownMenuTrigger onClick={e => e.stopPropagation()}>
-                            <Button size="sm" variant="ghost" style={{ padding: "2px 6px", flexShrink: 0 }}>
+                          <DropdownMenuTrigger>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              style={{ padding: "2px 6px", flexShrink: 0 }}
+                              onClick={(e) => e.stopPropagation()}
+                            >
                               <MoreHorizontal size={14} />
                             </Button>
                           </DropdownMenuTrigger>
