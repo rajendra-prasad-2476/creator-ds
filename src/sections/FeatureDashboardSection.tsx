@@ -9,7 +9,7 @@ import {
   type FeatureEntry,
   type FeatureStatus,
 } from "@/screens/feature-registry"
-import { ChevronDown, ChevronRight, GitBranch, Clock, ExternalLink } from "lucide-react"
+import { ChevronDown, ChevronRight, GitBranch, Clock, ExternalLink, AlertTriangle, Lightbulb } from "lucide-react"
 
 const STATUS_CONFIG: Record<FeatureStatus, { label: string; color: string; bg: string; border: string }> = {
   draft: { label: "Draft", color: "var(--cds-huegrey-text-default)", bg: "var(--cds-surface-subtle, #F5F5F5)", border: "var(--border)" },
@@ -140,32 +140,116 @@ function FeatureCard({ feature }: { feature: FeatureEntry }) {
           <>
             <Separator />
             <div style={{ padding: "var(--cds-padding-card)" }}>
-              <Tabs defaultValue="screens">
-                <TabsList style={{ marginBottom: "var(--cds-space-16)", background: "transparent", padding: 0, borderBottom: "1px solid var(--border)" }}>
-                  <TabsTrigger value="screens">Screens ({feature.screens.length})</TabsTrigger>
-                  <TabsTrigger value="history">Version History</TabsTrigger>
-                </TabsList>
-                <TabsContent value="screens">
-                  <div style={{ display: "flex", flexDirection: "column", gap: "var(--cds-gap-small)" }}>
-                    {feature.screens.map((screen) => (
-                      <div key={screen.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "var(--cds-space-12) var(--cds-padding-card)", borderRadius: "var(--cds-radius-r)", border: "1px solid var(--border)", background: "var(--cds-white)" }}>
-                        <div>
-                          <div style={{ fontSize: "var(--cds-text-p2)", fontWeight: 600, color: "var(--cds-huegrey-text-dark)", marginBottom: "var(--cds-space-4)" }}>{screen.name}</div>
-                          <div style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)", fontFamily: "monospace" }}>{screen.sourcePath}</div>
-                        </div>
-                        <div style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-small)", flexShrink: 0 }}>
-                          <Button size="sm" onClick={() => openPreview(screen.id)} style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-tight)", flexShrink: 0 }}>
-                            <ExternalLink size={12} /> Preview
-                          </Button>
-                        </div>
+              {(() => {
+                const totalGaps = feature.screens.reduce((sum, s) => sum + (s.customComponents?.length ?? 0), 0)
+                const oversightCount = feature.screens.reduce((sum, s) => sum + (s.customComponents?.filter((c) => c.reason === "oversight").length ?? 0), 0)
+                return (
+                  <Tabs defaultValue="screens">
+                    <TabsList style={{ marginBottom: "var(--cds-space-16)", background: "transparent", padding: 0, borderBottom: "1px solid var(--border)" }}>
+                      <TabsTrigger value="screens">Screens ({feature.screens.length})</TabsTrigger>
+                      <TabsTrigger value="ds-gaps">
+                        DS Gaps {totalGaps > 0 && (
+                          <span style={{ marginLeft: "var(--cds-gap-tight)", padding: "0 6px", borderRadius: "var(--cds-radius-full)", fontSize: "var(--cds-text-p4)", fontWeight: 700, background: oversightCount > 0 ? "var(--cds-error-surface-default)" : "var(--cds-warning-surface-default)", color: "var(--cds-white)", display: "inline-flex", alignItems: "center" }}>
+                            {totalGaps}
+                          </span>
+                        )}
+                      </TabsTrigger>
+                      <TabsTrigger value="history">Version History</TabsTrigger>
+                    </TabsList>
+
+                    <TabsContent value="screens">
+                      <div style={{ display: "flex", flexDirection: "column", gap: "var(--cds-gap-small)" }}>
+                        {feature.screens.map((screen) => (
+                          <div key={screen.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "var(--cds-space-12) var(--cds-padding-card)", borderRadius: "var(--cds-radius-r)", border: "1px solid var(--border)", background: "var(--cds-white)" }}>
+                            <div>
+                              <div style={{ fontSize: "var(--cds-text-p2)", fontWeight: 600, color: "var(--cds-huegrey-text-dark)", marginBottom: "var(--cds-space-4)" }}>{screen.name}</div>
+                              <div style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)", fontFamily: "monospace" }}>{screen.sourcePath}</div>
+                            </div>
+                            <div style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-small)", flexShrink: 0 }}>
+                              <Button size="sm" onClick={() => openPreview(screen.id)} style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-tight)", flexShrink: 0 }}>
+                                <ExternalLink size={12} /> Preview
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                </TabsContent>
-                <TabsContent value="history">
-                  <VersionHistory feature={feature} />
-                </TabsContent>
-              </Tabs>
+                    </TabsContent>
+
+                    <TabsContent value="ds-gaps">
+                      {totalGaps === 0 ? (
+                        <div style={{ textAlign: "center", padding: "var(--cds-space-24)", color: "var(--cds-success-text-default, #078841)", fontSize: "var(--cds-text-p2)", border: "1px solid var(--cds-success-border-low-hover, #9FCFB8)", borderRadius: "var(--cds-radius-r)", background: "var(--cds-success-surface-subtle)" }}>
+                          ✓ No DS gaps detected — all UI uses DS components.
+                        </div>
+                      ) : (
+                        <div style={{ display: "flex", flexDirection: "column", gap: "var(--cds-space-16)" }}>
+                          {feature.screens.map((screen) => {
+                            if (!screen.customComponents?.length) return null
+                            return (
+                              <div key={screen.id}>
+                                <div style={{ fontSize: "var(--cds-text-p3)", fontWeight: 600, color: "var(--cds-huegrey-text-dark)", marginBottom: "var(--cds-space-8)" }}>
+                                  {screen.name}
+                                </div>
+                                <div style={{ display: "flex", flexDirection: "column", gap: "var(--cds-gap-small)" }}>
+                                  {screen.customComponents.map((gap, i) => {
+                                    const isOversight = gap.reason === "oversight"
+                                    const isNotAvailable = gap.reason === "DS component not available"
+                                    const bgColor = isOversight
+                                      ? "var(--cds-error-surface-subtle)"
+                                      : isNotAvailable
+                                      ? "var(--cds-warning-surface-subtle)"
+                                      : "var(--cds-primary-surface-subtle)"
+                                    const borderColor = isOversight
+                                      ? "var(--cds-error-border-low-hover, #F5ABAA)"
+                                      : isNotAvailable
+                                      ? "var(--cds-warning-border-low-hover, #F5C99E)"
+                                      : "var(--cds-primary-border-minimal, #A8C0FA)"
+                                    const iconColor = isOversight
+                                      ? "var(--cds-error-text-default)"
+                                      : isNotAvailable
+                                      ? "var(--cds-warning-text-default, #BE4E04)"
+                                      : "var(--cds-primary-text-default)"
+                                    return (
+                                      <div key={i} style={{ padding: "var(--cds-space-12)", borderRadius: "var(--cds-radius-r)", border: `1px solid ${borderColor}`, background: bgColor, display: "flex", gap: "var(--cds-gap-default)", alignItems: "flex-start" }}>
+                                        <div style={{ flexShrink: 0, marginTop: 1 }}>
+                                          {isOversight
+                                            ? <AlertTriangle size={14} style={{ color: iconColor }} />
+                                            : <Lightbulb size={14} style={{ color: iconColor }} />}
+                                        </div>
+                                        <div style={{ flex: 1, minWidth: 0 }}>
+                                          <div style={{ fontSize: "var(--cds-text-p3)", fontWeight: 600, color: "var(--cds-huegrey-text-dark)", marginBottom: 2 }}>{gap.element}</div>
+                                          <div style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-tight)", flexWrap: "wrap" }}>
+                                            <span style={{ fontSize: "var(--cds-text-p4)", padding: "1px 6px", borderRadius: "var(--cds-radius-xs)", background: isOversight ? "var(--cds-error-surface-default)" : "var(--cds-huegrey-surface-subtle)", color: isOversight ? "var(--cds-white)" : "var(--cds-huegrey-text-default)", fontWeight: 500 }}>
+                                              {isOversight ? "Oversight — fixable now" : isNotAvailable ? "DS Missing" : "Doesn't fit"}
+                                            </span>
+                                            {gap.parity && (
+                                              <span style={{ fontSize: "var(--cds-text-p4)", padding: "1px 6px", borderRadius: "var(--cds-radius-xs)", background: "var(--cds-surface-subtle, #F5F5F5)", color: "var(--cds-huegrey-text-default)", fontWeight: 500 }}>
+                                                ds-parity {gap.parity}
+                                              </span>
+                                            )}
+                                            {gap.dsAlternative && (
+                                              <span style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>
+                                                → Use <code style={{ fontSize: "var(--cds-text-p4)", background: "var(--cds-surface-subtle)", padding: "1px 4px", borderRadius: 3 }}>{gap.dsAlternative}</code>
+                                              </span>
+                                            )}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    )
+                                  })}
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      )}
+                    </TabsContent>
+
+                    <TabsContent value="history">
+                      <VersionHistory feature={feature} />
+                    </TabsContent>
+                  </Tabs>
+                )
+              })()}
             </div>
           </>
         )}
