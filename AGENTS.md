@@ -136,8 +136,12 @@ When a design intent could map to multiple components, follow this table.
 | Simple binary on/off toggle, no colour variant needed | `Switch` | `Toggle`, custom `<div>` |
 | User fills in a form field | `Label` + `Input` (or `Textarea`) | raw `<input>` / `<textarea>` |
 | Input needs a trailing action (copy, search, clear) | `InputSuffix` | raw `<div>` wrapper + `<button>` beside `<input>` |
+| Input needs a trailing static label (domain suffix, unit) | `InputSuffix` with `suffixLabel` prop | raw `<span>` beside `<input>` |
 | Input needs a leading context label/icon (currency, country code, URL scheme) | `InputPrefix` | raw `<span>` + `<input>` side by side |
+| Input needs a leading search icon | `InputPrefix` with `prefixIcon={<Search />}` | absolutely-positioned icon inside a `<div>` wrapper |
 | Input needs context on BOTH sides (currency + unit, code + extension) | `InputAffixed` | two raw `<span>` elements flanking an `<input>` |
+| Capacity / progress bar | `Progress` | raw `<div>` with a fixed height and inline width percentage |
+| Stat / capacity card | `Card` + `CardContent` | raw `<div>` with manual border and padding |
 | Mutually exclusive choice displayed as a card (with description) | `RadioCard` inside `RadioGroup` | custom card `<div>` with manual radio indicator |
 | Display a label, category, or keyword as a pill | `Tag` | hand-styled `<span>` or `<div>` badge |
 | Allow users to enter multiple values as dismissible chips | `TagInput` | raw `<input>` beside custom chip divs |
@@ -149,6 +153,8 @@ When a design intent could map to multiple components, follow this table.
 | Action overflow menu | `DropdownMenu` | bare `<ul>` |
 | Contextual help text | `Tooltip` | `title` attribute |
 | Slide-in detail pane | `Sheet` | `Dialog` |
+| Sheet subtitle / description | `<div>` with `border-bottom` **below** `<SheetHeader>` | `SheetDescription` inside `<SheetHeader>` (causes inline layout, breaks title) |
+| Dropdown row actions with icons | `DropdownMenuItem` children: `<Icon size={13} /> Label` | bare label with no icon on some items but icon on others |
 | Dimmed scrim behind an overlay / panel | `Blanket` | custom `<div>` with a background color |
 | Page-level loading state | future `Skeleton` or `Spinner` | `<div className="animate-spin">` |
 | Empty list / zero-data state | future `EmptyState` | raw centred `<p>` text |

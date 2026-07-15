@@ -51,6 +51,21 @@ export interface ScreenEntry {
   destPath: string
   /** Raw TSX source — imported via Vite ?raw, used by "Copy for Figma" */
   rawSource: string
+  /**
+   * Custom / raw-HTML elements used in this screen that are NOT DS components.
+   * Used by the Feature Dashboard to surface DS gaps per screen.
+   *
+   * Format: { element: string; reason: string; dsAlternative?: string }[]
+   * - element: what was used (e.g. "raw <div> capacity card")
+   * - reason: "DS component not available" | "component doesn't fit" | "oversight"
+   * - dsAlternative: the DS component that should replace it when available
+   */
+  customComponents?: Array<{
+    element: string
+    reason: "DS component not available" | "component doesn't fit" | "oversight"
+    dsAlternative?: string
+    parity?: "P1" | "P2" | "P3"
+  }>
 }
 
 export interface VersionNote {
@@ -145,6 +160,13 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
         sourcePath: "src/screens/demo-users/DemoUsersOrgPoolScreen.tsx",
         destPath: "features/003-demo-users/screens/DemoUsersOrgPoolScreen.tsx",
         rawSource: DemoUsersOrgPoolScreenRaw,
+        customComponents: [
+          { element: "raw <div> capacity stat cards (3×)", reason: "DS component not available", dsAlternative: "Card + StatCard", parity: "P2" },
+          { element: "raw <div> progress bar (capacity fill)", reason: "component doesn't fit", dsAlternative: "Progress with colour prop", parity: "P1" },
+          { element: "absolutely-positioned <Search> icon over <Input>", reason: "oversight", dsAlternative: "InputPrefix with prefixIcon", parity: undefined },
+          { element: "raw <div> AI dialog warning banner", reason: "oversight", dsAlternative: "Notes variant=warning", parity: undefined },
+          { element: "raw <p> pagination placeholder", reason: "DS component not available", dsAlternative: "Pagination", parity: "P1" },
+        ],
       },
       {
         id: "demo-users-app-assignment",
@@ -153,6 +175,9 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
         sourcePath: "src/screens/demo-users/DemoUsersAppAssignmentScreen.tsx",
         destPath: "features/003-demo-users/screens/DemoUsersAppAssignmentScreen.tsx",
         rawSource: DemoUsersAppAssignmentScreenRaw,
+        customComponents: [
+          { element: "raw <p> empty state text", reason: "DS component not available", dsAlternative: "EmptyState", parity: "P1" },
+        ],
       },
       {
         id: "demo-users-view-as",
@@ -161,6 +186,11 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
         sourcePath: "src/screens/demo-users/DemoUsersViewAsScreen.tsx",
         destPath: "features/003-demo-users/screens/DemoUsersViewAsScreen.tsx",
         rawSource: DemoUsersViewAsScreenRaw,
+        customComponents: [
+          { element: "raw <button> user switcher entry cards", reason: "DS component not available", dsAlternative: "Future SelectionCard or ListItem DS component", parity: "P3" },
+          { element: "raw <p> empty search state", reason: "DS component not available", dsAlternative: "EmptyState", parity: "P1" },
+          { element: "absolutely-positioned <Search> icon over <Input>", reason: "oversight", dsAlternative: "InputPrefix with prefixIcon", parity: undefined },
+        ],
       },
     ],
     versionHistory: [
