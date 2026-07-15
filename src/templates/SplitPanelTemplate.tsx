@@ -387,7 +387,7 @@ export default function SplitPanelTemplate({
                       </div>
                       {/* ··· overflow menu */}
                       {item.menuGroups && item.menuGroups.length > 0 && (
-                        <DropdownMenu>
+                        <DropdownMenu modal={false}>
                           <DropdownMenuTrigger
                             onClick={(e) => e.stopPropagation()}
                             style={{
@@ -413,7 +413,7 @@ export default function SplitPanelTemplate({
                                 {group.items.map(mi => (
                                   <DropdownMenuItem
                                     key={mi.label}
-                                    onSelect={() => { mi.onSelect?.(); item.onMenuAction?.(mi.label) }}
+                                    onClick={(e) => { e.stopPropagation(); mi.onSelect?.(); item.onMenuAction?.(mi.label) }}
                                     style={mi.destructive ? { color: "var(--cds-error-text-default)" } : undefined}
                                   >
                                     {mi.label}

@@ -18,6 +18,35 @@ import * as React from "react"
 import { FEATURE_REGISTRY } from "@/screens/feature-registry"
 import { NavigationProvider } from "@/screens/navigation"
 
+class ErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { error: Error | null }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props)
+    this.state = { error: null }
+  }
+  static getDerivedStateFromError(error: Error) {
+    return { error }
+  }
+  render() {
+    if (this.state.error) {
+      return (
+        <div style={{ padding: 32, fontFamily: "'Zoho Puvi', sans-serif", color: "red" }}>
+          <h2>Runtime Error</h2>
+          <pre style={{ whiteSpace: "pre-wrap", fontSize: 13, background: "#FEE", padding: 16, borderRadius: 8 }}>
+            {this.state.error.message}
+            {"\n\n"}
+            {this.state.error.stack}
+          </pre>
+          <button onClick={() => this.setState({ error: null })}>Retry</button>
+        </div>
+      )
+    }
+    return this.props.children
+  }
+}
+
 function PreviewApp() {
   const params = new URLSearchParams(window.location.search)
   const featureId = params.get("feature")
@@ -70,15 +99,19 @@ function PreviewApp() {
   )
 
   return (
-    <NavigationProvider
-      initialScreenId={screen.id}
-      screenMap={screenMap}
-    />
+    <ErrorBoundary>
+      <NavigationProvider
+        initialScreenId={screen.id}
+        screenMap={screenMap}
+      />
+    </ErrorBoundary>
   )
 }
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <PreviewApp />
+    <ErrorBoundary>
+      <PreviewApp />
+    </ErrorBoundary>
   </StrictMode>
 )
