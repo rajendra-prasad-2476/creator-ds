@@ -55,7 +55,13 @@ import { Notes } from "@/components/ui/notes"
 import { ContentSwitcher } from "@/components/ui/content-switcher"
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
-import { Plus, Trash2, ChevronLeft } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu"
+import { Plus, Trash2, ChevronLeft, MoreHorizontal } from "lucide-react"
 import { useNavigation } from "@/screens/navigation"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -192,7 +198,7 @@ function AssignSheet({ open, onClose, environment, existingUserIds, onAssign }: 
           </SheetDescription>
         </SheetHeader>
 
-        <div style={{ flex: 1, overflowY: "auto", padding: "var(--cds-space-24)", display: "flex", flexDirection: "column", gap: "var(--cds-space-20)" }}>
+        <div style={{ flex: 1, overflowY: "auto", padding: "var(--cds-space-24)", display: "flex", flexDirection: "column", gap: "var(--cds-space-16)" }}>
 
           {/* User selector */}
           <div>
@@ -378,14 +384,15 @@ export default function DemoUsersAppAssignmentScreen() {
           <main className="flex-1 overflow-y-auto" style={{ padding: "var(--cds-padding-section-v) var(--cds-padding-section-h)" }}>
 
             {/* Breadcrumb / Back */}
-            <button
-              type="button"
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => canGoBack ? goBack() : navigate("demo-users-org-pool")}
-              style={{ display: "inline-flex", alignItems: "center", gap: "var(--cds-gap-tight)", fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)", background: "none", border: "none", cursor: "pointer", padding: 0, marginBottom: "var(--cds-space-16)" }}
+              style={{ display: "inline-flex", alignItems: "center", gap: "var(--cds-gap-tight)", color: "var(--cds-huegrey-text-default)", marginBottom: "var(--cds-space-16)", paddingLeft: 0 }}
             >
               <ChevronLeft size={14} />
               Demo Users
-            </button>
+            </Button>
 
             {/* Page header */}
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "var(--cds-space-24)" }}>
@@ -469,14 +476,21 @@ export default function DemoUsersAppAssignmentScreen() {
                           <span style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-dark)" }}>{a.permission}</span>
                         </TableCell>
                         <TableCell>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => setRemoveTarget(a)}
-                            style={{ color: "var(--cds-error-text-default)", padding: "4px 8px" }}
-                          >
-                            <Trash2 size={14} />
-                          </Button>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger>
+                              <Button size="sm" variant="ghost" style={{ padding: "4px 8px" }}>
+                                <MoreHorizontal size={15} />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem
+                                onClick={() => setRemoveTarget(a)}
+                                style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-small)", color: "var(--cds-error-text-default)" }}
+                              >
+                                <Trash2 size={13} /> Remove
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </TableCell>
                       </TableRow>
                     ))
