@@ -62,7 +62,7 @@ import { InputSuffix } from "@/components/ui/input-suffix"
 import { Notes } from "@/components/ui/notes"
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
-import { MoreHorizontal, Search, Plus, Sparkles, Users, UserCircle, RefreshCw, Pencil } from "lucide-react"
+import { MoreHorizontal, Search, Plus, Sparkles, Users, UserCircle, RefreshCw, Pencil, Link2, PowerOff, RotateCcw } from "lucide-react"
 import { useNavigation } from "@/screens/navigation"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -828,18 +828,18 @@ export default function DemoUsersOrgPoolScreen() {
                                 <Pencil size={13} /> Edit
                               </DropdownMenuItem>
                               <DropdownMenuItem onClick={() => navigate("demo-users-app-assignment")} style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-small)" }}>
-                                Assign to App
+                                <Link2 size={13} /> Assign to App
                               </DropdownMenuItem>
                               {user.status === "Active" ? (
                                 <DropdownMenuItem
                                   onClick={() => setDeactivateUser(user)}
-                                  style={{ color: "var(--cds-error-text-default, #CC1914)" }}
+                                  style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-small)", color: "var(--cds-error-text-default, #CC1914)" }}
                                 >
-                                  Deactivate
+                                  <PowerOff size={13} /> Deactivate
                                 </DropdownMenuItem>
                               ) : (
-                                <DropdownMenuItem onClick={() => handleReactivate(user.id)}>
-                                  Reactivate
+                                <DropdownMenuItem onClick={() => handleReactivate(user.id)} style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-small)" }}>
+                                  <RotateCcw size={13} /> Reactivate
                                 </DropdownMenuItem>
                               )}
                             </DropdownMenuContent>
