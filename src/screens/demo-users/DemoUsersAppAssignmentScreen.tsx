@@ -381,7 +381,7 @@ export default function DemoUsersAppAssignmentScreen() {
       <div className="flex flex-col h-screen">
         <TopBar />
         <div className="flex flex-1 overflow-hidden">
-          <LeftNav />
+          <LeftNav activeId="environments" />
           <main className="flex-1 overflow-y-auto" style={{ padding: "var(--cds-padding-section-v) var(--cds-padding-section-h)" }}>
 
             {/* Breadcrumb / Back */}

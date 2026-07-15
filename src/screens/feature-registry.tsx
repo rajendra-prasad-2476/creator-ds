@@ -16,6 +16,7 @@ import * as React from "react"
 import DemoUsersOrgPoolScreen from "@/screens/demo-users/DemoUsersOrgPoolScreen"
 import DemoUsersAppAssignmentScreen from "@/screens/demo-users/DemoUsersAppAssignmentScreen"
 import DemoUsersViewAsScreen from "@/screens/demo-users/DemoUsersViewAsScreen"
+import EnvironmentSettingsScreen from "@/screens/demo-users/EnvironmentSettingsScreen"
 import OperationsScreen from "@/screens/zia-configuration/OperationsScreen"
 import ZiaSettingsScreen from "@/screens/zia-configuration/ZiaSettingsScreen"
 import ZiaProviderDetailScreen from "@/screens/zia-configuration/ZiaProviderDetailScreen"
@@ -38,6 +39,7 @@ import PortalAdvancedSettingsScreenRaw from "@/screens/portal-security/PortalAdv
 import DemoUsersOrgPoolScreenRaw from "@/screens/demo-users/DemoUsersOrgPoolScreen.tsx?raw"
 import DemoUsersAppAssignmentScreenRaw from "@/screens/demo-users/DemoUsersAppAssignmentScreen.tsx?raw"
 import DemoUsersViewAsScreenRaw from "@/screens/demo-users/DemoUsersViewAsScreen.tsx?raw"
+import EnvironmentSettingsScreenRaw from "@/screens/demo-users/EnvironmentSettingsScreen.tsx?raw"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -148,7 +150,7 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
     id: "003",
     name: "Demo Users in Environments",
     prdRef: "#003",
-    version: "v1.0",
+    version: "v1.2",
     status: "draft",
     owner: "rajendra.prasad",
     lastUpdated: "2026-07-15",
@@ -192,6 +194,18 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
           { element: "absolutely-positioned <Search> icon over <Input>", reason: "oversight", dsAlternative: "InputPrefix with prefixIcon", parity: undefined },
         ],
       },
+      {
+        id: "environment-settings",
+        name: "Environment Settings (Demo Users, Notifications, Variables, Schedules)",
+        factory: () => <EnvironmentSettingsScreen />,
+        sourcePath: "src/screens/demo-users/EnvironmentSettingsScreen.tsx",
+        destPath: "features/003-demo-users/screens/EnvironmentSettingsScreen.tsx",
+        rawSource: EnvironmentSettingsScreenRaw,
+        customComponents: [
+          { element: "raw <p> empty state text in Demo Users tab", reason: "DS component not available", dsAlternative: "EmptyState", parity: "P1" },
+          { element: "raw <div> variables table (no DS Table for simple key-value)", reason: "component doesn't fit", dsAlternative: "Table component could work here", parity: undefined },
+        ],
+      },
     ],
     versionHistory: [
       {
@@ -214,6 +228,19 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
           "Added View As (Live Mode) screen — grouped User/Portal User switcher, search/filter, active context detail panel",
           "Navigate from Org Pool row action menu: Edit, Assign to App",
           "Component gaps flagged: EmptyState (×3)",
+        ],
+      },
+      {
+        version: "v1.2",
+        date: "2026-07-15",
+        notes: [
+          "Added Environment Settings screen (help-doc-aligned) — Demo Users, Notifications, Variables, Workflow Schedules tabs",
+          "Demo Users tab: add from org pool with role + permission, remove with AlertDialog",
+          "Environment switcher (ContentSwitcher) in app context header",
+          "Notifications tab: Mail / SMS / Push with all help-doc options",
+          "Variables tab: read-only defined + current value table",
+          "Workflow Schedules tab: Suspend All / Application-Specific",
+          "Component gaps flagged: EmptyState (×1)",
         ],
       },
     ],

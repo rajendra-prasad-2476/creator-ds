@@ -222,7 +222,7 @@ const DEFAULT_SECTIONS: NavSectionDef[] = [
     id: "develop",
     label: "DEVELOP",
     items: [
-      { id: "solutions", label: "Solutions", icon: <IconSolutions />, active: true },
+      { id: "solutions", label: "Solutions", icon: <IconSolutions /> },
       { id: "microservices", label: "Microservices", icon: <IconMicroservices /> },
     ],
   },
