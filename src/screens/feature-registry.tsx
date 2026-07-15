@@ -17,6 +17,7 @@ import DemoUsersOrgPoolScreen from "@/screens/demo-users/DemoUsersOrgPoolScreen"
 import DemoUsersAppAssignmentScreen from "@/screens/demo-users/DemoUsersAppAssignmentScreen"
 import DemoUsersViewAsScreen from "@/screens/demo-users/DemoUsersViewAsScreen"
 import EnvironmentSettingsScreen from "@/screens/demo-users/EnvironmentSettingsScreen"
+import EnvironmentsScreen from "@/screens/demo-users/EnvironmentsScreen"
 import OperationsScreen from "@/screens/zia-configuration/OperationsScreen"
 import ZiaSettingsScreen from "@/screens/zia-configuration/ZiaSettingsScreen"
 import ZiaProviderDetailScreen from "@/screens/zia-configuration/ZiaProviderDetailScreen"
@@ -40,6 +41,7 @@ import DemoUsersOrgPoolScreenRaw from "@/screens/demo-users/DemoUsersOrgPoolScre
 import DemoUsersAppAssignmentScreenRaw from "@/screens/demo-users/DemoUsersAppAssignmentScreen.tsx?raw"
 import DemoUsersViewAsScreenRaw from "@/screens/demo-users/DemoUsersViewAsScreen.tsx?raw"
 import EnvironmentSettingsScreenRaw from "@/screens/demo-users/EnvironmentSettingsScreen.tsx?raw"
+import EnvironmentsScreenRaw from "@/screens/demo-users/EnvironmentsScreen.tsx?raw"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -150,7 +152,7 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
     id: "003",
     name: "Demo Users in Environments",
     prdRef: "#003",
-    version: "v1.2",
+    version: "v1.3",
     status: "draft",
     owner: "rajendra.prasad",
     lastUpdated: "2026-07-15",
@@ -196,7 +198,7 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
       },
       {
         id: "environment-settings",
-        name: "Environment Settings (Demo Users, Notifications, Variables, Schedules)",
+        name: "Environment Settings (standalone — deprecated, use environment-settings-sheet)",
         factory: () => <EnvironmentSettingsScreen />,
         sourcePath: "src/screens/demo-users/EnvironmentSettingsScreen.tsx",
         destPath: "features/003-demo-users/screens/EnvironmentSettingsScreen.tsx",
@@ -204,6 +206,17 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
         customComponents: [
           { element: "raw <p> empty state text in Demo Users tab", reason: "DS component not available", dsAlternative: "EmptyState", parity: "P1" },
           { element: "raw <div> variables table (no DS Table for simple key-value)", reason: "component doesn't fit", dsAlternative: "Table component could work here", parity: undefined },
+        ],
+      },
+      {
+        id: "environments",
+        name: "Environments (App list + Stage/Production + Settings Sheet)",
+        factory: () => <EnvironmentsScreen />,
+        sourcePath: "src/screens/demo-users/EnvironmentsScreen.tsx",
+        destPath: "features/003-demo-users/screens/EnvironmentsScreen.tsx",
+        rawSource: EnvironmentsScreenRaw,
+        customComponents: [
+          { element: "raw <p> empty state text (Demo Users tab)", reason: "DS component not available", dsAlternative: "EmptyState", parity: "P1" },
         ],
       },
     ],
@@ -228,6 +241,16 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
           "Added View As (Live Mode) screen — grouped User/Portal User switcher, search/filter, active context detail panel",
           "Navigate from Org Pool row action menu: Edit, Assign to App",
           "Component gaps flagged: EmptyState (×3)",
+        ],
+      },
+      {
+        version: "v1.3",
+        date: "2026-07-15",
+        notes: [
+          "Added EnvironmentsScreen — uses SplitPanelTemplate (app list + Stage/Production columns + ··· menu with grouped actions)",
+          "Settings menu opens Environment Settings Sheet (correct slide-in panel per help doc screenshot)",
+          "SplitPanelTemplate extended: sublabel, accentColor, menuGroups with group labels, activeNavId prop",
+          "Old EnvironmentSettingsScreen retained as standalone preview (deprecated)",
         ],
       },
       {

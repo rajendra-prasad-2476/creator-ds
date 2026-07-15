@@ -28,15 +28,33 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Search, ChevronDown } from "lucide-react"
+import { Search, ChevronDown, MoreHorizontal } from "lucide-react"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
+
+export interface SplitPanelMenuGroup {
+  label?: string
+  items: { label: string; onSelect?: () => void; destructive?: boolean }[]
+}
 
 export interface SplitPanelItem {
   id: string
   label: string
+  /** Optional second line under the label */
+  sublabel?: string
+  /** Color for the sublabel text */
+  sublabelColor?: string
+  /** Accent color for the avatar/icon circle */
+  accentColor?: string
+  /** Grouped menu items for the ··· overflow menu */
+  menuGroups?: SplitPanelMenuGroup[]
+  /** Called when any menu item label is clicked */
+  onMenuAction?: (label: string) => void
+  onClick?: () => void
 }
 
 export interface SplitPanel {
@@ -66,6 +84,8 @@ export interface SplitPanelTemplateProps {
   listItems?: SplitPanelItem[]
   panels?: SplitPanel[]
   onSearch?: (query: string) => void
+  /** LeftNav activeId — which nav item should be highlighted */
+  activeNavId?: string
 }
 
 // ─── Default data ─────────────────────────────────────────────────────────────
@@ -189,6 +209,7 @@ export default function SplitPanelTemplate({
   listItems = [],
   panels = DEFAULT_PANELS,
   onSearch,
+  activeNavId,
 }: SplitPanelTemplateProps) {
   const [search, setSearch] = React.useState("")
 
@@ -206,7 +227,7 @@ export default function SplitPanelTemplate({
     <div className="flex flex-col h-screen">
       <TopBar />
       <div className="flex flex-1 overflow-hidden">
-        <LeftNav />
+        <LeftNav activeId={activeNavId} />
         <main
           className="flex-1 overflow-y-auto"
           style={{
@@ -341,15 +362,56 @@ export default function SplitPanelTemplate({
                   {filteredList.map((item) => (
                     <li
                       key={item.id}
+                      onClick={item.onClick}
                       style={{
-                        padding: "var(--cds-space-8) var(--cds-padding-card)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "var(--cds-gap-default)",
+                        padding: "var(--cds-space-10, 10px) var(--cds-padding-card)",
                         borderBottom: "1px solid var(--border)",
-                        fontSize: "var(--cds-text-p2)",
-                        color: "var(--cds-huegrey-text-dark)",
-                        cursor: "pointer",
+                        cursor: item.onClick ? "pointer" : "default",
                       }}
                     >
-                      {item.label}
+                      {/* App icon circle */}
+                      {item.accentColor && (
+                        <div style={{ width: 32, height: 32, borderRadius: "var(--cds-radius-s)", background: item.accentColor, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--cds-white)", fontSize: "var(--cds-text-p3)", fontWeight: 700 }}>
+                          {item.label[0]}
+                        </div>
+                      )}
+                      {/* Label + sublabel */}
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: "var(--cds-text-p2)", fontWeight: 500, color: "var(--cds-huegrey-text-dark)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.label}</div>
+                        {item.sublabel && (
+                          <div style={{ fontSize: "var(--cds-text-p3)", color: item.sublabelColor ?? "var(--cds-huegrey-text-default)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.sublabel}</div>
+                        )}
+                      </div>
+                      {/* ··· overflow menu */}
+                      {item.menuGroups && item.menuGroups.length > 0 && (
+                        <DropdownMenu>
+                          <DropdownMenuTrigger onClick={e => e.stopPropagation()}>
+                            <Button size="sm" variant="ghost" style={{ padding: "2px 6px", flexShrink: 0 }}>
+                              <MoreHorizontal size={14} />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            {item.menuGroups.map((group, gi) => (
+                              <React.Fragment key={gi}>
+                                {gi > 0 && <DropdownMenuSeparator />}
+                                {group.label && <DropdownMenuLabel>{group.label}</DropdownMenuLabel>}
+                                {group.items.map(mi => (
+                                  <DropdownMenuItem
+                                    key={mi.label}
+                                    onSelect={() => { mi.onSelect?.(); item.onMenuAction?.(mi.label) }}
+                                    style={mi.destructive ? { color: "var(--cds-error-text-default)" } : undefined}
+                                  >
+                                    {mi.label}
+                                  </DropdownMenuItem>
+                                ))}
+                              </React.Fragment>
+                            ))}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      )}
                     </li>
                   ))}
                 </ul>
