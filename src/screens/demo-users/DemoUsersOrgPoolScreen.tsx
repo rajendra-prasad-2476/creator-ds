@@ -507,7 +507,7 @@ function EditUserSheet({ user, onClose, onSave }: EditUserSheetProps) {
           </div>
 
           {/* Read-only info */}
-          <Notes variant="neutral" title="Email and type are locked">
+          <Notes variant="info" title="Email and type are locked">
             Email and type cannot be changed after creation. To change type, deactivate this identity and create a new one.
           </Notes>
 
