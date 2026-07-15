@@ -49,7 +49,6 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetDescription,
 } from "@/components/ui/sheet"
 import { Notes } from "@/components/ui/notes"
 import { ContentSwitcher } from "@/components/ui/content-switcher"
@@ -193,10 +192,12 @@ function AssignSheet({ open, onClose, environment, existingUserIds, onAssign }: 
       <SheetContent side="right" style={{ width: "min(480px, 95vw)", display: "flex", flexDirection: "column" }}>
         <SheetHeader>
           <SheetTitle>Assign Demo User</SheetTitle>
-          <SheetDescription>
-            Assign a demo user from the org pool to this app in {environment}.
-          </SheetDescription>
         </SheetHeader>
+        <div style={{ padding: "var(--cds-space-8) var(--cds-space-24) var(--cds-space-12)", borderBottom: "1px solid var(--border)" }}>
+          <p style={{ margin: 0, fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>
+            Assign a demo user from the org pool to this app in <strong>{environment}</strong>.
+          </p>
+        </div>
 
         <div style={{ flex: 1, overflowY: "auto", padding: "var(--cds-space-24)", display: "flex", flexDirection: "column", gap: "var(--cds-space-16)" }}>
 

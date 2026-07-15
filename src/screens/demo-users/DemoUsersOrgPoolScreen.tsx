@@ -54,7 +54,7 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog"
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { RadioGroup } from "@/components/ui/radio-group"
 import { RadioCard } from "@/components/ui/radio-card"
@@ -462,10 +462,12 @@ function EditUserSheet({ user, onClose, onSave }: EditUserSheetProps) {
       <SheetContent side="right" style={{ width: "min(480px, 95vw)", display: "flex", flexDirection: "column" }}>
         <SheetHeader>
           <SheetTitle>Edit Demo User</SheetTitle>
-          <SheetDescription>
-            Update the display name for this demo user. Email, username, and type are locked after creation.
-          </SheetDescription>
         </SheetHeader>
+        <div style={{ padding: "var(--cds-space-8) var(--cds-space-24) var(--cds-space-12)", borderBottom: "1px solid var(--border)" }}>
+          <p style={{ margin: 0, fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>
+            Update the display name for this demo user. Email, username, and type are locked after creation.
+          </p>
+        </div>
 
         <div style={{ flex: 1, padding: "var(--cds-space-24)", display: "flex", flexDirection: "column", gap: "var(--cds-space-20)" }}>
 
