@@ -14,6 +14,8 @@
 
 import * as React from "react"
 import DemoUsersOrgPoolScreen from "@/screens/demo-users/DemoUsersOrgPoolScreen"
+import DemoUsersAppAssignmentScreen from "@/screens/demo-users/DemoUsersAppAssignmentScreen"
+import DemoUsersViewAsScreen from "@/screens/demo-users/DemoUsersViewAsScreen"
 import OperationsScreen from "@/screens/zia-configuration/OperationsScreen"
 import ZiaSettingsScreen from "@/screens/zia-configuration/ZiaSettingsScreen"
 import ZiaProviderDetailScreen from "@/screens/zia-configuration/ZiaProviderDetailScreen"
@@ -34,6 +36,8 @@ import PortalMFAScreenRaw from "@/screens/portal-security/PortalMFAScreen.tsx?ra
 import PortalAllowedIPsScreenRaw from "@/screens/portal-security/PortalAllowedIPsScreen.tsx?raw"
 import PortalAdvancedSettingsScreenRaw from "@/screens/portal-security/PortalAdvancedSettingsScreen.tsx?raw"
 import DemoUsersOrgPoolScreenRaw from "@/screens/demo-users/DemoUsersOrgPoolScreen.tsx?raw"
+import DemoUsersAppAssignmentScreenRaw from "@/screens/demo-users/DemoUsersAppAssignmentScreen.tsx?raw"
+import DemoUsersViewAsScreenRaw from "@/screens/demo-users/DemoUsersViewAsScreen.tsx?raw"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -132,7 +136,7 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
     version: "v1.0",
     status: "draft",
     owner: "rajendra.prasad",
-    lastUpdated: "2026-07-14",
+    lastUpdated: "2026-07-15",
     screens: [
       {
         id: "demo-users-org-pool",
@@ -141,6 +145,22 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
         sourcePath: "src/screens/demo-users/DemoUsersOrgPoolScreen.tsx",
         destPath: "features/003-demo-users/screens/DemoUsersOrgPoolScreen.tsx",
         rawSource: DemoUsersOrgPoolScreenRaw,
+      },
+      {
+        id: "demo-users-app-assignment",
+        name: "App Assignment",
+        factory: () => <DemoUsersAppAssignmentScreen />,
+        sourcePath: "src/screens/demo-users/DemoUsersAppAssignmentScreen.tsx",
+        destPath: "features/003-demo-users/screens/DemoUsersAppAssignmentScreen.tsx",
+        rawSource: DemoUsersAppAssignmentScreenRaw,
+      },
+      {
+        id: "demo-users-view-as",
+        name: "View As (Live Mode)",
+        factory: () => <DemoUsersViewAsScreen />,
+        sourcePath: "src/screens/demo-users/DemoUsersViewAsScreen.tsx",
+        destPath: "features/003-demo-users/screens/DemoUsersViewAsScreen.tsx",
+        rawSource: DemoUsersViewAsScreenRaw,
       },
     ],
     versionHistory: [
@@ -153,6 +173,17 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
           "Screen 2 (inline): Add Manually Sheet — email local part + auto domain suffix + display name + type selector + real-time duplicate check",
           "Screen 3 (inline): AI Generate Dialog — count + type selectors, preview panel, Regenerate, Confirm",
           "Component gaps flagged: EmptyState (×1), Pagination (×1)",
+        ],
+      },
+      {
+        version: "v1.1",
+        date: "2026-07-15",
+        notes: [
+          "Added Edit Demo User sheet — display name editable, email/type locked",
+          "Added App Assignment screen — assign org pool users to app per environment, role + permission, remove action",
+          "Added View As (Live Mode) screen — grouped User/Portal User switcher, search/filter, active context detail panel",
+          "Navigate from Org Pool row action menu: Edit, Assign to App",
+          "Component gaps flagged: EmptyState (×3)",
         ],
       },
     ],

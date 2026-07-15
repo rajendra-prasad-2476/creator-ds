@@ -54,7 +54,7 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog"
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { RadioGroup } from "@/components/ui/radio-group"
 import { RadioCard } from "@/components/ui/radio-card"
@@ -62,7 +62,8 @@ import { InputSuffix } from "@/components/ui/input-suffix"
 import { Notes } from "@/components/ui/notes"
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
-import { MoreHorizontal, Search, Plus, Sparkles, Users, UserCircle, RefreshCw } from "lucide-react"
+import { MoreHorizontal, Search, Plus, Sparkles, Users, UserCircle, RefreshCw, Pencil } from "lucide-react"
+import { useNavigation } from "@/screens/navigation"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -425,6 +426,102 @@ function AiGenerateDialog({ open, onClose, existingEmails, availableUserSlots, a
   )
 }
 
+// ─── Edit Demo User Sheet ─────────────────────────────────────────────────────
+
+interface EditUserSheetProps {
+  user: DemoUserIdentity | null
+  onClose: () => void
+  onSave: (userId: string, displayName: string) => void
+}
+
+function EditUserSheet({ user, onClose, onSave }: EditUserSheetProps) {
+  const [displayName, setDisplayName] = React.useState("")
+  const [submitted, setSubmitted] = React.useState(false)
+
+  React.useEffect(() => {
+    if (user) setDisplayName(user.displayName)
+  }, [user])
+
+  function handleSave() {
+    setSubmitted(true)
+    if (!displayName.trim()) return
+    onSave(user!.id, displayName.trim())
+    handleClose()
+  }
+
+  function handleClose() {
+    setDisplayName("")
+    setSubmitted(false)
+    onClose()
+  }
+
+  if (!user) return null
+
+  return (
+    <Sheet open={!!user} onOpenChange={(o) => !o && handleClose()}>
+      <SheetContent side="right" style={{ width: "min(480px, 95vw)", display: "flex", flexDirection: "column" }}>
+        <SheetHeader>
+          <SheetTitle>Edit Demo User</SheetTitle>
+          <SheetDescription>
+            Update the display name for this demo user. Email, username, and type are locked after creation.
+          </SheetDescription>
+        </SheetHeader>
+
+        <div style={{ flex: 1, padding: "var(--cds-space-24)", display: "flex", flexDirection: "column", gap: "var(--cds-space-20)" }}>
+
+          {/* Identity preview — read-only */}
+          <div style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-default)", padding: "var(--cds-space-12)", borderRadius: "var(--cds-radius-r)", background: "var(--cds-surface-subtle, #F5F5F5)", border: "1px solid var(--border)" }}>
+            <Avatar style={{ width: 36, height: 36, flexShrink: 0 }}>
+              <AvatarFallback style={{ background: userTypeColor(user.type), color: "var(--cds-white)", fontSize: "var(--cds-text-p3)", fontWeight: 700 }}>
+                {initials(user.displayName)}
+              </AvatarFallback>
+            </Avatar>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>{user.email}</div>
+              <div style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>Username: {user.username}</div>
+            </div>
+            <Badge variant="subtle" colour={user.type === "User" ? "primary" : "success"} size="sm">
+              {user.type}
+            </Badge>
+          </div>
+
+          {/* Display Name — editable */}
+          <div>
+            <Label htmlFor="editDisplayName" style={{ fontSize: "var(--cds-text-p3)", fontWeight: 600, marginBottom: "var(--cds-space-8)", display: "block" }}>
+              Display Name <span style={{ color: "var(--cds-error-text-default)" }}>*</span>
+            </Label>
+            <Input
+              id="editDisplayName"
+              placeholder="e.g. Sarah Green"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+            />
+            {submitted && !displayName.trim() && (
+              <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-error-text-default)", marginTop: "var(--cds-space-4)" }}>
+                Display name is required.
+              </p>
+            )}
+            <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)", marginTop: "var(--cds-space-4)" }}>
+              Editing propagates to all app assignments immediately.
+            </p>
+          </div>
+
+          {/* Read-only info */}
+          <Notes variant="neutral" title="Email and type are locked">
+            Email and type cannot be changed after creation. To change type, deactivate this identity and create a new one.
+          </Notes>
+
+        </div>
+
+        <div style={{ borderTop: "1px solid var(--border)", padding: "var(--cds-space-16) var(--cds-space-24)", display: "flex", gap: "var(--cds-gap-small)", justifyContent: "flex-end" }}>
+          <Button variant="outline" onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleSave}>Save Changes</Button>
+        </div>
+      </SheetContent>
+    </Sheet>
+  )
+}
+
 // ─── Deactivate Confirm Dialog ─────────────────────────────────────────────────
 
 interface DeactivateDialogProps {
@@ -468,6 +565,8 @@ export default function DemoUsersOrgPoolScreen() {
   const [addSheetOpen, setAddSheetOpen] = React.useState(false)
   const [aiDialogOpen, setAiDialogOpen] = React.useState(false)
   const [deactivateUser, setDeactivateUser] = React.useState<DemoUserIdentity | null>(null)
+  const [editUser, setEditUser] = React.useState<DemoUserIdentity | null>(null)
+  const { navigate } = useNavigation()
 
   const activeUsers = users.filter((u) => u.status === "Active" && u.type === "User").length
   const activePortal = users.filter((u) => u.status === "Active" && u.type === "Portal User").length
@@ -524,6 +623,13 @@ export default function DemoUsersOrgPoolScreen() {
       prev.map((u) => (u.id === userId ? { ...u, status: "Active" } : u))
     )
     toast.success("Demo user reactivated and is now available for assignment.")
+  }
+
+  function handleEditSave(userId: string, displayName: string) {
+    setUsers((prev) =>
+      prev.map((u) => (u.id === userId ? { ...u, displayName } : u))
+    )
+    toast.success("Display name updated and propagated to all assignments.")
   }
 
   return (
@@ -716,6 +822,12 @@ export default function DemoUsersOrgPoolScreen() {
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
+                              <DropdownMenuItem onClick={() => setEditUser(user)} style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-small)" }}>
+                                <Pencil size={13} /> Edit
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => navigate("demo-users-app-assignment")} style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-small)" }}>
+                                Assign to App
+                              </DropdownMenuItem>
                               {user.status === "Active" ? (
                                 <DropdownMenuItem
                                   onClick={() => setDeactivateUser(user)}
@@ -767,6 +879,11 @@ export default function DemoUsersOrgPoolScreen() {
         user={deactivateUser}
         onClose={() => setDeactivateUser(null)}
         onConfirm={handleDeactivate}
+      />
+      <EditUserSheet
+        user={editUser}
+        onClose={() => setEditUser(null)}
+        onSave={handleEditSave}
       />
     </>
   )
