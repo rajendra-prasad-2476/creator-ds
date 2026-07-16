@@ -191,7 +191,7 @@ function ProblemSolutionHero({ overview }: { overview: FeatureOverview }) {
   )
 }
 
-function ScreenFlowMap({ overview, featureId, onPreview }: { overview: FeatureOverview; featureId: string; onPreview: (screenId: string) => void }) {
+function ScreenFlowMap({ overview, featureId: _featureId, onPreview }: { overview: FeatureOverview; featureId: string; onPreview: (screenId: string) => void }) {
   if (!overview.screenFlow?.length) return null
 
   const NODE_TYPE_STYLE: Record<string, { bg: string; border: string; color: string; label: string }> = {
@@ -219,7 +219,7 @@ function ScreenFlowMap({ overview, featureId, onPreview }: { overview: FeatureOv
 
       {/* Flow nodes */}
       <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--cds-space-8)", alignItems: "center" }}>
-        {overview.screenFlow.map((node, idx) => {
+        {overview.screenFlow.map((node, _idx) => {
           const style = NODE_TYPE_STYLE[node.type ?? "detail"] ?? NODE_TYPE_STYLE.detail
           const hasArrow = (node.leadsTo?.length ?? 0) > 0
 
