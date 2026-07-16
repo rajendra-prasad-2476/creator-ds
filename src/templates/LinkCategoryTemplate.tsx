@@ -206,10 +206,11 @@ export default function LinkCategoryTemplate({
             <div style={{ display: "flex", flexDirection: "column", gap: "var(--cds-gap-tight)" }}>
               <h1
                 style={{
-                  fontSize: "var(--cds-text-h2)",
-                  lineHeight: "var(--cds-leading-h2)",
+                  fontSize: "var(--cds-text-p1)",
+                  lineHeight: "var(--cds-leading-p1)",
                   color: "var(--cds-huegrey-text-dark)",
-                  fontWeight: 600,
+                  fontWeight: 500,
+                  margin: 0,
                 }}
               >
                 {title}
@@ -221,6 +222,7 @@ export default function LinkCategoryTemplate({
                     lineHeight: "var(--cds-leading-p2)",
                     color: "var(--cds-huegrey-text-default)",
                     maxWidth: 700,
+                    margin: 0,
                   }}
                 >
                   {description}

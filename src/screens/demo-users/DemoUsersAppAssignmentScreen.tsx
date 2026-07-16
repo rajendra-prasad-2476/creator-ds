@@ -398,7 +398,7 @@ export default function DemoUsersAppAssignmentScreen() {
             {/* Page header */}
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "var(--cds-space-24)" }}>
               <div>
-                <h1 style={{ fontSize: "var(--cds-text-h2)", fontWeight: 700, color: "var(--cds-huegrey-text-dark)", margin: "0 0 var(--cds-space-4)" }}>
+                <h1 style={{ fontSize: "var(--cds-text-p1)", fontWeight: 500, color: "var(--cds-huegrey-text-dark)", margin: "0 0 var(--cds-space-4)" }}>
                   App Assignment
                 </h1>
                 <p style={{ fontSize: "var(--cds-text-p2)", color: "var(--cds-huegrey-text-default)", margin: 0 }}>

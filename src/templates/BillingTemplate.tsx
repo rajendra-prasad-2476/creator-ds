@@ -393,9 +393,9 @@ export default function BillingTemplate({
           <div style={{ marginBottom: "var(--cds-space-24)" }}>
             <h1
               style={{
-                fontSize: "var(--cds-text-h2)",
-                lineHeight: "var(--cds-leading-h2)",
-                fontWeight: 600,
+                fontSize: "var(--cds-text-p1)",
+                lineHeight: "var(--cds-leading-p1)",
+                fontWeight: 500,
                 color: "var(--cds-huegrey-text-dark)",
                 margin: 0,
               }}

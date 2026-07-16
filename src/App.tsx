@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
-import { Atom, Combine, Component, Palette, LayoutTemplate } from "lucide-react";
+import { Atom, Combine, Component, Palette, LayoutTemplate, GitCompareArrows } from "lucide-react";
 import { TopBar } from "@/components/ui/top-bar";
 import { DS_VERSION } from "@/ds-changelog";
 import { FoundationSection } from "@/sections/FoundationSection";
@@ -9,6 +9,7 @@ import { AtomsSection } from "@/sections/AtomsSection";
 import { MoleculesSection } from "@/sections/MoleculesSection";
 import { OrganismsSection } from "@/sections/OrganismsSection";
 import { TemplatesSection } from "@/sections/TemplatesSection";
+import { ParitySection } from "@/sections/ParitySection";
 
 function App() {
   return (
@@ -54,6 +55,10 @@ function App() {
                 <LayoutTemplate className="h-4 w-4" /> Templates
                 <Badge variant="subtle" className="ml-1 text-[10px] h-5 px-1.5">8</Badge>
               </TabsTrigger>
+              <TabsTrigger value="parity" className="gap-1.5">
+                <GitCompareArrows className="h-4 w-4" /> DS Parity
+                <Badge colour="error" variant="subtle" className="ml-1 text-[10px] h-5 px-1.5">13</Badge>
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="foundation">
@@ -74,6 +79,10 @@ function App() {
 
             <TabsContent value="templates">
               <TemplatesSection />
+            </TabsContent>
+
+            <TabsContent value="parity">
+              <ParitySection />
             </TabsContent>
           </Tabs>
         </main>

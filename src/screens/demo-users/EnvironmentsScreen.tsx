@@ -8,13 +8,17 @@
  * Clicking "Settings" opens the Environment Settings Sheet (slide-in panel)
  * with tabs: Demo Users | Notifications | AI Models | Variables | Workflow Schedules
  *
+ * "Add Demo User" renders as an inline panel inside the same sheet — no nested sheets.
+ *
  * Uses: SplitPanelTemplate (AGENTS.md §6)
  *
  * Help doc: https://help.zoho.com/.../managing-applications-in-the-environments
  */
 
 import * as React from "react"
+import * as ReactDOM from "react-dom"
 import SplitPanelTemplate from "@/templates/SplitPanelTemplate"
+import { useNavigation } from "@/screens/navigation"
 import {
   Sheet,
   SheetContent,
@@ -47,7 +51,7 @@ import { Notes } from "@/components/ui/notes"
 import { Separator } from "@/components/ui/separator"
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
-import { Plus, Trash2, Users } from "lucide-react"
+import { ArrowLeft, Plus, Trash2, Users } from "lucide-react"
 import {
   SEED_ORG_POOL,
   SEED_ASSIGNMENTS,
@@ -69,18 +73,18 @@ const MOCK_APPS = [
   { id: "procurement",      label: "Procurement V1",  status: "No changes available", color: "#CC1914" },
 ]
 
-// ─── Add Demo User Sheet ──────────────────────────────────────────────────────
+// ─── Add Demo User Inline Panel ───────────────────────────────────────────────
+// Renders as an inline form (no nested Sheet), called inside DemoUsersTab
 
-interface AddDemoUserSheetProps {
-  open: boolean
-  onClose: () => void
+interface AddDemoUserPanelProps {
   environment: Environment
   existingUserIds: string[]
   appName: string
   onAdd: (assignment: Omit<AppAssignment, "id">) => void
+  onCancel: () => void
 }
 
-function AddDemoUserSheet({ open, onClose, environment, existingUserIds, appName, onAdd }: AddDemoUserSheetProps) {
+function AddDemoUserPanel({ environment, existingUserIds, appName, onAdd, onCancel }: AddDemoUserPanelProps) {
   const [userId, setUserId] = React.useState("")
   const [role, setRole] = React.useState("")
   const [permission, setPermission] = React.useState("")
@@ -97,110 +101,108 @@ function AddDemoUserSheet({ open, onClose, environment, existingUserIds, appName
     setSubmitted(true)
     if (!userId || !permission || (!isPortal && !role)) return
     if (!selected) return
-    onAdd({ userId: selected.id, email: selected.email, displayName: selected.displayName, username: selected.username, type: selected.type, environment, role: isPortal ? undefined : role, permission })
-    handleClose()
-  }
-
-  function handleClose() {
-    setUserId(""); setRole(""); setPermission(""); setSubmitted(false); onClose()
+    onAdd({
+      userId: selected.id,
+      email: selected.email,
+      displayName: selected.displayName,
+      username: selected.username,
+      type: selected.type,
+      environment,
+      role: isPortal ? undefined : role,
+      permission,
+    })
   }
 
   return (
-    <Sheet open={open} onOpenChange={o => !o && handleClose()}>
-      <SheetContent side="right" style={{ width: "min(460px, 95vw)", display: "flex", flexDirection: "column" }}>
-        <SheetHeader>
-          <SheetTitle>Add Demo User</SheetTitle>
-        </SheetHeader>
-        <div style={{ padding: "var(--cds-space-8) var(--cds-space-24) var(--cds-space-12)", borderBottom: "1px solid var(--border)" }}>
-          <p style={{ margin: 0, fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>
-            Select a demo user from the org pool and assign role and permission for <strong>{appName}</strong> in <strong>{environment}</strong>.
-          </p>
+    <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+      {/* Sub-header */}
+      <div style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-small)", padding: "var(--cds-space-12) 0 var(--cds-space-16)", borderBottom: "1px solid var(--border)", marginBottom: "var(--cds-space-20)" }}>
+        <button
+          onClick={onCancel}
+          style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", background: "transparent", border: "none", cursor: "pointer", padding: "4px", borderRadius: "var(--cds-radius-s)", color: "var(--cds-huegrey-text-default)" }}
+          aria-label="Back"
+        >
+          <ArrowLeft size={16} />
+        </button>
+        <div>
+          <div style={{ fontSize: "var(--cds-text-p2)", fontWeight: 600, color: "var(--cds-huegrey-text-dark)" }}>Add Demo User</div>
+          <div style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>
+            Select from the org pool — <strong>{appName}</strong> · <strong>{environment}</strong>
+          </div>
         </div>
-        <div style={{ flex: 1, overflowY: "auto", padding: "var(--cds-space-24)", display: "flex", flexDirection: "column", gap: "var(--cds-space-16)" }}>
+      </div>
+
+      {/* Form fields */}
+      <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: "var(--cds-space-16)" }}>
+        <div>
+          <Label style={{ fontSize: "var(--cds-text-p3)", fontWeight: 600, marginBottom: "var(--cds-space-8)", display: "block" }}>
+            Name <span style={{ color: "var(--cds-error-text-default)" }}>*</span>
+          </Label>
+          <Select value={userId} onValueChange={v => v && setUserId(v)}>
+            <SelectTrigger><SelectValue placeholder="Select a demo user from pool" /></SelectTrigger>
+            <SelectContent searchable searchPlaceholder="Search demo users…">
+              {available.map(u => <SelectItem key={u.id} value={u.id}>{u.displayName} ({u.username})</SelectItem>)}
+            </SelectContent>
+          </Select>
+          {submitted && !userId && <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-error-text-default)", marginTop: "var(--cds-space-4)" }}>Please select a demo user.</p>}
+          {available.length === 0 && <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)", marginTop: "var(--cds-space-4)" }}>All active demo users are already assigned to this app.</p>}
+        </div>
+
+        {selected && (
+          <div style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-default)", padding: "var(--cds-space-12)", borderRadius: "var(--cds-radius-r)", border: "1px solid var(--border)", background: "var(--cds-surface-subtle, #F5F5F5)" }}>
+            <Avatar style={{ width: 32, height: 32, flexShrink: 0 }}>
+              <AvatarFallback style={{ background: userTypeColor(selected.type), color: "var(--cds-white)", fontSize: "var(--cds-text-p3)", fontWeight: 700 }}>{initials(selected.displayName)}</AvatarFallback>
+            </Avatar>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: "var(--cds-text-p2)", fontWeight: 600, color: "var(--cds-huegrey-text-dark)" }}>{selected.displayName}</div>
+              <div style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>{selected.email}</div>
+            </div>
+            <Badge variant="subtle" colour={selected.type === "User" ? "primary" : "success"}>{selected.type}</Badge>
+          </div>
+        )}
+
+        {selected && !isPortal && (
           <div>
             <Label style={{ fontSize: "var(--cds-text-p3)", fontWeight: 600, marginBottom: "var(--cds-space-8)", display: "block" }}>
-              Name <span style={{ color: "var(--cds-error-text-default)" }}>*</span>
+              Role <span style={{ color: "var(--cds-error-text-default)" }}>*</span>
             </Label>
-            <Select value={userId} onValueChange={v => v && setUserId(v)}>
-              <SelectTrigger><SelectValue placeholder="Select a demo user from pool" /></SelectTrigger>
-              <SelectContent searchable searchPlaceholder="Search demo users…">
-                {available.map(u => <SelectItem key={u.id} value={u.id}>{u.displayName} ({u.username})</SelectItem>)}
-              </SelectContent>
+            <Select value={role} onValueChange={v => v && setRole(v)}>
+              <SelectTrigger><SelectValue placeholder="Select a role" /></SelectTrigger>
+              <SelectContent>{MOCK_ROLES.map(r => <SelectItem key={r} value={r}>{r}</SelectItem>)}</SelectContent>
             </Select>
-            {submitted && !userId && <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-error-text-default)", marginTop: "var(--cds-space-4)" }}>Please select a demo user.</p>}
-            {available.length === 0 && <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)", marginTop: "var(--cds-space-4)" }}>All active demo users are already assigned to this app.</p>}
+            {submitted && !role && <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-error-text-default)", marginTop: "var(--cds-space-4)" }}>Role is required.</p>}
           </div>
+        )}
 
-          {selected && (
-            <div style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-default)", padding: "var(--cds-space-12)", borderRadius: "var(--cds-radius-r)", border: "1px solid var(--border)", background: "var(--cds-surface-subtle, #F5F5F5)" }}>
-              <Avatar style={{ width: 32, height: 32, flexShrink: 0 }}>
-                <AvatarFallback style={{ background: userTypeColor(selected.type), color: "var(--cds-white)", fontSize: "var(--cds-text-p3)", fontWeight: 700 }}>{initials(selected.displayName)}</AvatarFallback>
-              </Avatar>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: "var(--cds-text-p2)", fontWeight: 600, color: "var(--cds-huegrey-text-dark)" }}>{selected.displayName}</div>
-                <div style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>{selected.email}</div>
-              </div>
-              <Badge variant="subtle" colour={selected.type === "User" ? "primary" : "success"}>{selected.type}</Badge>
-            </div>
-          )}
+        {selected && (
+          <div>
+            <Label style={{ fontSize: "var(--cds-text-p3)", fontWeight: 600, marginBottom: "var(--cds-space-8)", display: "block" }}>
+              Permission <span style={{ color: "var(--cds-error-text-default)" }}>*</span>
+            </Label>
+            <Select value={permission} onValueChange={v => v && setPermission(v)}>
+              <SelectTrigger><SelectValue placeholder="Select a permission" /></SelectTrigger>
+              <SelectContent>{permOptions.map(p => <SelectItem key={p} value={p}>{p}</SelectItem>)}</SelectContent>
+            </Select>
+            {submitted && !permission && <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-error-text-default)", marginTop: "var(--cds-space-4)" }}>Permission is required.</p>}
+            <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)", marginTop: "var(--cds-space-4)" }}>
+              Only permissions configured in Application Settings are listed.
+            </p>
+          </div>
+        )}
 
-          {selected && !isPortal && (
-            <div>
-              <Label style={{ fontSize: "var(--cds-text-p3)", fontWeight: 600, marginBottom: "var(--cds-space-8)", display: "block" }}>Role <span style={{ color: "var(--cds-error-text-default)" }}>*</span></Label>
-              <Select value={role} onValueChange={v => v && setRole(v)}>
-                <SelectTrigger><SelectValue placeholder="Select a role" /></SelectTrigger>
-                <SelectContent>{MOCK_ROLES.map(r => <SelectItem key={r} value={r}>{r}</SelectItem>)}</SelectContent>
-              </Select>
-              {submitted && !role && <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-error-text-default)", marginTop: "var(--cds-space-4)" }}>Role is required.</p>}
-            </div>
-          )}
+        {selected && isPortal && (
+          <Notes variant="info" title="Portal User — no role required">
+            Portal users are assigned portal permissions only. No role is applicable.
+          </Notes>
+        )}
+      </div>
 
-          {selected && (
-            <div>
-              <Label style={{ fontSize: "var(--cds-text-p3)", fontWeight: 600, marginBottom: "var(--cds-space-8)", display: "block" }}>
-                Permission <span style={{ color: "var(--cds-error-text-default)" }}>*</span>
-              </Label>
-              <Select value={permission} onValueChange={v => v && setPermission(v)}>
-                <SelectTrigger><SelectValue placeholder="Select a permission" /></SelectTrigger>
-                <SelectContent>{permOptions.map(p => <SelectItem key={p} value={p}>{p}</SelectItem>)}</SelectContent>
-              </Select>
-              {submitted && !permission && <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-error-text-default)", marginTop: "var(--cds-space-4)" }}>Permission is required.</p>}
-              <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)", marginTop: "var(--cds-space-4)" }}>Only permissions configured in Application Settings are listed.</p>
-            </div>
-          )}
-
-          {selected && isPortal && (
-            <Notes variant="info" title="Portal User — no role required">
-              Portal users are assigned portal permissions only. No role is applicable.
-            </Notes>
-          )}
-        </div>
-        <div style={{ borderTop: "1px solid var(--border)", padding: "var(--cds-space-16) var(--cds-space-24)", display: "flex", gap: "var(--cds-gap-small)", justifyContent: "flex-end" }}>
-          <Button variant="outline" onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleAdd} disabled={available.length === 0}>Add</Button>
-        </div>
-      </SheetContent>
-    </Sheet>
-  )
-}
-
-// ─── Remove Confirm Dialog ────────────────────────────────────────────────────
-
-function RemoveDialog({ assignment, appName, onClose, onConfirm }: { assignment: AppAssignment | null; appName: string; onClose: () => void; onConfirm: (id: string) => void }) {
-  if (!assignment) return null
-  return (
-    <AlertDialog open={!!assignment} onOpenChange={o => !o && onClose()}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Remove {assignment.displayName}?</AlertDialogTitle>
-          <AlertDialogDescription>This removes the demo user from <strong>{appName}</strong> in this environment. The identity stays in the org pool and can be re-assigned.</AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel onClick={onClose}>No, Keep</AlertDialogCancel>
-          <AlertDialogAction onClick={() => { onConfirm(assignment.id); onClose() }} style={{ background: "var(--cds-error-surface-default)" }}>Yes, Remove</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+      {/* Footer actions */}
+      <div style={{ borderTop: "1px solid var(--border)", paddingTop: "var(--cds-space-16)", marginTop: "var(--cds-space-16)", display: "flex", gap: "var(--cds-gap-small)", justifyContent: "flex-end" }}>
+        <Button variant="outline" onClick={onCancel}>Cancel</Button>
+        <Button onClick={handleAdd} disabled={available.length === 0}>Add</Button>
+      </div>
+    </div>
   )
 }
 
@@ -210,13 +212,16 @@ function DemoUsersTab({ environment, appName }: { environment: Environment; appN
   const [assignments, setAssignments] = React.useState<AppAssignment[]>(
     SEED_ASSIGNMENTS.filter(a => a.environment === environment)
   )
-  const [addOpen, setAddOpen] = React.useState(false)
+  const [showAddPanel, setShowAddPanel] = React.useState(false)
   const [removeTarget, setRemoveTarget] = React.useState<AppAssignment | null>(null)
   const existingIds = assignments.map(a => a.userId)
+
+  React.useEffect(() => { setShowAddPanel(false) }, [environment])
 
   function handleAdd(assignment: Omit<AppAssignment, "id">) {
     setAssignments(prev => [...prev, { ...assignment, id: `a${Date.now()}` }])
     toast.success(`${assignment.displayName} added to ${appName} (${environment}).`)
+    setShowAddPanel(false)
   }
 
   function handleRemove(id: string) {
@@ -224,6 +229,20 @@ function DemoUsersTab({ environment, appName }: { environment: Environment; appN
     toast.success("Demo user removed.")
   }
 
+  // ── Show Add form inline ──────────────────────────────────────────────────
+  if (showAddPanel) {
+    return (
+      <AddDemoUserPanel
+        environment={environment}
+        existingUserIds={existingIds}
+        appName={appName}
+        onAdd={handleAdd}
+        onCancel={() => setShowAddPanel(false)}
+      />
+    )
+  }
+
+  // ── User list ─────────────────────────────────────────────────────────────
   return (
     <>
       {assignments.length === 0 ? (
@@ -236,14 +255,14 @@ function DemoUsersTab({ environment, appName }: { environment: Environment; appN
             <p style={{ fontSize: "var(--cds-text-p2)", fontWeight: 600, color: "var(--cds-huegrey-text-dark)", margin: "0 0 var(--cds-space-4)" }}>No demo users found</p>
             <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)", margin: 0 }}>Add demo users to test this app as different roles and permissions.</p>
           </div>
-          <Button onClick={() => setAddOpen(true)} style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-tight)" }}>
+          <Button onClick={() => setShowAddPanel(true)} style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-tight)" }}>
             <Plus size={14} /> Add Demo User
           </Button>
         </div>
       ) : (
         <>
           <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "var(--cds-space-12)" }}>
-            <Button size="sm" onClick={() => setAddOpen(true)} style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-tight)" }}>
+            <Button size="sm" onClick={() => setShowAddPanel(true)} style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-tight)" }}>
               <Plus size={13} /> Add Demo User
             </Button>
           </div>
@@ -275,8 +294,31 @@ function DemoUsersTab({ environment, appName }: { environment: Environment; appN
           </div>
         </>
       )}
-      <AddDemoUserSheet open={addOpen} onClose={() => setAddOpen(false)} environment={environment} existingUserIds={existingIds} appName={appName} onAdd={handleAdd} />
-      <RemoveDialog assignment={removeTarget} appName={appName} onClose={() => setRemoveTarget(null)} onConfirm={handleRemove} />
+
+      {/* Render the confirm dialog via a portal at document.body so it escapes the Sheet stacking context */}
+      {removeTarget && ReactDOM.createPortal(
+        <AlertDialog open={!!removeTarget} onOpenChange={o => !o && setRemoveTarget(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Remove {removeTarget.displayName}?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This removes the demo user from <strong>{appName}</strong> in this environment.
+                The identity stays in the org pool and can be re-assigned.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={() => setRemoveTarget(null)}>No, Keep</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => { handleRemove(removeTarget.id); setRemoveTarget(null) }}
+                style={{ background: "var(--cds-error-surface-default)" }}
+              >
+                Yes, Remove
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>,
+        document.body
+      )}
     </>
   )
 }
@@ -399,11 +441,14 @@ interface EnvSettingsSheetProps {
 function EnvironmentSettingsSheet({ open, onClose, appName }: EnvSettingsSheetProps) {
   const [env, setEnv] = React.useState<Environment>("Development")
 
+  // Reset env when sheet closes
+  React.useEffect(() => { if (!open) setEnv("Development") }, [open])
+
   return (
     <Sheet open={open} onOpenChange={o => !o && onClose()}>
       <SheetContent
         side="right"
-        style={{ width: "min(780px, 95vw)", display: "flex", flexDirection: "column" }}
+        style={{ width: "min(900px, 95vw)", display: "flex", flexDirection: "column" }}
       >
         <SheetHeader>
           <SheetTitle>Environment Settings</SheetTitle>
@@ -415,10 +460,10 @@ function EnvironmentSettingsSheet({ open, onClose, appName }: EnvSettingsSheetPr
         </div>
 
         <div style={{ flex: 1, overflowY: "auto", padding: "var(--cds-space-16) var(--cds-space-24)" }}>
-          {/* Tabs row with env + app dropdowns on the right */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid var(--border)", marginBottom: "var(--cds-space-24)" }}>
-            <Tabs defaultValue="demo-users" style={{ flex: 1 }}>
-              <TabsList style={{ background: "transparent", padding: 0 }}>
+          <Tabs defaultValue="demo-users" style={{ flex: 1 }}>
+            {/* Tabs + dropdowns on the same row, tabs left / dropdowns right, bottom-border underline */}
+            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", borderBottom: "1px solid var(--border)", marginBottom: "var(--cds-space-20)" }}>
+              <TabsList style={{ background: "transparent", padding: 0, alignSelf: "flex-end" }}>
                 <TabsTrigger value="demo-users">Demo Users</TabsTrigger>
                 <TabsTrigger value="notifications">Notifications</TabsTrigger>
                 <TabsTrigger value="ai-models">AI Models</TabsTrigger>
@@ -426,8 +471,8 @@ function EnvironmentSettingsSheet({ open, onClose, appName }: EnvSettingsSheetPr
                 <TabsTrigger value="schedules">Workflow Schedules</TabsTrigger>
               </TabsList>
 
-              {/* Environment + App selectors — inline right of tabs */}
-              <div style={{ display: "flex", gap: "var(--cds-gap-small)", marginBottom: "var(--cds-space-16)", marginTop: "var(--cds-space-16)" }}>
+              {/* Env + App selectors — right side, vertically centred within the tabs row */}
+              <div style={{ display: "flex", gap: "var(--cds-gap-small)", paddingBottom: "var(--cds-space-8)", flexShrink: 0 }}>
                 <Select value={env} onValueChange={v => v && setEnv(v as Environment)}>
                   <SelectTrigger style={{ width: 160 }}><SelectValue /></SelectTrigger>
                   <SelectContent>
@@ -436,33 +481,34 @@ function EnvironmentSettingsSheet({ open, onClose, appName }: EnvSettingsSheetPr
                   </SelectContent>
                 </Select>
                 <Select defaultValue="expenses">
-                  <SelectTrigger style={{ width: 160 }}><SelectValue /></SelectTrigger>
+                  <SelectTrigger style={{ width: 180 }}><SelectValue /></SelectTrigger>
                   <SelectContent>
                     {MOCK_APPS.map(a => <SelectItem key={a.id} value={a.id}>{a.label}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
+            </div>
 
-              <TabsContent value="demo-users">
-                <DemoUsersTab environment={env} appName={appName} />
-              </TabsContent>
-              <TabsContent value="notifications">
-                <NotificationsTab />
-              </TabsContent>
-              <TabsContent value="ai-models">
-                <div style={{ textAlign: "center", padding: "var(--cds-space-32)", color: "var(--cds-huegrey-text-default)", fontSize: "var(--cds-text-p2)" }}>
-                  {/* TODO: replace with <EmptyState /> once built — ds-parity P1 */}
-                  No AI models configured for this environment.
-                </div>
-              </TabsContent>
-              <TabsContent value="variables">
-                <VariablesTab />
-              </TabsContent>
-              <TabsContent value="schedules">
-                <SchedulesTab />
-              </TabsContent>
-            </Tabs>
-          </div>
+            <TabsContent value="demo-users">
+              {/* DemoUsersTab now manages its own inline add panel — no second Sheet */}
+              <DemoUsersTab environment={env} appName={appName} />
+            </TabsContent>
+            <TabsContent value="notifications">
+              <NotificationsTab />
+            </TabsContent>
+            <TabsContent value="ai-models">
+              <div style={{ textAlign: "center", padding: "var(--cds-space-32)", color: "var(--cds-huegrey-text-default)", fontSize: "var(--cds-text-p2)" }}>
+                {/* TODO: replace with <EmptyState /> once built — ds-parity P1 */}
+                No AI models configured for this environment.
+              </div>
+            </TabsContent>
+            <TabsContent value="variables">
+              <VariablesTab />
+            </TabsContent>
+            <TabsContent value="schedules">
+              <SchedulesTab />
+            </TabsContent>
+          </Tabs>
         </div>
 
         <div style={{ borderTop: "1px solid var(--border)", padding: "var(--cds-space-16) var(--cds-space-24)", display: "flex", justifyContent: "flex-end" }}>
@@ -476,6 +522,7 @@ function EnvironmentSettingsSheet({ open, onClose, appName }: EnvSettingsSheetPr
 // ─── Main Screen ──────────────────────────────────────────────────────────────
 
 export default function EnvironmentsScreen() {
+  const { navigate } = useNavigation()
   const [settingsOpen, setSettingsOpen] = React.useState(false)
   const [selectedApp, setSelectedApp] = React.useState("Expenses")
 
@@ -495,7 +542,16 @@ export default function EnvironmentsScreen() {
         activeNavId="environments"
         headerActions={[
           { label: "Version History", variant: "outline" },
-          { label: "Manage", variant: "default", dropdownItems: [{ label: "Settings" }, { label: "Variables" }, { label: "Schedules" }] },
+          {
+            label: "Manage",
+            variant: "default",
+            dropdownItems: [
+              { label: "Demo Users", onSelect: () => setTimeout(() => navigate("demo-users-org-pool"), 0), onClick: () => setTimeout(() => navigate("demo-users-org-pool"), 0) },
+              { label: "Settings" },
+              { label: "Variables" },
+              { label: "Schedules" },
+            ],
+          },
           { label: "Publish", variant: "default", dropdownItems: [{ label: "Publish to Stage" }, { label: "Publish to Production" }] },
         ]}
         listItems={MOCK_APPS.map(a => ({

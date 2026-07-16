@@ -27,6 +27,7 @@ import { Input } from "@/components/ui/input"
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -71,7 +72,7 @@ export interface HeaderAction {
   label: string
   variant?: "default" | "outline" | "secondary"
   /** If set, renders as a DropdownMenu trigger */
-  dropdownItems?: { label: string; onSelect?: () => void }[]
+  dropdownItems?: { label: string; onSelect?: () => void; onClick?: () => void }[]
   onClick?: () => void
 }
 
@@ -248,10 +249,11 @@ export default function SplitPanelTemplate({
             <div style={{ display: "flex", flexDirection: "column", gap: "var(--cds-gap-tight)" }}>
               <h1
                 style={{
-                  fontSize: "var(--cds-text-h2)",
-                  lineHeight: "var(--cds-leading-h2)",
+                  fontSize: "var(--cds-text-p1)",
+                  lineHeight: "var(--cds-leading-p1)",
                   color: "var(--cds-huegrey-text-dark)",
-                  fontWeight: 600,
+                  fontWeight: 500,
+                  margin: 0,
                 }}
               >
                 {title}
@@ -295,10 +297,32 @@ export default function SplitPanelTemplate({
               {headerActions.map((action) =>
                 action.dropdownItems ? (
                   <DropdownMenu key={action.label}>
-                    <DropdownMenuTrigger style={{ border:"none", cursor:"pointer", display:"inline-flex", alignItems:"center", gap:4, fontSize:"var(--cds-text-p2)", padding:"4px 12px", borderRadius:"var(--cds-radius-r)", background:"var(--cds-primary-surface-default)", color:"var(--cds-white)" }}>{action.label} <ChevronDown size={12} /></DropdownMenuTrigger>
+                    <DropdownMenuTrigger
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 4,
+                        fontSize: "var(--cds-text-p2)",
+                        padding: "0 var(--cds-space-12)",
+                        height: 32,
+                        borderRadius: "var(--cds-radius-r)",
+                        border: action.variant === "outline" ? "1px solid var(--border)" : "none",
+                        background: action.variant === "outline" ? "var(--cds-white)" : "var(--cds-primary-surface-default)",
+                        color: action.variant === "outline" ? "var(--cds-huegrey-text-dark)" : "var(--cds-white)",
+                        fontFamily: "inherit",
+                        fontWeight: 500,
+                        cursor: "pointer",
+                      }}
+                    >
+                      {action.label} <ChevronDown size={12} />
+                    </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       {action.dropdownItems.map((di) => (
-                        <DropdownMenuItem key={di.label} onSelect={di.onSelect}>
+                        <DropdownMenuItem
+                          key={di.label}
+                          onSelect={di.onSelect}
+                          onClick={di.onClick ?? di.onSelect}
+                        >
                           {di.label}
                         </DropdownMenuItem>
                       ))}
@@ -409,16 +433,18 @@ export default function SplitPanelTemplate({
                             {item.menuGroups.map((group, gi) => (
                               <React.Fragment key={gi}>
                                 {gi > 0 && <DropdownMenuSeparator />}
-                                {group.label && <DropdownMenuLabel>{group.label}</DropdownMenuLabel>}
-                                {group.items.map(mi => (
-                                  <DropdownMenuItem
-                                    key={mi.label}
-                                    onClick={(e) => { e.stopPropagation(); mi.onSelect?.(); item.onMenuAction?.(mi.label) }}
-                                    style={mi.destructive ? { color: "var(--cds-error-text-default)" } : undefined}
-                                  >
-                                    {mi.label}
-                                  </DropdownMenuItem>
-                                ))}
+                                <DropdownMenuGroup>
+                                  {group.label && <DropdownMenuLabel>{group.label}</DropdownMenuLabel>}
+                                  {group.items.map(mi => (
+                                    <DropdownMenuItem
+                                      key={mi.label}
+                                      onClick={(e) => { e.stopPropagation(); mi.onSelect?.(); item.onMenuAction?.(mi.label) }}
+                                      style={mi.destructive ? { color: "var(--cds-error-text-default)" } : undefined}
+                                    >
+                                      {mi.label}
+                                    </DropdownMenuItem>
+                                  ))}
+                                </DropdownMenuGroup>
                               </React.Fragment>
                             ))}
                           </DropdownMenuContent>

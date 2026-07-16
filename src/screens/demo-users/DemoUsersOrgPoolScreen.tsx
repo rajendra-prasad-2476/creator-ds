@@ -62,8 +62,16 @@ import { InputSuffix } from "@/components/ui/input-suffix"
 import { Notes } from "@/components/ui/notes"
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
-import { MoreHorizontal, Search, Plus, Sparkles, Users, UserCircle, RefreshCw, Pencil, Link2, PowerOff, RotateCcw } from "lucide-react"
+import { MoreHorizontal, Search, Plus, Sparkles, Users, UserCircle, RefreshCw, Pencil, Link2, PowerOff, RotateCcw, Trash2, ChevronRight } from "lucide-react"
 import { useNavigation } from "@/screens/navigation"
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -79,6 +87,47 @@ interface DemoUserIdentity {
   username: string
   createdOn: string
   assignedApps: number
+}
+
+interface AppEntry {
+  assignmentId: string
+  appName: string
+  environment: "Development" | "Stage"
+  role?: string
+  permission: string
+}
+
+// ─── Seed app assignments per user ────────────────────────────────────────────
+
+const SEED_APP_ASSIGNMENTS: Record<string, AppEntry[]> = {
+  u1: [
+    { assignmentId: "a1-1", appName: "CRM Lite",    environment: "Development", role: "Manager",   permission: "Full Access" },
+    { assignmentId: "a1-2", appName: "HR Portal",   environment: "Stage",       role: "Viewer",    permission: "Read Only" },
+  ],
+  u2: [
+    { assignmentId: "a2-1", appName: "CRM Lite",    environment: "Stage",       role: "Executive", permission: "CRM Access" },
+  ],
+  u3: [
+    { assignmentId: "a3-1", appName: "CRM Lite",    environment: "Development", role: "Admin",     permission: "Full Access" },
+    { assignmentId: "a3-2", appName: "Helpdesk",    environment: "Development", role: "Manager",   permission: "Edit Access" },
+    { assignmentId: "a3-3", appName: "HR Portal",   environment: "Stage",       role: "Viewer",    permission: "Read Only" },
+  ],
+  u5: [
+    { assignmentId: "a5-1", appName: "Helpdesk",    environment: "Development", role: "Developer", permission: "Export Access" },
+  ],
+  u7: [
+    { assignmentId: "a7-1", appName: "CRM Lite",    environment: "Development", role: "Viewer",    permission: "Read Only" },
+  ],
+  p1: [
+    { assignmentId: "ap1-1", appName: "Client Portal", environment: "Development", permission: "Applicant View" },
+  ],
+  p2: [
+    { assignmentId: "ap2-1", appName: "Client Portal", environment: "Development", permission: "Customer Portal" },
+    { assignmentId: "ap2-2", appName: "Vendor Hub",    environment: "Stage",        permission: "Public View" },
+  ],
+  p4: [
+    { assignmentId: "ap4-1", appName: "Vendor Hub",    environment: "Development", permission: "Vendor Access" },
+  ],
 }
 
 // ─── Seed data ────────────────────────────────────────────────────────────────
@@ -524,6 +573,144 @@ function EditUserSheet({ user, onClose, onSave }: EditUserSheetProps) {
   )
 }
 
+// ─── Assigned Apps Sheet ──────────────────────────────────────────────────────
+
+interface AssignedAppsSheetProps {
+  user: DemoUserIdentity | null
+  apps: AppEntry[]
+  onClose: () => void
+  onRemove: (userId: string, assignmentId: string) => void
+}
+
+function AssignedAppsSheet({ user, apps, onClose, onRemove }: AssignedAppsSheetProps) {
+  const [removeTarget, setRemoveTarget] = React.useState<AppEntry | null>(null)
+
+  if (!user) return null
+
+  return (
+    <>
+      <Sheet open={!!user} onOpenChange={(o) => !o && onClose()}>
+        <SheetContent side="right" style={{ width: "min(520px, 95vw)", display: "flex", flexDirection: "column" }}>
+          <SheetHeader>
+            <SheetTitle>Assigned Apps</SheetTitle>
+          </SheetHeader>
+
+          {/* User identity strip */}
+          <div style={{ padding: "var(--cds-space-12) var(--cds-space-24)", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", gap: "var(--cds-gap-default)" }}>
+            <Avatar style={{ width: 36, height: 36, flexShrink: 0 }}>
+              <AvatarFallback style={{ background: userTypeColor(user.type), color: "var(--cds-white)", fontSize: "var(--cds-text-p3)", fontWeight: 700 }}>
+                {initials(user.displayName)}
+              </AvatarFallback>
+            </Avatar>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: "var(--cds-text-p2)", fontWeight: 600, color: "var(--cds-huegrey-text-dark)" }}>{user.displayName}</div>
+              <div style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>{user.email}</div>
+            </div>
+            <Badge variant="subtle" colour={user.type === "User" ? "primary" : "success"} size="sm">
+              {user.type}
+            </Badge>
+          </div>
+
+          {/* App list */}
+          <div style={{ flex: 1, overflowY: "auto", padding: "var(--cds-space-16) var(--cds-space-24)", display: "flex", flexDirection: "column", gap: "var(--cds-space-8)" }}>
+            {apps.length === 0 ? (
+              <div style={{ textAlign: "center", padding: "var(--cds-space-32) 0", color: "var(--cds-huegrey-text-default)", fontSize: "var(--cds-text-p2)" }}>
+                {/* TODO: replace with <EmptyState /> once built — ds-parity P1 */}
+                No apps assigned yet.
+              </div>
+            ) : (
+              apps.map((app) => (
+                <div
+                  key={app.assignmentId}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "var(--cds-gap-default)",
+                    padding: "var(--cds-space-12)",
+                    borderRadius: "var(--cds-radius-r)",
+                    border: "1px solid var(--border)",
+                    background: "var(--cds-white)",
+                  }}
+                >
+                  {/* App icon placeholder */}
+                  <div style={{
+                    width: 36, height: 36, borderRadius: "var(--cds-radius-r)",
+                    background: "var(--cds-primary-surface-subtle, #EEF2FE)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    flexShrink: 0,
+                    fontSize: "var(--cds-text-p4)", fontWeight: 700,
+                    color: "var(--cds-primary-text-default)",
+                  }}>
+                    {app.appName.slice(0, 2).toUpperCase()}
+                  </div>
+
+                  {/* App details */}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: "var(--cds-text-p2)", fontWeight: 600, color: "var(--cds-huegrey-text-dark)" }}>{app.appName}</div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-small)", marginTop: 2, flexWrap: "wrap" }}>
+                      <Badge variant="subtle" size="sm" style={{ background: app.environment === "Development" ? "var(--cds-primary-surface-subtle, #EEF2FE)" : "var(--cds-warning-surface-subtle, #FFF8F0)", color: app.environment === "Development" ? "var(--cds-primary-text-default)" : "var(--cds-warning-text-default, #D25704)", border: "none", borderRadius: "var(--cds-radius-full)" }}>
+                        {app.environment}
+                      </Badge>
+                      {app.role && (
+                        <span style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>
+                          Role: <strong style={{ color: "var(--cds-huegrey-text-dark)" }}>{app.role}</strong>
+                        </span>
+                      )}
+                      <span style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>
+                        Permission: <strong style={{ color: "var(--cds-huegrey-text-dark)" }}>{app.permission}</strong>
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Remove button */}
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setRemoveTarget(app)}
+                    style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-tight)", color: "var(--cds-error-text-default)", flexShrink: 0 }}
+                  >
+                    <Trash2 size={13} /> Remove
+                  </Button>
+                </div>
+              ))
+            )}
+          </div>
+
+          <div style={{ borderTop: "1px solid var(--border)", padding: "var(--cds-space-16) var(--cds-space-24)", display: "flex", justifyContent: "flex-end" }}>
+            <Button variant="outline" onClick={onClose}>Close</Button>
+          </div>
+        </SheetContent>
+      </Sheet>
+
+      {/* Remove confirmation */}
+      <AlertDialog open={!!removeTarget} onOpenChange={(o) => !o && setRemoveTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remove access from {removeTarget?.appName}?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {user.displayName} will lose access to <strong>{removeTarget?.appName}</strong> ({removeTarget?.environment}). The identity remains in the org pool and can be reassigned. This cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setRemoveTarget(null)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (removeTarget) {
+                  onRemove(user.id, removeTarget.assignmentId)
+                  setRemoveTarget(null)
+                }
+              }}
+              style={{ background: "var(--cds-error-surface-default)" }}
+            >
+              Yes, Remove Access
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
+  )
+}
+
 // ─── Deactivate Confirm Dialog ─────────────────────────────────────────────────
 
 interface DeactivateDialogProps {
@@ -560,6 +747,7 @@ function DeactivateDialog({ user, onClose, onConfirm }: DeactivateDialogProps) {
 
 export default function DemoUsersOrgPoolScreen() {
   const [users, setUsers] = React.useState<DemoUserIdentity[]>(SEED_USERS)
+  const [appAssignments, setAppAssignments] = React.useState<Record<string, AppEntry[]>>(SEED_APP_ASSIGNMENTS)
   const [search, setSearch] = React.useState("")
   const [filterType, setFilterType] = React.useState<"All" | DemoUserType>("All")
   const [filterStatus, setFilterStatus] = React.useState<"All" | DemoUserStatus>("All")
@@ -568,7 +756,8 @@ export default function DemoUsersOrgPoolScreen() {
   const [aiDialogOpen, setAiDialogOpen] = React.useState(false)
   const [deactivateUser, setDeactivateUser] = React.useState<DemoUserIdentity | null>(null)
   const [editUser, setEditUser] = React.useState<DemoUserIdentity | null>(null)
-  const { navigate } = useNavigation()
+  const [appsSheetUser, setAppsSheetUser] = React.useState<DemoUserIdentity | null>(null)
+  const { navigate, canGoBack, goBack } = useNavigation()
 
   const activeUsers = users.filter((u) => u.status === "Active" && u.type === "User").length
   const activePortal = users.filter((u) => u.status === "Active" && u.type === "Portal User").length
@@ -634,6 +823,21 @@ export default function DemoUsersOrgPoolScreen() {
     toast.success("Display name updated and propagated to all assignments.")
   }
 
+  function handleRemoveAppAccess(userId: string, assignmentId: string) {
+    setAppAssignments((prev) => {
+      const updated = (prev[userId] ?? []).filter((a) => a.assignmentId !== assignmentId)
+      return { ...prev, [userId]: updated }
+    })
+    setUsers((prev) =>
+      prev.map((u) => {
+        if (u.id !== userId) return u
+        const remaining = (appAssignments[userId] ?? []).filter((a) => a.assignmentId !== assignmentId).length
+        return { ...u, assignedApps: remaining }
+      })
+    )
+    toast.success("App access removed.")
+  }
+
   return (
     <>
       <Toaster richColors position="top-right" />
@@ -643,10 +847,27 @@ export default function DemoUsersOrgPoolScreen() {
           <LeftNav activeId="environments" />
           <main className="flex-1 overflow-y-auto" style={{ padding: "var(--cds-padding-section-v) var(--cds-padding-section-h)" }}>
 
+            {/* Back breadcrumb — shown when navigated to from Environments > Manage */}
+            {canGoBack && (
+              <Breadcrumb style={{ marginBottom: "var(--cds-space-12)" }}>
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink onClick={() => goBack()} style={{ cursor: "pointer" }}>
+                      Environments
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage>Demo Users</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+            )}
+
             {/* Page header */}
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "var(--cds-space-24)" }}>
               <div>
-                <h1 style={{ fontSize: "var(--cds-text-h2)", fontWeight: 700, color: "var(--cds-huegrey-text-dark)", margin: "0 0 var(--cds-space-4)" }}>
+                <h1 style={{ fontSize: "var(--cds-text-p1)", fontWeight: 500, color: "var(--cds-huegrey-text-dark)", margin: "0 0 var(--cds-space-4)" }}>
                   Demo Users
                 </h1>
                 <p style={{ fontSize: "var(--cds-text-p2)", color: "var(--cds-huegrey-text-default)", margin: 0 }}>
@@ -812,9 +1033,26 @@ export default function DemoUsersOrgPoolScreen() {
                           </span>
                         </TableCell>
                         <TableCell>
-                          <span style={{ fontSize: "var(--cds-text-p2)", color: "var(--cds-huegrey-text-dark)" }}>
-                            {user.assignedApps > 0 ? user.assignedApps : <span style={{ color: "var(--cds-huegrey-text-default)" }}>—</span>}
-                          </span>
+                          {user.assignedApps > 0 ? (
+                            <button
+                              onClick={() => setAppsSheetUser(user)}
+                              style={{
+                                display: "inline-flex", alignItems: "center", gap: "var(--cds-gap-tight)",
+                                fontSize: "var(--cds-text-p2)", fontWeight: 500,
+                                color: "var(--cds-primary-text-default)",
+                                background: "none", border: "none", cursor: "pointer", padding: 0,
+                                textDecoration: "underline", textDecorationColor: "transparent",
+                                transition: "text-decoration-color 0.15s",
+                              }}
+                              onMouseEnter={(e) => { (e.currentTarget.style.textDecorationColor = "var(--cds-primary-text-default)") }}
+                              onMouseLeave={(e) => { (e.currentTarget.style.textDecorationColor = "transparent") }}
+                            >
+                              {user.assignedApps} app{user.assignedApps !== 1 ? "s" : ""}
+                              <ChevronRight size={12} />
+                            </button>
+                          ) : (
+                            <span style={{ color: "var(--cds-huegrey-text-default)", fontSize: "var(--cds-text-p2)" }}>—</span>
+                          )}
                         </TableCell>
                         <TableCell>
                           <DropdownMenu>
@@ -886,6 +1124,12 @@ export default function DemoUsersOrgPoolScreen() {
         user={editUser}
         onClose={() => setEditUser(null)}
         onSave={handleEditSave}
+      />
+      <AssignedAppsSheet
+        user={appsSheetUser}
+        apps={appsSheetUser ? (appAssignments[appsSheetUser.id] ?? []) : []}
+        onClose={() => setAppsSheetUser(null)}
+        onRemove={handleRemoveAppAccess}
       />
     </>
   )

@@ -212,7 +212,7 @@ export default function DemoUsersViewAsScreen() {
 
           {/* Page header */}
           <div style={{ marginBottom: "var(--cds-space-24)" }}>
-            <h1 style={{ fontSize: "var(--cds-text-h2)", fontWeight: 700, color: "var(--cds-huegrey-text-dark)", margin: "0 0 var(--cds-space-4)" }}>
+            <h1 style={{ fontSize: "var(--cds-text-p1)", fontWeight: 500, color: "var(--cds-huegrey-text-dark)", margin: "0 0 var(--cds-space-4)" }}>
               View As
             </h1>
             <p style={{ fontSize: "var(--cds-text-p2)", color: "var(--cds-huegrey-text-default)", margin: 0 }}>

@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+
+    /* Root — required by tsc when declarationDir differs from src */
+    "rootDir": "./src",
+
+    /* Declaration output — handled by vite-plugin-dts at build time */
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "outDir": "./dist",
+
+    /* Strictness */
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": false,
+    "noEmit": false,
+
+    /* Suppress TS6 deprecation warnings */
+    "ignoreDeprecations": "6.0",
+
+    /* Path aliases — must match vite config */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src/index.ts", "src/components/ui/**/*.tsx", "src/lib/**/*.ts"]
+}

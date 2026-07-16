@@ -78,6 +78,34 @@ export interface VersionNote {
   notes: string[]
 }
 
+/**
+ * Structured narrative for the Overview tab shown in Feature Dashboard.
+ * Helps designers & devs understand the "why" before diving into screens.
+ */
+export interface FeatureOverview {
+  /** One-sentence elevator pitch for the feature */
+  tagline: string
+  /** Description of the pain/gap that existed before this feature */
+  problemStatement: string
+  /** List of specific pain points (shown as "Before" bullets) */
+  painPoints: string[]
+  /** Description of what this feature delivers */
+  solutionStatement: string
+  /** List of specific improvements (shown as "After" bullets) */
+  improvements: string[]
+  /** Plain-text navigation flow tree (copied from PRD §6) */
+  navigationFlow?: string
+  /** Screen flow nodes for the visual flow diagram */
+  screenFlow?: Array<{
+    id: string
+    label: string
+    /** IDs of screens this one leads to (for drawing arrows) */
+    leadsTo?: string[]
+    /** Optional: "entry" | "sheet" | "dialog" | "detail" */
+    type?: "entry" | "sheet" | "dialog" | "detail"
+  }>
+}
+
 export interface FeatureEntry {
   id: string
   name: string
@@ -86,6 +114,8 @@ export interface FeatureEntry {
   status: FeatureStatus
   owner: string
   lastUpdated: string
+  /** Optional narrative overview shown in the Overview tab */
+  overview?: FeatureOverview
   screens: ScreenEntry[]
   versionHistory: VersionNote[]
 }
@@ -101,6 +131,37 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
     status: "in-review",
     owner: "rajendra.prasad",
     lastUpdated: "2026-07-08",
+    overview: {
+      tagline: "Give admins direct control over which AI provider powers each Zia feature — no more one-size-fits-all AI.",
+      problemStatement: "Zia's AI provider was fixed at the platform level. Admins had no way to choose which LLM powered which feature, could not add their own API keys, and couldn't see which Zia capabilities were even active for their org.",
+      painPoints: [
+        "No visibility into which LLM provider Zia was using",
+        "Couldn't swap providers (e.g. use OpenAI for one feature, Anthropic for another)",
+        "API keys had to be managed by Zoho support — not self-service",
+        "No per-feature on/off control; Zia was all-or-nothing",
+        "No usage tracking to understand token consumption",
+      ],
+      solutionStatement: "Admins can now configure LLM providers, add their own API keys, map providers to specific Zia features, and toggle each feature independently — all from a single settings page.",
+      improvements: [
+        "4 providers supported: Zoho Zia (default), OpenAI, Anthropic, Google Gemini",
+        "Self-service API key management with a 5-key limit per provider",
+        "Per-feature provider mapping (e.g. AI Prediction → OpenAI)",
+        "Per-feature on/off toggle with clear status badges",
+        "Usage tab per provider with deep links to billing dashboards",
+      ],
+      navigationFlow: `Operations → Zia Configuration
+  └─ [Zia Settings — LLM Providers tab]
+       ├─ Click provider card → [Provider Detail]
+       │    ├─ Manage API Keys (add / delete)
+       │    └─ Usage tab → external billing links
+       └─ Switch to Features tab
+            └─ Map provider + toggle per Zia feature`,
+      screenFlow: [
+        { id: "operations",        label: "Operations",       type: "entry",  leadsTo: ["zia-settings"] },
+        { id: "zia-settings",      label: "Zia Settings",     type: "detail", leadsTo: ["zia-provider-detail"] },
+        { id: "zia-provider-detail", label: "Provider Detail", type: "detail", leadsTo: [] },
+      ],
+    },
     screens: [
       {
         id: "operations",
@@ -156,6 +217,46 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
     status: "draft",
     owner: "rajendra.prasad",
     lastUpdated: "2026-07-15",
+    overview: {
+      tagline: "Test portal user flows safely — without using real accounts or exposing production data.",
+      problemStatement: "Developers and QA engineers had no way to test portal user flows in Dev or Stage environments without creating real Zoho accounts, sharing credentials, or risking data leakage into production.",
+      painPoints: [
+        "Required real email accounts to simulate portal user sessions",
+        "Credentials were shared informally — a security risk",
+        "No way to reset user state between test runs",
+        "Portal user assignments had to be managed manually with no tracking",
+        "Switching between portal user personas during testing required logging out and back in",
+      ],
+      solutionStatement: "An org-level Demo Users pool gives teams up to 50 sandboxed identities (40 User + 10 Portal User) that can be assigned to apps per environment, given roles and permissions, and switched live using a 'View As' mode — all without real accounts.",
+      improvements: [
+        "Create up to 50 demo identities manually or via AI generation",
+        "Assign demo users to specific apps in Dev or Stage environments",
+        "Set role and permission level per assignment",
+        "Live 'View As' mode: switch active persona without logging out",
+        "Environment Settings: configure notifications, variables, and workflow schedules per environment",
+      ],
+      navigationFlow: `Manage → Demo Users (Org Pool)
+  └─ [Org Pool List]
+       ├─ Add Manually → [Add Demo User Sheet]
+       ├─ AI Generate → [Generate Dialog]
+       ├─ Row: Edit → [Edit Sheet]
+       ├─ Row: Assign to App → [App Assignment]
+       └─ Row: View As → [View As — Live Mode]
+
+Manage → Environments
+  └─ [Environments — App List + Stage/Production]
+       └─ ··· → Settings → [Environment Settings Sheet]
+            ├─ Demo Users tab
+            ├─ Notifications tab
+            ├─ Variables tab
+            └─ Workflow Schedules tab`,
+      screenFlow: [
+        { id: "demo-users-org-pool",     label: "Org Pool",       type: "entry",  leadsTo: ["demo-users-app-assignment", "demo-users-view-as"] },
+        { id: "demo-users-app-assignment", label: "App Assignment", type: "detail", leadsTo: [] },
+        { id: "demo-users-view-as",      label: "View As",        type: "detail", leadsTo: [] },
+        { id: "environments",            label: "Environments",   type: "entry",  leadsTo: [] },
+      ],
+    },
     screens: [
       {
         id: "demo-users-org-pool",
@@ -277,6 +378,38 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
     status: "draft",
     owner: "rajendra.prasad",
     lastUpdated: "2026-07-10",
+    overview: {
+      tagline: "Give portal admins the security controls they need — password policy, MFA, IP allowlisting, and session management in one place.",
+      problemStatement: "Zoho Creator portals had no built-in security policy management for portal users. Admins couldn't enforce password strength, require MFA, restrict access by IP range, or control session lifetimes — leaving portals open to brute-force attacks and unauthorized access.",
+      painPoints: [
+        "No password strength enforcement for portal user accounts",
+        "MFA was unavailable for portal-facing login flows",
+        "No IP allowlisting — any IP could attempt to access the portal",
+        "Session lifetime and account lockout were not configurable",
+        "Security setup was scattered across multiple unrelated settings",
+      ],
+      solutionStatement: "A unified Security Policies section brings password policy, MFA configuration, IP allowlisting, and advanced session controls under a single, structured settings flow — giving admins clear visibility and control over portal security posture.",
+      improvements: [
+        "Password Policy: strength presets (Strong / Good / Fair / Custom) + complexity + age rules",
+        "MFA: method selection (TOTP, SMS, OneAuth) + remember-device lifetime + backup codes",
+        "Allowed IP Addresses: Individual IPs, CIDR ranges, and IP ranges — all in one table",
+        "Advanced Settings: session lifetime + consecutive-failure lockout period",
+        "Each policy can be enabled independently — no forced all-or-nothing setup",
+      ],
+      navigationFlow: `Portal → Security Policies
+  └─ [Landing — intro card + Setup CTA]
+       ├─ Left nav → [Password Policy]
+       ├─ Left nav → [Multi-Factor Authentication]
+       ├─ Left nav → [Allowed IP Addresses]
+       └─ Left nav → [Advanced Settings]`,
+      screenFlow: [
+        { id: "portal-security-landing",   label: "Security Landing",    type: "entry",  leadsTo: ["portal-password-policy", "portal-mfa", "portal-allowed-ips", "portal-advanced-settings"] },
+        { id: "portal-password-policy",    label: "Password Policy",     type: "detail", leadsTo: [] },
+        { id: "portal-mfa",                label: "MFA",                 type: "detail", leadsTo: [] },
+        { id: "portal-allowed-ips",        label: "Allowed IPs",         type: "detail", leadsTo: [] },
+        { id: "portal-advanced-settings",  label: "Advanced Settings",   type: "detail", leadsTo: [] },
+      ],
+    },
     screens: [
       {
         id: "portal-security-landing",

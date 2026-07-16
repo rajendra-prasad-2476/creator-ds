@@ -1,16 +1,69 @@
 {
-  "name": "creator-ds-react",
-  "private": true,
-  "version": "0.0.0",
+  "name": "@creator-kit/creator-ds-react",
+  "version": "1.1.1",
+  "description": "Creator Design System — React component library for Zoho Creator",
+  "author": "Zoho Creator Design Team",
+  "license": "MIT",
+  "private": false,
   "type": "module",
+  "files": [
+    "dist",
+    "guidelines",
+    "src/styles.css",
+    "README.md"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "style": "./dist/styles.css",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./styles": {
+      "import": "./dist/styles.css",
+      "default": "./dist/styles.css"
+    }
+  },
+  "sideEffects": [
+    "./dist/styles.css",
+    "./src/styles.css"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:lib": "vite build --config vite.lib.config.ts && cp src/styles.css dist/styles.css",
+    "build:lib:watch": "vite build --config vite.lib.config.ts --watch",
     "lint": "oxlint",
     "preview": "vite preview",
     "ds:changelog": "node scripts/gen-changelog.ts",
     "figma:check": "figma connect",
-    "figma:publish": "figma connect publish"
+    "figma:publish": "figma connect publish",
+    "prepublishOnly": "npm run build:lib"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "@base-ui/react": ">=1.0.0",
+    "sonner": ">=2.0.0",
+    "next-themes": ">=0.4.0",
+    "input-otp": ">=1.0.0",
+    "lucide-react": ">=1.0.0",
+    "class-variance-authority": ">=0.7.0",
+    "clsx": ">=2.0.0",
+    "tailwind-merge": ">=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@base-ui/react": { "optional": false },
+    "sonner": { "optional": false },
+    "next-themes": { "optional": false },
+    "input-otp": { "optional": false },
+    "lucide-react": { "optional": false },
+    "class-variance-authority": { "optional": false },
+    "clsx": { "optional": false },
+    "tailwind-merge": { "optional": false }
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
@@ -21,8 +74,8 @@
     "input-otp": "^1.4.2",
     "lucide-react": "^1.23.0",
     "next-themes": "^0.4.6",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
     "shadcn": "^4.13.0",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.6.0",
@@ -37,6 +90,24 @@
     "@vitejs/plugin-react": "^6.0.3",
     "oxlint": "^1.71.0",
     "typescript": "~6.0.2",
-    "vite": "^8.1.1"
+    "vite": "^8.1.1",
+    "vite-plugin-dts": "^4.5.4"
+  },
+  "keywords": [
+    "zoho",
+    "creator",
+    "design-system",
+    "react",
+    "components",
+    "figma-make",
+    "ui-library"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.figma.com/npm/22c15a36-5e69-4ce4-a8fd-0d380442771d/registry/",
+    "access": "restricted"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rajendra-prasad-2476/creator-ds.git"
   }
 }
