@@ -16,7 +16,7 @@
  */
 
 import * as React from "react"
-import * as ReactDOM from "react-dom"
+import { createPortal } from "react-dom"
 import SplitPanelTemplate from "@/templates/SplitPanelTemplate"
 import { useNavigation } from "@/screens/navigation"
 import {
@@ -51,7 +51,7 @@ import { Notes } from "@/components/ui/notes"
 import { Separator } from "@/components/ui/separator"
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
-import { ArrowLeft, Plus, Trash2, Users } from "lucide-react"
+import { ArrowLeft, ChevronDown, Plus, Search, Trash2, Users, X } from "lucide-react"
 import {
   SEED_ORG_POOL,
   SEED_ASSIGNMENTS,
@@ -72,6 +72,365 @@ const MOCK_APPS = [
   { id: "expenses",         label: "Expenses",        status: "No changes available", color: "#078841" },
   { id: "procurement",      label: "Procurement V1",  status: "No changes available", color: "#CC1914" },
 ]
+
+// ─── User Search Combobox ─────────────────────────────────────────────────────
+// Inline searchable combobox that avoids nesting a Base UI Select (with its own
+// FloatingFocusManager) inside the Sheet's FloatingFocusManager. Both managers
+// would fight over keyboard events, making the search input un-typeable.
+// This component renders a plain <input> + an absolutely-positioned list so that
+// all key events flow directly to the input without any focus-trap interference.
+
+type PoolUser = typeof SEED_ORG_POOL[number]
+
+interface UserSearchComboboxProps {
+  available: PoolUser[]
+  value: string
+  onChange: (id: string) => void
+  submitted: boolean
+}
+
+function UserSearchCombobox({ available, value, onChange, submitted }: UserSearchComboboxProps) {
+  const [query, setQuery] = React.useState("")
+  const [open, setOpen] = React.useState(false)
+  const [triggerRect, setTriggerRect] = React.useState<DOMRect | null>(null)
+  const [bodyEl, setBodyEl] = React.useState<HTMLElement | null>(null)
+  const inputRef = React.useRef<HTMLInputElement>(null)
+  const listRef = React.useRef<HTMLDivElement>(null)
+  const wrapperRef = React.useRef<HTMLDivElement>(null)
+
+  // Safely capture document.body after mount (avoids SSR/pre-render errors)
+  React.useEffect(() => { setBodyEl(document.body) }, [])
+
+  const selectedUser = available.find(u => u.id === value) ??
+    SEED_ORG_POOL.find(u => u.id === value) // keep label even if filtered out
+
+  const filtered = query
+    ? available.filter(u =>
+        `${u.displayName} ${u.username} ${u.email}`.toLowerCase().includes(query.toLowerCase())
+      )
+    : available
+
+  // Close when clicking outside (checks both the trigger wrapper and the portal list)
+  React.useEffect(() => {
+    function handlePointerDown(e: PointerEvent) {
+      const target = e.target as Node
+      const insideWrapper = wrapperRef.current?.contains(target)
+      const insideList = listRef.current?.contains(target)
+      if (!insideWrapper && !insideList) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener("pointerdown", handlePointerDown)
+    return () => document.removeEventListener("pointerdown", handlePointerDown)
+  }, [])
+
+  function openDropdown() {
+    setQuery("")
+    // Capture the trigger's viewport rect so the portal can position itself
+    if (wrapperRef.current) {
+      const btn = wrapperRef.current.querySelector("button")
+      setTriggerRect(btn ? btn.getBoundingClientRect() : wrapperRef.current.getBoundingClientRect())
+    }
+    setOpen(true)
+    // Focus the input on next tick after dropdown renders
+    setTimeout(() => inputRef.current?.focus(), 0)
+  }
+
+  function selectUser(u: PoolUser) {
+    onChange(u.id)
+    setOpen(false)
+    setQuery("")
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Escape") {
+      setOpen(false)
+    } else if (e.key === "Enter" && filtered.length > 0) {
+      selectUser(filtered[0])
+    }
+    // Stop propagation so Sheet's focus-trap never sees these keystrokes
+    e.stopPropagation()
+  }
+
+  const displayLabel = selectedUser
+    ? `${selectedUser.displayName} (${selectedUser.username})`
+    : ""
+
+  return (
+    <div ref={wrapperRef} style={{ position: "relative" }}>
+      <Label style={{ fontSize: "var(--cds-text-p3)", fontWeight: 600, marginBottom: "var(--cds-space-8)", display: "block" }}>
+        Name <span style={{ color: "var(--cds-error-text-default)" }}>*</span>
+      </Label>
+
+      {/* Trigger — mimics SelectTrigger visually */}
+      <button
+        type="button"
+        onClick={openDropdown}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "100%",
+          height: 36,
+          padding: "0 11px",
+          border: `1px solid ${submitted && !value ? "var(--cds-error-border-default)" : open ? "var(--cds-primary-border-default)" : "var(--cds-huegrey-border-fairish)"}`,
+          borderRadius: "var(--cds-radius-r)",
+          background: "var(--cds-white)",
+          cursor: "pointer",
+          fontSize: "var(--cds-text-p2)",
+          color: value ? "var(--cds-huegrey-text-dark)" : "var(--cds-huegrey-text-fairish)",
+          textAlign: "left",
+          gap: 8,
+        }}
+      >
+        <span style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          {displayLabel || "Select a demo user from pool"}
+        </span>
+        <ChevronDown size={14} style={{ flexShrink: 0, color: "var(--cds-huegrey-text-default)", transform: open ? "rotate(180deg)" : "none", transition: "transform 100ms" }} />
+      </button>
+
+      {/* Dropdown — rendered into document.body to escape overflow:auto (Sheet scroll area) */}
+      {open && triggerRect && bodyEl instanceof HTMLElement && createPortal(
+        <div
+          ref={listRef}
+          style={{
+            position: "fixed",
+            top: triggerRect.bottom + 4,
+            left: triggerRect.left,
+            width: triggerRect.width,
+            border: "1px solid var(--cds-huegrey-border-minimal)",
+            borderRadius: "var(--cds-radius-r)",
+            background: "var(--cds-white)",
+            boxShadow: "var(--cds-shadow-base)",
+            zIndex: 9999,
+            overflow: "hidden",
+          }}
+        >
+          {/* Search input */}
+          <div style={{ padding: "10px 10px 6px", borderBottom: "1px solid var(--cds-huegrey-border-minimal)" }}>
+            <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+              <Search size={14} style={{ position: "absolute", left: 8, color: "var(--cds-huegrey-text-default)", pointerEvents: "none", flexShrink: 0 }} />
+              <input
+                ref={inputRef}
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Search demo users…"
+                style={{
+                  width: "100%",
+                  height: 30,
+                  paddingLeft: 28,
+                  paddingRight: query ? 28 : 8,
+                  border: "1px solid var(--cds-huegrey-border-fairish)",
+                  borderRadius: "var(--cds-radius-s)",
+                  fontSize: "var(--cds-text-p2)",
+                  color: "var(--cds-huegrey-text-dark)",
+                  outline: "none",
+                  background: "var(--cds-white)",
+                }}
+              />
+              {query && (
+                <button
+                  type="button"
+                  onMouseDown={e => e.preventDefault()}
+                  onClick={() => setQuery("")}
+                  style={{ position: "absolute", right: 8, background: "transparent", border: "none", cursor: "pointer", color: "var(--cds-huegrey-text-default)", display: "flex", alignItems: "center" }}
+                >
+                  <X size={12} />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Options list */}
+          <div style={{ maxHeight: 220, overflowY: "auto", padding: "6px 0" }}>
+            {filtered.length === 0 ? (
+              <div style={{ padding: "10px 12px", fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>
+                No users match your search.
+              </div>
+            ) : (
+              filtered.map(u => (
+                <button
+                  key={u.id}
+                  type="button"
+                  onMouseDown={e => e.preventDefault()}
+                  onClick={() => selectUser(u)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    width: "100%",
+                    padding: "8px 12px",
+                    background: u.id === value ? "var(--cds-secondary-surface-subtle)" : "transparent",
+                    border: "none",
+                    cursor: "pointer",
+                    fontSize: "var(--cds-text-p2)",
+                    color: "var(--cds-huegrey-text-dark)",
+                    textAlign: "left",
+                    gap: 8,
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "var(--cds-secondary-surface-subtle-hover)" }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = u.id === value ? "var(--cds-secondary-surface-subtle)" : "transparent" }}
+                >
+                  <Avatar style={{ width: 24, height: 24, flexShrink: 0 }}>
+                    <AvatarFallback style={{ background: userTypeColor(u.type), color: "var(--cds-white)", fontSize: "var(--cds-text-p4)", fontWeight: 700 }}>{initials(u.displayName)}</AvatarFallback>
+                  </Avatar>
+                  <span style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    {u.displayName} <span style={{ color: "var(--cds-huegrey-text-default)" }}>({u.username})</span>
+                  </span>
+                </button>
+              ))
+            )}
+          </div>
+        </div>,
+        bodyEl
+      )}
+
+      {submitted && !value && (
+        <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-error-text-default)", marginTop: "var(--cds-space-4)" }}>
+          Please select a demo user.
+        </p>
+      )}
+      {available.length === 0 && (
+        <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)", marginTop: "var(--cds-space-4)" }}>
+          All active demo users are already assigned to this app.
+        </p>
+      )}
+    </div>
+  )
+}
+
+// ─── Inline Select ────────────────────────────────────────────────────────────
+// Plain inline dropdown that avoids the FloatingFocusManager conflict.
+// Used for Role and Permission fields inside the Sheet.
+
+interface InlineSelectProps {
+  label: string
+  required?: boolean
+  placeholder: string
+  options: { value: string; label: string }[]
+  value: string
+  onChange: (v: string) => void
+  error?: string
+  hint?: string
+}
+
+function InlineSelect({ label, required, placeholder, options, value, onChange, error, hint }: InlineSelectProps) {
+  const [open, setOpen] = React.useState(false)
+  const [triggerRect, setTriggerRect] = React.useState<DOMRect | null>(null)
+  const [bodyEl, setBodyEl] = React.useState<HTMLElement | null>(null)
+  const wrapperRef = React.useRef<HTMLDivElement>(null)
+  const listRef = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => { setBodyEl(document.body) }, [])
+
+  React.useEffect(() => {
+    function handlePointerDown(e: PointerEvent) {
+      const target = e.target as Node
+      const insideWrapper = wrapperRef.current?.contains(target)
+      const insideList = listRef.current?.contains(target)
+      if (!insideWrapper && !insideList) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener("pointerdown", handlePointerDown)
+    return () => document.removeEventListener("pointerdown", handlePointerDown)
+  }, [])
+
+  function openDropdown() {
+    if (wrapperRef.current) {
+      const btn = wrapperRef.current.querySelector("button")
+      setTriggerRect(btn ? btn.getBoundingClientRect() : wrapperRef.current.getBoundingClientRect())
+    }
+    setOpen(o => !o)
+  }
+
+  const selectedLabel = options.find(o => o.value === value)?.label
+
+  return (
+    <div ref={wrapperRef} style={{ position: "relative" }}>
+      {label && (
+        <Label style={{ fontSize: "var(--cds-text-p3)", fontWeight: 600, marginBottom: "var(--cds-space-8)", display: "block" }}>
+          {label} {required && <span style={{ color: "var(--cds-error-text-default)" }}>*</span>}
+        </Label>
+      )}
+      <button
+        type="button"
+        onClick={openDropdown}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "100%",
+          height: 36,
+          padding: "0 11px",
+          border: `1px solid ${error ? "var(--cds-error-border-default)" : open ? "var(--cds-primary-border-default)" : "var(--cds-huegrey-border-fairish)"}`,
+          borderRadius: "var(--cds-radius-r)",
+          background: "var(--cds-white)",
+          cursor: "pointer",
+          fontSize: "var(--cds-text-p2)",
+          color: value ? "var(--cds-huegrey-text-dark)" : "var(--cds-huegrey-text-fairish)",
+          textAlign: "left",
+          gap: 8,
+        }}
+      >
+        <span style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          {selectedLabel || placeholder}
+        </span>
+        <ChevronDown size={14} style={{ flexShrink: 0, color: "var(--cds-huegrey-text-default)", transform: open ? "rotate(180deg)" : "none", transition: "transform 100ms" }} />
+      </button>
+
+      {/* Dropdown — portalled to document.body so it escapes overflow:auto containers */}
+      {open && triggerRect && bodyEl instanceof HTMLElement && createPortal(
+        <div
+          ref={listRef}
+          style={{
+            position: "fixed",
+            top: triggerRect.bottom + 4,
+            left: triggerRect.left,
+            width: triggerRect.width,
+            border: "1px solid var(--cds-huegrey-border-minimal)",
+            borderRadius: "var(--cds-radius-r)",
+            background: "var(--cds-white)",
+            boxShadow: "var(--cds-shadow-base)",
+            zIndex: 9999,
+            overflow: "hidden",
+          }}
+        >
+          <div style={{ maxHeight: 220, overflowY: "auto", padding: "6px 0" }}>
+            {options.map(o => (
+              <button
+                key={o.value}
+                type="button"
+                onMouseDown={e => e.preventDefault()}
+                onClick={() => { onChange(o.value); setOpen(false) }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  width: "100%",
+                  padding: "9px 12px",
+                  background: o.value === value ? "var(--cds-secondary-surface-subtle)" : "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: "var(--cds-text-p2)",
+                  color: "var(--cds-huegrey-text-dark)",
+                  textAlign: "left",
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "var(--cds-secondary-surface-subtle-hover)" }}
+                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = o.value === value ? "var(--cds-secondary-surface-subtle)" : "transparent" }}
+              >
+                {o.label}
+              </button>
+            ))}
+          </div>
+        </div>,
+        bodyEl
+      )}
+
+      {error && <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-error-text-default)", marginTop: "var(--cds-space-4)" }}>{error}</p>}
+      {hint && <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)", marginTop: "var(--cds-space-4)" }}>{hint}</p>}
+    </div>
+  )
+}
 
 // ─── Add Demo User Inline Panel ───────────────────────────────────────────────
 // Renders as an inline form (no nested Sheet), called inside DemoUsersTab
@@ -134,19 +493,13 @@ function AddDemoUserPanel({ environment, existingUserIds, appName, onAdd, onCanc
 
       {/* Form fields */}
       <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: "var(--cds-space-16)" }}>
-        <div>
-          <Label style={{ fontSize: "var(--cds-text-p3)", fontWeight: 600, marginBottom: "var(--cds-space-8)", display: "block" }}>
-            Name <span style={{ color: "var(--cds-error-text-default)" }}>*</span>
-          </Label>
-          <Select value={userId} onValueChange={v => v && setUserId(v)}>
-            <SelectTrigger><SelectValue placeholder="Select a demo user from pool" /></SelectTrigger>
-            <SelectContent searchable searchPlaceholder="Search demo users…">
-              {available.map(u => <SelectItem key={u.id} value={u.id}>{u.displayName} ({u.username})</SelectItem>)}
-            </SelectContent>
-          </Select>
-          {submitted && !userId && <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-error-text-default)", marginTop: "var(--cds-space-4)" }}>Please select a demo user.</p>}
-          {available.length === 0 && <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)", marginTop: "var(--cds-space-4)" }}>All active demo users are already assigned to this app.</p>}
-        </div>
+        {/* Name — inline searchable combobox (avoids FloatingFocusManager conflict with Sheet) */}
+        <UserSearchCombobox
+          available={available}
+          value={userId}
+          onChange={setUserId}
+          submitted={submitted}
+        />
 
         {selected && (
           <div style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-default)", padding: "var(--cds-space-12)", borderRadius: "var(--cds-radius-r)", border: "1px solid var(--border)", background: "var(--cds-surface-subtle, #F5F5F5)" }}>
@@ -162,32 +515,28 @@ function AddDemoUserPanel({ environment, existingUserIds, appName, onAdd, onCanc
         )}
 
         {selected && !isPortal && (
-          <div>
-            <Label style={{ fontSize: "var(--cds-text-p3)", fontWeight: 600, marginBottom: "var(--cds-space-8)", display: "block" }}>
-              Role <span style={{ color: "var(--cds-error-text-default)" }}>*</span>
-            </Label>
-            <Select value={role} onValueChange={v => v && setRole(v)}>
-              <SelectTrigger><SelectValue placeholder="Select a role" /></SelectTrigger>
-              <SelectContent>{MOCK_ROLES.map(r => <SelectItem key={r} value={r}>{r}</SelectItem>)}</SelectContent>
-            </Select>
-            {submitted && !role && <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-error-text-default)", marginTop: "var(--cds-space-4)" }}>Role is required.</p>}
-          </div>
+          <InlineSelect
+            label="Role"
+            required
+            placeholder="Select a role"
+            options={MOCK_ROLES.map(r => ({ value: r, label: r }))}
+            value={role}
+            onChange={setRole}
+            error={submitted && !role ? "Role is required." : undefined}
+          />
         )}
 
         {selected && (
-          <div>
-            <Label style={{ fontSize: "var(--cds-text-p3)", fontWeight: 600, marginBottom: "var(--cds-space-8)", display: "block" }}>
-              Permission <span style={{ color: "var(--cds-error-text-default)" }}>*</span>
-            </Label>
-            <Select value={permission} onValueChange={v => v && setPermission(v)}>
-              <SelectTrigger><SelectValue placeholder="Select a permission" /></SelectTrigger>
-              <SelectContent>{permOptions.map(p => <SelectItem key={p} value={p}>{p}</SelectItem>)}</SelectContent>
-            </Select>
-            {submitted && !permission && <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-error-text-default)", marginTop: "var(--cds-space-4)" }}>Permission is required.</p>}
-            <p style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)", marginTop: "var(--cds-space-4)" }}>
-              Only permissions configured in Application Settings are listed.
-            </p>
-          </div>
+          <InlineSelect
+            label="Permission"
+            required
+            placeholder="Select a permission"
+            options={permOptions.map(p => ({ value: p, label: p }))}
+            value={permission}
+            onChange={setPermission}
+            error={submitted && !permission ? "Permission is required." : undefined}
+            hint="Only permissions configured in Application Settings are listed."
+          />
         )}
 
         {selected && isPortal && (
@@ -214,8 +563,11 @@ function DemoUsersTab({ environment, appName }: { environment: Environment; appN
   )
   const [showAddPanel, setShowAddPanel] = React.useState(false)
   const [removeTarget, setRemoveTarget] = React.useState<AppAssignment | null>(null)
+  const [bodyEl, setBodyEl] = React.useState<HTMLElement | null>(null)
   const existingIds = assignments.map(a => a.userId)
 
+  // Safely capture document.body after mount (avoids SSR/pre-render portal errors)
+  React.useEffect(() => { setBodyEl(document.body) }, [])
   React.useEffect(() => { setShowAddPanel(false) }, [environment])
 
   function handleAdd(assignment: Omit<AppAssignment, "id">) {
@@ -296,7 +648,7 @@ function DemoUsersTab({ environment, appName }: { environment: Environment; appN
       )}
 
       {/* Render the confirm dialog via a portal at document.body so it escapes the Sheet stacking context */}
-      {removeTarget && ReactDOM.createPortal(
+      {removeTarget && bodyEl instanceof HTMLElement && createPortal(
         <AlertDialog open={!!removeTarget} onOpenChange={o => !o && setRemoveTarget(null)}>
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -317,7 +669,7 @@ function DemoUsersTab({ environment, appName }: { environment: Environment; appN
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>,
-        document.body
+        bodyEl
       )}
     </>
   )
@@ -471,21 +823,25 @@ function EnvironmentSettingsSheet({ open, onClose, appName }: EnvSettingsSheetPr
                 <TabsTrigger value="schedules">Workflow Schedules</TabsTrigger>
               </TabsList>
 
-              {/* Env + App selectors — right side, vertically centred within the tabs row */}
+              {/* Env + App selectors — inline dropdowns to avoid FloatingFocusManager conflict */}
               <div style={{ display: "flex", gap: "var(--cds-gap-small)", paddingBottom: "var(--cds-space-8)", flexShrink: 0 }}>
-                <Select value={env} onValueChange={v => v && setEnv(v as Environment)}>
-                  <SelectTrigger style={{ width: 160 }}><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Development">Development</SelectItem>
-                    <SelectItem value="Stage">Stage</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Select defaultValue="expenses">
-                  <SelectTrigger style={{ width: 180 }}><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {MOCK_APPS.map(a => <SelectItem key={a.id} value={a.id}>{a.label}</SelectItem>)}
-                  </SelectContent>
-                </Select>
+                <InlineSelect
+                  label=""
+                  placeholder="Development"
+                  options={[
+                    { value: "Development", label: "Development" },
+                    { value: "Stage", label: "Stage" },
+                  ]}
+                  value={env}
+                  onChange={v => setEnv(v as Environment)}
+                />
+                <InlineSelect
+                  label=""
+                  placeholder="Select app"
+                  options={MOCK_APPS.map(a => ({ value: a.id, label: a.label }))}
+                  value="expenses"
+                  onChange={() => {}}
+                />
               </div>
             </div>
 
