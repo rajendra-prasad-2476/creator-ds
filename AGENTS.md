@@ -6,6 +6,100 @@
 
 ---
 
+## 0. PRE-GENERATION STEP — Creator Parity Check (MANDATORY)
+
+> **Run this before generating any screen.** Understanding what Creator already supports prevents
+> duplicating existing UI and ensures the generated screens only cover genuine gaps or enhancements.
+
+---
+
+### 0.1 What to do
+
+Before writing a single line of TSX for a new PRD feature, the AI agent **must**:
+
+1. **Read the PRD** — identify all functional requirements and user flows.
+2. **Extract feature questions** — for each major functional area (FR), form a plain-English question:
+   - _"Does Creator already support X?"_
+   - _"How does Creator currently handle Y?"_
+3. **Query the Creator knowledge API** for each question:
+
+```bash
+curl -s -X POST http://zcem-u24-vm37:8001/api/ask \
+  -H "Content-Type: application/json" \
+  -d '{
+    "question": "Does Zoho Creator support <feature>?",
+    "llm_provider": "internal",
+    "product": "creator"
+  }'
+```
+
+4. **Interpret the response** — for each answer:
+
+| Response | Meaning | Action |
+|---|---|---|
+| Detailed answer + sources | Feature **exists** in Creator | Note the existing behaviour; design the screen as an *enhancement* or *settings entry point* |
+| Empty answer or "not found" | Feature is a **gap** / new | Design screens from scratch; flag in `docs/ds-parity.csv` |
+| Partial answer | Feature **partially exists** | Document the gap; design only the missing part |
+
+5. **Log clarifications in the PRD** — add a `## Creator Parity Check` section to the PRD file
+   (see §0.3 for format) before starting screen generation.
+
+---
+
+### 0.2 Example queries for a PRD
+
+For the **Demo Users in Environments** PRD, the agent would ask:
+
+```
+Q1: "Does Zoho Creator support demo users or test users in environments?"
+Q2: "Can you add portal users to a Zoho Creator app and assign them permissions?"
+Q3: "Does Zoho Creator have Dev, Stage, and Production environments for apps?"
+Q4: "Is there a 'View As' or persona switcher feature in Zoho Creator?"
+```
+
+Then interpret:
+
+```
+Q1 → Empty answer           → GAP: demo user pool (max 50, AI-generated) is new
+Q2 → Full answer + 3 sources → EXISTS: portal users with role/permission — PRD extends this
+Q3 → Empty answer           → GAP: multi-environment support is new in Creator 6
+Q4 → Empty answer           → GAP: View As persona switcher is fully new
+```
+
+This tells the agent: **portal user management already exists** — the new screens should
+build on/extend that pattern rather than reinvent it.
+
+---
+
+### 0.3 PRD Creator Parity Check section format
+
+Add this section to the PRD markdown file **before** `## 6. Screen Inventory`:
+
+```markdown
+## Creator Parity Check [REQUIRED — run before screen generation]
+
+> Queried via `http://zcem-u24-vm37:8001/api/ask` · `llm_provider: internal` · `product: creator`
+> Date: YYYY-MM-DD
+
+| # | Feature area | Question asked | API result | Status | Notes |
+|---|---|---|---|---|---|
+| 1 | Portal users | "Can you add portal users and assign permissions?" | Full answer | **Exists** | Docs: Manage And Configure Portal Users |
+| 2 | Dev/Stage environments | "How do Dev and Stage environments work?" | Empty | **Gap** | New in C6 — design from scratch |
+| 3 | Demo user pool | "Does Creator have demo/test user accounts?" | Empty | **Gap** | Fully new feature |
+| 4 | View As / persona switcher | "Is there a View As feature in Creator?" | Empty | **Gap** | Fully new feature |
+```
+
+---
+
+### 0.4 Rules
+
+- **Never skip this step** — even if the PM says "this is all new", validate with the API.
+- If the API times out or is unreachable, note `API unavailable` in the table and proceed.
+- Do **not** redesign existing Creator flows — only extend or wrap them.
+- Questions must be in plain English, not technical jargon — the LLM is trained on help docs.
+
+---
+
 ## 1. Non-Negotiable Rules
 
 These rules are hard constraints. Violating any of them produces output that **must be rejected**.
@@ -21,13 +115,64 @@ These rules are hard constraints. Violating any of them produces output that **m
 
 ### 1.3 Design tokens — colors
 - Use `--cds-*` CSS custom properties for every color. Never hardcode hex, `rgb()`, or `hsl()` values.
-- Correct: `color: var(--cds-primary-text-default)`
+- Correct: `className="[color:var(--cds-primary-text-default)]"` or `style={{ color: "var(--cds-primary-text-default)" }}` on icon elements only
 - Wrong: `color: #0D4EF2` or `color: blue`
 
 ### 1.4 Design tokens — spacing & radius
 - Use `--cds-space-*` and `--cds-gap-*` / `--cds-padding-*` tokens for all spacing.
 - Use `--cds-radius-*` tokens for all border radii.
 - Never write arbitrary pixel values for spacing or radius inline.
+
+### 1.6 Style attribute ban — use `className` instead
+- **Never use `style={{}}` for layout or typography in screen files.** This is the most common violation.
+- All layout (`display`, `flexDirection`, `alignItems`, `justifyContent`, `gap`, `padding`, `margin`) must be expressed as **Tailwind `className` utilities** or **Tailwind arbitrary-value classes** (`[var(--cds-*)]`).
+- `style={{}}` is **only permitted** for truly runtime-dynamic values that cannot be expressed as a class (e.g. `style={{ width: \`${pct}%\` }}`).
+- Correct:
+  ```tsx
+  <div className="flex items-center gap-[var(--cds-gap-tight)]">
+  <div className="p-[var(--cds-padding-card)] rounded-[var(--cds-radius-r)]">
+  <p className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-huegrey-text-dark)]">
+  ```
+- Wrong:
+  ```tsx
+  <div style={{ display: "flex", alignItems: "center", gap: "var(--cds-gap-tight)" }}>
+  <div style={{ padding: "var(--cds-padding-card)", borderRadius: "var(--cds-radius-r)" }}>
+  <p style={{ fontSize: "var(--cds-text-p2)", color: "var(--cds-huegrey-text-dark)" }}>
+  ```
+- **Exception — icon color only:** A lucide-react icon's `color` prop (or a single-property `style={{ color }}`) is acceptable when the icon component does not accept `className` for color. Prefer `className` with `[color:var(--cds-*)]` even for icons.
+
+### 1.7 Managing long `className` strings — use `cn()` and local constants
+
+Arbitrary-value Tailwind classes with `--cds-*` tokens can make `className` verbose. Use these patterns to keep code readable:
+
+**Pattern A — `cn()` helper** (imported from `@/lib/utils`):
+```tsx
+import { cn } from "@/lib/utils"
+
+<div className={cn(
+  "flex flex-col items-start",
+  "gap-[var(--cds-gap-default)] p-[var(--cds-padding-card)]",
+  "rounded-[var(--cds-radius-r)] border border-[var(--border)]",
+  isActive && "bg-[var(--cds-primary-surface-subtle)]"  // conditional class
+)}>
+```
+
+**Pattern B — local `const` for repeated patterns:**
+```tsx
+const cardBase = [
+  "flex flex-col",
+  "gap-[var(--cds-gap-default)] p-[var(--cds-padding-card)]",
+  "rounded-[var(--cds-radius-r)] border border-[var(--border)]",
+].join(" ")
+
+// reuse across elements:
+<div className={cardBase}>
+<div className={cn(cardBase, "bg-[var(--cds-error-surface-subtle)]")}>
+```
+
+**Pattern C — use DS components** instead of composing long classNames on bare `<div>`s:
+- `Card` + `CardContent` already have padding, radius, and border — prefer them over a heavily styled `<div>`
+- Long classNames on `<div>` are often a signal that a DS component should be used instead
 
 ### 1.5 Page structure
 Every generated screen **must** compose the following shell:
@@ -115,13 +260,16 @@ Never put page-level navigation inside `<main>`. Never skip `TopBar` or `LeftNav
 ### Organisms
 | Component | Import | Use for |
 |---|---|---|
-| `Card` | `card.tsx` | Content containers / panels |
+| `Card` | `card.tsx` | Content containers / panels — add `interactive` prop for hover-border-blue on clickable cards |
+| `CardHorizontal` | `card.tsx` | Horizontal list-item card: illustration slot + title/description body + CTA that switches to primary fill on card hover — use for microservice / resource catalog rows |
+| `CardOperations` | `card.tsx` | "Floated title pill" card for Operations / settings landing pages — pill (icon + title) overlaps the white card body top; body has a 2-col link grid. Sub-components: `CardOperationsPill`, `CardOperationsBody`, `CardOperationsGrid`, `CardOperationsLink` |
 | `Dialog` | `dialog.tsx` | Modal dialogs requiring user response |
 | `AlertDialog` | `alert-dialog.tsx` | Destructive confirmation dialogs |
 | `Sheet` | `sheet.tsx` | Slide-in side panels |
 | `Table` | `table.tsx` | Tabular data display |
 | `TopBar` | `top-bar.tsx` | Global app header (always present) |
 | `LeftNav` | `left-nav.tsx` | Global sidebar navigation (always present) |
+| `FullPageDialog` | `full-page-dialog.tsx` | Full-screen dialog shell with header, sidebar nav (section or stepper), content area, and optional hints panel |
 
 ---
 
@@ -131,6 +279,7 @@ When a design intent could map to multiple components, follow this table.
 
 | Intent | Use this | Never use |
 |---|---|---|
+| Multi-step wizard or multi-section full-screen form | `FullPageDialog` | custom full-screen div with manual header + sidebar |
 | User confirms a destructive action | `AlertDialog` | `Dialog`, `window.confirm()` |
 | User enables/disables a setting with semantic colour (e.g. success on, error off) | `Toggle` | custom `<div>` switch or `Switch` |
 | Simple binary on/off toggle, no colour variant needed | `Switch` | `Toggle`, custom `<div>` |
@@ -142,6 +291,8 @@ When a design intent could map to multiple components, follow this table.
 | Input needs context on BOTH sides (currency + unit, code + extension) | `InputAffixed` | two raw `<span>` elements flanking an `<input>` |
 | Capacity / progress bar | `Progress` | raw `<div>` with a fixed height and inline width percentage |
 | Stat / capacity card | `Card` + `CardContent` | raw `<div>` with manual border and padding |
+| Horizontal list-item (icon + title + description + CTA) | `CardHorizontal` + sub-components | manually-composed `<div>` flex row with a custom hover-swap button |
+| Operations / settings landing page category card (icon pill + link grid) | `CardOperations` + `CardOperationsPill` + `CardOperationsBody` + `CardOperationsGrid` + `CardOperationsLink` | `LinkCategoryTemplate` with custom raw `<div>` cards, or hand-styled absolute positioning |
 | Mutually exclusive choice displayed as a card (with description) | `RadioCard` inside `RadioGroup` | custom card `<div>` with manual radio indicator |
 | Display a label, category, or keyword as a pill | `Tag` | hand-styled `<span>` or `<div>` badge |
 | Allow users to enter multiple values as dismissible chips | `TagInput` | raw `<input>` beside custom chip divs |
@@ -192,13 +343,25 @@ Colors
   Border default:  var(--border)                         #E5E5E7
   Blanket scrim:   var(--cds-blanket-overlay)            rgba(1,3,10,0.1)
 
-Spacing
+Spacing (complete list — do NOT invent values not in this table)
+  0px:   var(--cds-space-0)
+  1px:   var(--cds-space-1)
+  2px:   var(--cds-space-2)
   4px:   var(--cds-space-4)
+  6px:   var(--cds-space-6)
   8px:   var(--cds-space-8)
   12px:  var(--cds-space-12)
   16px:  var(--cds-space-16)
+  20px:  var(--cds-space-20)
   24px:  var(--cds-space-24)
   32px:  var(--cds-space-32)
+  40px:  var(--cds-space-40)
+  48px:  var(--cds-space-48)
+  64px:  var(--cds-space-64)
+  80px:  var(--cds-space-80)
+
+  ⚠️ DOES NOT EXIST — never use: --cds-space-10, --cds-space-14 (ghost tokens; resolve to unset)
+  → Use --cds-space-8 (8px) or --cds-space-12 (12px) as nearest alternates
 
 Semantic spacing
   Icon ↔ label gap:       var(--cds-gap-tight)          4px
@@ -376,6 +539,9 @@ export default function OperationsScreen() {
 - Do not install or import any UI library other than the components in `src/components/ui/`
 - Do not use `className="text-blue-500"` or any Tailwind color utility — use `--cds-*` tokens
 - Do not use `style={{ fontFamily: "Inter" }}` or any font override
+- **Do not use `style={{}}` for layout, spacing, typography, or color in screen files.** Use `className` with Tailwind arbitrary-value utilities instead (see §1.6). This is the #1 most common violation.
+  - Wrong: `<div style={{ display: "flex", gap: "var(--cds-gap-small)", fontSize: "var(--cds-text-p2)" }}>`
+  - Correct: `<div className="flex gap-[var(--cds-gap-small)] text-[length:var(--cds-text-p2)]">`
 - Do not create a custom modal, drawer, or tooltip — use `Dialog`, `Sheet`, `Tooltip`
 - Do not build a custom overlay/scrim backdrop — use `Blanket` (Dialog/Sheet already render it automatically)
 - Do not add `console.log` or debug output to production screen files
@@ -537,6 +703,35 @@ After bumping, always run:
 ```bash
 npx tsx scripts/gen-changelog.ts
 ```
+
+## 15. Ghost Token Guard — CI Lint Command
+
+After generating or modifying any screen, run this one-liner to catch undefined `--cds-space-*` tokens before committing:
+
+```bash
+# Catches --cds-space-10, --cds-space-14, and any other undefined spacing tokens
+grep -rn "cds-space-" src/screens/ | grep -vE "cds-space-(0|1|2|4|6|8|12|16|20|24|32|40|48|64|80)\b" | grep -v "\.md:"
+```
+
+If this returns any results, replace the flagged token with the nearest valid value:
+
+| Flagged token | Use instead |
+|---|---|
+| `--cds-space-3` | `--cds-space-4` |
+| `--cds-space-5` | `--cds-space-4` or `--cds-space-6` |
+| `--cds-space-10` | `--cds-space-8` or `--cds-space-12` |
+| `--cds-space-14` | `--cds-space-12` or `--cds-space-16` |
+| `--cds-space-18` | `--cds-space-16` or `--cds-space-20` |
+| `--cds-space-36` | `--cds-space-32` or `--cds-space-40` |
+
+Also run this to catch spacing tokens incorrectly used as `fontSize` values:
+
+```bash
+# Catches fontSize: "var(--cds-space-*)" — spacing tokens must not be used as font sizes
+grep -rn 'fontSize.*cds-space' src/screens/
+```
+
+`fontSize` must always use `--cds-text-p1` through `--cds-text-p6` or `--cds-text-h1` through `--cds-text-h6`.
 
 ---
 

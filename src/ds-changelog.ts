@@ -33,10 +33,73 @@ export interface DSChangeEntry {
 }
 
 /** Current DS version — surfaced as the version badge in the showcase TopBar. */
-export const DS_VERSION = "1.10.2"
+export const DS_VERSION = "1.13.0"
 
 /** Newest entry first. */
 export const DS_CHANGELOG: DSChangeEntry[] = [
+  {
+    version: "1.13.0",
+    date: "2026-07-29",
+    changes: [
+      {
+        type: "added",
+        scope: "FullPageDialog",
+        summary:
+          "New FullPageDialog organism: full-screen dialog shell with a header (title, status, action CTA, close), a 200px sidebar nav (section groups or numbered stepper), a scrollable content area, and an optional 240px hints panel. Supports navStyle='section' | 'stepper' and showHints prop. Implemented from Figma node 9072:26985.",
+        parity: "FullPageDialog",
+      },
+    ],
+  },
+  {
+    version: "1.12.0",
+    date: "2026-07-28",
+    changes: [
+      {
+        type: "added",
+        scope: "Card",
+        summary:
+          "New CardOperations variant: 'floated title pill' card for Operations / settings landing pages. A pill (icon circle + title) is absolutely positioned overlapping the white card body top. Body contains a 2-column link grid. Sub-components: CardOperations, CardOperationsPill, CardOperationsBody, CardOperationsGrid, CardOperationsLink. Implemented from Figma node 7301:5223.",
+        parity: "CardOperations",
+      },
+    ],
+  },
+  {
+    version: "1.11.0",
+    date: "2026-07-28",
+    changes: [
+      {
+        type: "added",
+        scope: "Card",
+        summary:
+          "New CardHorizontal variant: horizontal list-item card with illustration slot, title+description body, and CTA action button. CTA transitions from huegrey-bordered (default) to primary-fill on card hover via Tailwind group-hover. Sub-components: CardHorizontal, CardHorizontalIcon, CardHorizontalBody, CardHorizontalTitle, CardHorizontalDescription, CardHorizontalAction.",
+        parity: "CardHorizontal",
+      },
+    ],
+  },
+  {
+    version: "1.10.4",
+    date: "2026-07-28",
+    changes: [
+      {
+        type: "fixed",
+        scope: "Card",
+        summary:
+          "Figma parity audit: replaced rounded-xl with radius-l (10px); replaced ring-1/ring-foreground/10 shadow with border border-huegrey-border-fairish; bg-card replaced with bg-white; CardTitle updated to H5 tokens (20px/26px); CardDescription updated to P2 tokens (14px/18px); CardFooter uses huegrey-surface-subtle background and huegrey-border-low top border. Added interactive prop for hover-border-primary-default on clickable microservice cards.",
+      },
+    ],
+  },
+  {
+    version: "1.10.3",
+    date: "2026-07-28",
+    changes: [
+      {
+        type: "fixed",
+        scope: "AlertDialog",
+        summary:
+          "Figma parity audit fixes: popup border-radius corrected from radius-r (6px) to radius-l (10px); footer now has rounded bottom corners; description used non-existent --cds-text-b2/leading-b2 tokens (corrected to --cds-text-p2/leading-p2); title colour token updated to --cds-huegrey-text-dark; description colour updated to --cds-huegrey-text-default; cancel button border uses --cds-huegrey-border-fairish (was neutral-border-default); icon-to-title gap corrected to 20px.",
+      },
+    ],
+  },
   {
     version: "1.10.2",
     date: "2026-07-14",

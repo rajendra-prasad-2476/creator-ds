@@ -159,6 +159,17 @@ export {
 } from "@/components/ui/table"
 export { TopBar } from "@/components/ui/top-bar"
 export { LeftNav } from "@/components/ui/left-nav"
+export {
+  FullPageDialog,
+} from "@/components/ui/full-page-dialog"
+export type {
+  FullPageDialogProps,
+  FullPageDialogNavStyle,
+  FullPageDialogSection,
+  FullPageDialogSectionItem,
+  FullPageDialogStep,
+  FullPageDialogStepStatus,
+} from "@/components/ui/full-page-dialog"
 
 // ─── Utilities ────────────────────────────────────────────────────────────────
 export { cn } from "@/lib/utils"

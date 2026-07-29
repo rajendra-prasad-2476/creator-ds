@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardHorizontal, CardHorizontalIcon, CardHorizontalBody, CardHorizontalTitle, CardHorizontalDescription, CardHorizontalAction, CardOperations, CardOperationsPill, CardOperationsBody, CardOperationsGrid, CardOperationsLink, CardBilling, CardBillingIcon, CardBillingBody, CardBillingValue, CardBillingLabel } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogIcon, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
@@ -16,8 +16,86 @@ import { Notes } from "@/components/ui/notes";
 import { Blanket } from "@/components/ui/blanket";
 import { TopBar } from "@/components/ui/top-bar";
 import { LeftNav } from "@/components/ui/left-nav";
-import { BarChart3, Plus, Filter, ArrowUpDown, Eye, Edit, Trash2, Database, Layers, Globe } from "lucide-react";
+import { FullPageDialog } from "@/components/ui/full-page-dialog";
+import type { FullPageDialogStep } from "@/components/ui/full-page-dialog";
+import { BarChart3, Plus, Filter, ArrowUpDown, Eye, Edit, Trash2, Database, Layers, Globe, PenLine, Link2, Key, Copy, CheckCircle2, LayoutGrid, GitFork, Lock } from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useState } from "react";
+import { ContentSwitcher } from "@/components/ui/content-switcher";
+import { Switch } from "@/components/ui/switch";
+
+function FullPageDialogDemo() {
+  const [navStyle, setNavStyle] = useState<"section" | "stepper">("section")
+  const [showHints, setShowHints] = useState(false)
+  const [activeItem, setActiveItem] = useState("authentication")
+
+  const sampleSections = [
+    {
+      id: "general",
+      label: "GENERAL",
+      icon: <Globe size={14} />,
+      items: [{ id: "basic-details", label: "Basic Details" }],
+    },
+    {
+      id: "security",
+      label: "SECURITY",
+      icon: <Lock size={14} />,
+      items: [
+        { id: "authentication", label: "Authentication" },
+        { id: "oauth-scopes", label: "OAuth Scopes" },
+      ],
+    },
+  ]
+
+  const sampleSteps: FullPageDialogStep[] = [
+    { id: "step-1", label: "Basic Details", status: "complete" },
+    { id: "step-2", label: "Request",       status: "complete" },
+    { id: "step-3", label: "Response",      status: "active" },
+    { id: "step-4", label: "Configuration", status: "pending" },
+    { id: "step-5", label: "Summary",       status: "pending" },
+  ]
+
+  const sampleHints = [
+    "Ensure to name your custom API with terms that are descriptive, memorable, and reflective of their functionality.",
+    "The link name will be appended to the endpoint URL generated.",
+  ]
+
+  return (
+    <div className="space-y-[var(--cds-space-12)]">
+      <div className="flex items-center gap-[var(--cds-gap-default)] flex-wrap">
+        <ContentSwitcher
+          items={["Section", "Stepper"]}
+          value={navStyle === "section" ? "Section" : "Stepper"}
+          onValueChange={(v) => setNavStyle(v === "Stepper" ? "stepper" : "section")}
+        />
+        <label className="flex items-center gap-[var(--cds-gap-small)] cursor-pointer">
+          <Switch checked={showHints} onCheckedChange={setShowHints} />
+          <span className="text-[length:var(--cds-text-p2)] text-[color:var(--cds-huegrey-text-dark)]">Show Hints</span>
+        </label>
+      </div>
+      <div className="border border-[var(--border)] rounded-[var(--cds-radius-r)] overflow-hidden h-[480px]">
+        <FullPageDialog
+          title="Dialog Title"
+          status="Draft"
+          actionLabel="Action"
+          navStyle={navStyle}
+          sections={sampleSections}
+          activeItemId={activeItem}
+          onItemSelect={setActiveItem}
+          steps={sampleSteps}
+          showHints={showHints}
+          hintsTitle="Hints"
+          hints={sampleHints}
+          onClose={() => {}}
+        >
+          <p className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-huegrey-text-default)] w-full">
+            Content goes here. Add form fields, cards, or other components.
+          </p>
+        </FullPageDialog>
+      </div>
+    </div>
+  )
+}
 
 function BlanketDemo() {
   const [open, setOpen] = useState(false);
@@ -159,6 +237,245 @@ export function OrganismsSection() {
               <CardHeader className="pb-2"><CardDescription>Active Sessions</CardDescription><CardTitle className="text-2xl">573</CardTitle></CardHeader>
               <CardContent><p className="text-xs text-[var(--cds-error-text-default)]">↓ 3% from last hour</p></CardContent>
             </Card>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Microservices Cards */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Microservices Cards</CardTitle>
+          <CardDescription>
+            Interactive cards for microservice catalog screens (AI-Model, Connection, Custom-API, AR-Library). Hover state turns the border blue via the <code>interactive</code> prop on <code>Card</code>.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            {/* AI-Model card */}
+            <Card interactive className="flex flex-col gap-[var(--cds-space-16)] p-[var(--cds-space-24)] pb-[var(--cds-space-20)]">
+              <Avatar size="xl" shape="squircle">
+                <AvatarFallback color="primary">AI</AvatarFallback>
+              </Avatar>
+              <p className="text-[length:var(--cds-text-h4)] leading-[var(--cds-leading-h4)] font-medium text-[color:var(--cds-huegrey-text-dark)]">AI Models</p>
+              <p className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-huegrey-text-default)]">Subtext description for the AI model service.</p>
+              <div className="flex items-center justify-between pt-[var(--cds-space-4)]">
+                <div className="flex items-center gap-[var(--cds-gap-small)]">
+                  <Eye size={16} className="text-[color:var(--cds-huegrey-text-default)]" />
+                  <span className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-huegrey-text-dark)]">Prediction</span>
+                </div>
+                <div className="flex items-center gap-[var(--cds-gap-small)]">
+                  <PenLine size={16} className="text-[color:var(--cds-huegrey-text-default)]" />
+                  <span className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-huegrey-text-default)]">Draft</span>
+                </div>
+              </div>
+            </Card>
+
+            {/* Connection card */}
+            <Card interactive className="flex flex-col gap-[var(--cds-space-6)] p-[var(--cds-space-24)] pb-[var(--cds-space-20)]">
+              <div className="flex size-10 items-center justify-center rounded-[var(--cds-radius-r)] bg-[var(--cds-primary-surface-subtle)]">
+                <Link2 size={20} className="text-[color:var(--cds-primary-text-default)]" />
+              </div>
+              <p className="text-[length:var(--cds-text-h4)] leading-[var(--cds-leading-h4)] font-medium text-[color:var(--cds-huegrey-text-dark)]">Zoho Analytics</p>
+              <div className="flex items-center gap-[var(--cds-gap-tight)]">
+                <span className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-huegrey-text-default)]">zoho_analytics_connection</span>
+                <Copy size={14} className="text-[color:var(--cds-huegrey-text-default)] shrink-0" />
+              </div>
+              <div className="flex items-center justify-end gap-[var(--cds-gap-small)] pt-[var(--cds-space-4)]">
+                <CheckCircle2 size={16} className="text-[color:var(--cds-success-text-default)]" />
+                <span className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-success-text-default)]">Connected</span>
+              </div>
+            </Card>
+
+            {/* Custom-API card */}
+            <Card interactive className="flex flex-col gap-[var(--cds-space-12)] p-[var(--cds-space-24)] pb-[var(--cds-space-20)]">
+              <Avatar size="xl" shape="squircle">
+                <AvatarFallback color="avocado">CA</AvatarFallback>
+              </Avatar>
+              <p className="text-[length:var(--cds-text-h4)] leading-[var(--cds-leading-h4)] font-medium text-[color:var(--cds-huegrey-text-dark)]">After Trip Public</p>
+              <div className="flex items-center gap-[var(--cds-gap-tight)] flex-wrap">
+                <span className="text-[length:var(--cds-text-p2)] font-medium text-[color:var(--cds-primary-text-default)]">POST</span>
+                <span className="text-[length:var(--cds-text-p2)] text-[color:var(--cds-huegrey-text-default)]">zoho_analytics_connection</span>
+                <Copy size={14} className="text-[color:var(--cds-huegrey-text-default)] shrink-0" />
+              </div>
+              <div className="flex items-center justify-between pt-[var(--cds-space-4)]">
+                <div className="flex items-center gap-[var(--cds-gap-small)]">
+                  <Key size={16} className="text-[color:var(--cds-huegrey-text-default)]" />
+                  <span className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-huegrey-text-dark)]">Public Key</span>
+                </div>
+                <div className="flex items-center gap-[var(--cds-gap-small)]">
+                  <CheckCircle2 size={16} className="text-[color:var(--cds-success-text-default)]" />
+                  <span className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-success-text-default)]">Ready to invoke</span>
+                </div>
+              </div>
+            </Card>
+
+            {/* AR-Library card */}
+            <Card interactive className="flex flex-col gap-[var(--cds-space-16)] p-[var(--cds-space-24)] pb-[var(--cds-space-20)]">
+              <Avatar size="xl" shape="squircle">
+                <AvatarFallback color="russet">AR</AvatarFallback>
+              </Avatar>
+              <p className="text-[length:var(--cds-text-h4)] leading-[var(--cds-leading-h4)] font-medium text-[color:var(--cds-huegrey-text-dark)]">AR Library</p>
+              <div className="flex items-center justify-between pt-[var(--cds-space-4)]">
+                <div className="flex items-center gap-[var(--cds-gap-tight)]">
+                  <span className="flex items-center justify-center border border-[var(--cds-huegrey-border-fairish)] rounded-[var(--cds-radius-s)] px-[var(--cds-space-6)] py-[var(--cds-space-1)] text-[length:var(--cds-text-p2)] text-[color:var(--cds-huegrey-text-dark)] min-w-[21px]">3</span>
+                  <span className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-huegrey-text-dark)]">Elements</span>
+                </div>
+                <div className="flex items-center gap-[var(--cds-gap-small)]">
+                  <Eye size={16} className="text-[color:var(--cds-huegrey-text-default)]" />
+                  <span className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-huegrey-text-default)]">Mark-based</span>
+                </div>
+              </div>
+            </Card>
+
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Card Horizontal — list-row variant */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Card Horizontal</CardTitle>
+          <CardDescription>
+            Horizontal list-item card for microservice / resource catalog rows. Contains a
+            fixed illustration slot, title + description body, and a CTA that switches from
+            huegrey-bordered (default) to primary-fill on card hover.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col gap-[var(--cds-gap-default)]">
+            <CardHorizontal>
+              <CardHorizontalIcon>
+                <div className="flex items-center justify-center w-full h-full rounded-[var(--cds-radius-r)] bg-[var(--cds-primary-surface-subtle)]">
+                  <span className="text-[length:var(--cds-text-p3)] font-semibold text-[color:var(--cds-primary-text-default)]">AI</span>
+                </div>
+              </CardHorizontalIcon>
+              <CardHorizontalBody>
+                <CardHorizontalTitle>AI Models</CardHorizontalTitle>
+                <CardHorizontalDescription>Add AI capabilities to your apps</CardHorizontalDescription>
+              </CardHorizontalBody>
+              <CardHorizontalAction>Create</CardHorizontalAction>
+            </CardHorizontal>
+
+            <CardHorizontal>
+              <CardHorizontalIcon>
+                <div className="flex items-center justify-center w-full h-full rounded-[var(--cds-radius-r)] bg-[var(--cds-info-surface-subtle,#e8f1fe)]">
+                  <span className="text-[length:var(--cds-text-p3)] font-semibold text-[color:var(--cds-info-text-default,#0d4ef2)]">AR</span>
+                </div>
+              </CardHorizontalIcon>
+              <CardHorizontalBody>
+                <CardHorizontalTitle>AR Library</CardHorizontalTitle>
+                <CardHorizontalDescription>Augmented reality elements for your apps</CardHorizontalDescription>
+              </CardHorizontalBody>
+              <CardHorizontalAction>Create</CardHorizontalAction>
+            </CardHorizontal>
+
+            <CardHorizontal>
+              <CardHorizontalIcon>
+                <div className="flex items-center justify-center w-full h-full rounded-[var(--cds-radius-r)] bg-[var(--cds-success-surface-subtle)]">
+                  <span className="text-[length:var(--cds-text-p3)] font-semibold text-[color:var(--cds-success-text-default)]">DS</span>
+                </div>
+              </CardHorizontalIcon>
+              <CardHorizontalBody>
+                <CardHorizontalTitle>Connections</CardHorizontalTitle>
+                <CardHorizontalDescription>Connect to external services and APIs</CardHorizontalDescription>
+              </CardHorizontalBody>
+              <CardHorizontalAction>Create</CardHorizontalAction>
+            </CardHorizontal>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Card Operations — floated title-pill variant */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Card Operations</CardTitle>
+          <CardDescription>
+            "Floated title pill" card variant for Operations / settings landing pages. A rounded pill
+            (icon circle + title) is absolutely positioned at the top, partially overlapping the white
+            card body to create a tabbed appearance. The body contains a 2-column link grid.
+            Sub-components: CardOperations, CardOperationsPill, CardOperationsBody, CardOperationsGrid,
+            CardOperationsLink.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-3 gap-[var(--cds-space-20)]">
+            <CardOperations>
+              <CardOperationsPill
+                icon={<LayoutGrid size={16} color="var(--cds-huegrey-text-default)" />}
+                title="Applications"
+              />
+              <CardOperationsBody>
+                <CardOperationsGrid>
+                  {["Backup", "Audit Trail", "Email Management", "Domain Restriction",
+                    "API Management", "Blueprint Analytics", "Logs", "Publish"].map((label) => (
+                    <CardOperationsLink key={label}>{label}</CardOperationsLink>
+                  ))}
+                </CardOperationsGrid>
+              </CardOperationsBody>
+            </CardOperations>
+
+            <CardOperations>
+              <CardOperationsPill
+                icon={<BarChart3 size={16} color="var(--cds-huegrey-text-default)" />}
+                title="BI & Analytics"
+              />
+              <CardOperationsBody>
+                <CardOperationsGrid>
+                  {["Workspaces", "Data Sources", "Reports", "Dashboards",
+                    "Slideshows", "AI Assistant", "Permissions", "Shared Views"].map((label) => (
+                    <CardOperationsLink key={label}>{label}</CardOperationsLink>
+                  ))}
+                </CardOperationsGrid>
+              </CardOperationsBody>
+            </CardOperations>
+
+            <CardOperations>
+              <CardOperationsPill
+                icon={<GitFork size={16} color="var(--cds-huegrey-text-default)" />}
+                title="Integration Flow"
+              />
+              <CardOperationsBody>
+                <CardOperationsGrid>
+                  {["Flow Builder", "Triggers", "Actions", "Connectors",
+                    "Webhooks", "Schedules", "History", "Variables"].map((label) => (
+                    <CardOperationsLink key={label}>{label}</CardOperationsLink>
+                  ))}
+                </CardOperationsGrid>
+              </CardOperationsBody>
+            </CardOperations>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* CardBilling */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Billing Card</CardTitle>
+          <CardDescription>Compact stat card for Billing / Usage pages. Supports default (interactive hover) and disabled states.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-wrap gap-[var(--cds-gap-default)]">
+            {/* Default — hover to see blue border */}
+            <CardBilling className="w-[280px]">
+              <CardBillingIcon>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2ZM9 7h6M9 11h6M9 15h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+              </CardBillingIcon>
+              <CardBillingBody>
+                <CardBillingValue>236 / 7,500,000</CardBillingValue>
+                <CardBillingLabel>Records</CardBillingLabel>
+              </CardBillingBody>
+            </CardBilling>
+            {/* Disabled */}
+            <CardBilling disabled className="w-[280px]">
+              <CardBillingIcon disabled>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2ZM9 7h6M9 11h6M9 15h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+              </CardBillingIcon>
+              <CardBillingBody>
+                <CardBillingValue>0 / 500</CardBillingValue>
+                <CardBillingLabel>API Calls (disabled)</CardBillingLabel>
+              </CardBillingBody>
+            </CardBilling>
           </div>
         </CardContent>
       </Card>
@@ -388,6 +705,21 @@ export function OrganismsSection() {
             <Separator />
             <div className="flex justify-end gap-2"><Button variant="outline">Cancel</Button><Button>Submit</Button></div>
           </div>
+        </CardContent>
+      </Card>
+
+      {/* Full Page Dialog */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Full Page Dialog</CardTitle>
+          <CardDescription>
+            Full-screen dialog shell with a header (title, status, CTA, close), a 200px sidebar nav
+            (section groups or stepper progress), a scrollable content area, and an optional 240px
+            hints panel. Toggle between Section and Stepper nav styles, and the Hints panel, below.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FullPageDialogDemo />
         </CardContent>
       </Card>
     </div>

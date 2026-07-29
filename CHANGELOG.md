@@ -2,7 +2,32 @@
 
 > Generated from `src/ds-changelog.ts` — do not edit by hand. Run `npm run ds:changelog`.
 
-Current version: **v1.10.2**
+Current version: **v1.13.0**
+
+## v1.13.0 — 2026-07-29
+
+### Added
+- **FullPageDialog** — New FullPageDialog organism: full-screen dialog shell with a header (title, status, action CTA, close), a 200px sidebar nav (section groups or numbered stepper), a scrollable content area, and an optional 240px hints panel. Supports navStyle='section' | 'stepper' and showHints prop. Implemented from Figma node 9072:26985. _(ds-parity: FullPageDialog)_
+
+## v1.12.0 — 2026-07-28
+
+### Added
+- **Card** — New CardOperations variant: 'floated title pill' card for Operations / settings landing pages. A pill (icon circle + title) is absolutely positioned overlapping the white card body top. Body contains a 2-column link grid. Sub-components: CardOperations, CardOperationsPill, CardOperationsBody, CardOperationsGrid, CardOperationsLink. Implemented from Figma node 7301:5223. _(ds-parity: CardOperations)_
+
+## v1.11.0 — 2026-07-28
+
+### Added
+- **Card** — New CardHorizontal variant: horizontal list-item card with illustration slot, title+description body, and CTA action button. CTA transitions from huegrey-bordered (default) to primary-fill on card hover via Tailwind group-hover. Sub-components: CardHorizontal, CardHorizontalIcon, CardHorizontalBody, CardHorizontalTitle, CardHorizontalDescription, CardHorizontalAction. _(ds-parity: CardHorizontal)_
+
+## v1.10.4 — 2026-07-28
+
+### Fixed
+- **Card** — Figma parity audit: replaced rounded-xl with radius-l (10px); replaced ring-1/ring-foreground/10 shadow with border border-huegrey-border-fairish; bg-card replaced with bg-white; CardTitle updated to H5 tokens (20px/26px); CardDescription updated to P2 tokens (14px/18px); CardFooter uses huegrey-surface-subtle background and huegrey-border-low top border. Added interactive prop for hover-border-primary-default on clickable microservice cards.
+
+## v1.10.3 — 2026-07-28
+
+### Fixed
+- **AlertDialog** — Figma parity audit fixes: popup border-radius corrected from radius-r (6px) to radius-l (10px); footer now has rounded bottom corners; description used non-existent --cds-text-b2/leading-b2 tokens (corrected to --cds-text-p2/leading-p2); title colour token updated to --cds-huegrey-text-dark; description colour updated to --cds-huegrey-text-default; cancel button border uses --cds-huegrey-border-fairish (was neutral-border-default); icon-to-title gap corrected to 20px.
 
 ## v1.10.2 — 2026-07-14
 
