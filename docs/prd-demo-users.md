@@ -321,6 +321,27 @@ Enable admins and developers to test Creator apps as realistic demo personas in 
 
 ---
 
+## Creator Parity Check [REQUIRED — run before screen generation]
+
+> Queried via `http://zcem-u24-vm37:8001/api/ask` · `llm_provider: internal` · `product: creator`
+> Date: 2026-07-16
+
+| # | Feature area | Question asked | API result | Status | Notes |
+|---|---|---|---|---|---|
+| 1 | Demo / test users | "Does Zoho Creator support demo users or test users in environments?" | Empty answer | **Gap** | Fully new feature — no existing demo user pool concept in Creator help docs |
+| 2 | Portal users | "Can you add portal users to a Zoho Creator app and assign them permissions?" | Full answer + 3 sources | **Exists** | Sources: *Manage And Configure Portal Users*, *Manage And Configure Permissions*, *Add Permission In Portal*. The PRD extends this existing flow — screens must build on the established portal user UX pattern, not replace it |
+| 3 | Dev / Stage environments | "What are Creator environments and how do Dev and Stage environments work?" | Empty answer + 4 doc sources | **Partially exists** | Sources: *Understand Environments*, *Manage Development Environment*, *Manage Stage Environment*, *Environments*. The Environments concept exists but demo-user assignment to environments is new — design only the demo-user assignment layer, not the environment concept itself |
+| 4 | View As / persona switcher | "Does Zoho Creator have an environment switcher or View As feature to preview an app as a different user or role?" | Empty answer | **Gap** | Fully new — the API returned no answer. View As persona switcher (S11) must be designed from scratch |
+
+### Parity interpretation for screen generation
+
+- **Portal user management (FR-4 App Assignment, FR-5 Copy to Stage):** Creator already has a portal user flow. The App Assignment screens (S7–S10) should feel like a natural **extension** of the existing Settings → Portal Users flow — reuse familiar UX patterns (same table structure, same role/permission selector patterns).
+- **Environments (FR-5, FR-6):** Creator already has Dev/Stage environments. Do **not** redesign the environments concept — only design the demo-user assignment tab within the existing Environment Settings sheet.
+- **Demo user pool (FR-1, FR-2, FR-3):** Fully new. Design the Org Pool screens (S1–S6) from scratch.
+- **View As (FR-6, S11):** Fully new. Design from scratch, integrated into the app top bar.
+
+---
+
 ## 6. Screen Inventory [REQUIRED]
 
 | Screen ID | Name | Type | Entry Point | Description |

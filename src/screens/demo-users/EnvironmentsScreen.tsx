@@ -41,6 +41,7 @@ import {
   AlertDialog,
   AlertDialogContent,
   AlertDialogHeader,
+  AlertDialogIcon,
   AlertDialogTitle,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -652,6 +653,7 @@ function DemoUsersTab({ environment, appName }: { environment: Environment; appN
         <AlertDialog open={!!removeTarget} onOpenChange={o => !o && setRemoveTarget(null)}>
           <AlertDialogContent>
             <AlertDialogHeader>
+              <AlertDialogIcon />
               <AlertDialogTitle>Remove {removeTarget.displayName}?</AlertDialogTitle>
               <AlertDialogDescription>
                 This removes the demo user from <strong>{appName}</strong> in this environment.
@@ -662,7 +664,6 @@ function DemoUsersTab({ environment, appName }: { environment: Environment; appN
               <AlertDialogCancel onClick={() => setRemoveTarget(null)}>No, Keep</AlertDialogCancel>
               <AlertDialogAction
                 onClick={() => { handleRemove(removeTarget.id); setRemoveTarget(null) }}
-                style={{ background: "var(--cds-error-surface-default)" }}
               >
                 Yes, Remove
               </AlertDialogAction>

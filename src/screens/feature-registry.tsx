@@ -13,6 +13,14 @@
  */
 
 import * as React from "react"
+import MobileAppListScreen from "@/screens/mobile-deployment/MobileAppListScreen"
+import DeploymentCredentialsScreen from "@/screens/mobile-deployment/DeploymentCredentialsScreen"
+import DeployWizardChannelScreen from "@/screens/mobile-deployment/DeployWizardChannelScreen"
+import DeployWizardPlayScreen from "@/screens/mobile-deployment/DeployWizardPlayScreen"
+import DeployWizardFirebaseScreen from "@/screens/mobile-deployment/DeployWizardFirebaseScreen"
+import DeployInProgressScreen from "@/screens/mobile-deployment/DeployInProgressScreen"
+import DeploymentHistoryScreen from "@/screens/mobile-deployment/DeploymentHistoryScreen"
+import PlaySetupGuideScreen from "@/screens/mobile-deployment/PlaySetupGuideScreen"
 import DemoUsersOrgPoolScreen from "@/screens/demo-users/DemoUsersOrgPoolScreen"
 import DemoUsersAppAssignmentScreen from "@/screens/demo-users/DemoUsersAppAssignmentScreen"
 import DemoUsersViewAsScreen from "@/screens/demo-users/DemoUsersViewAsScreen"
@@ -42,6 +50,14 @@ import DemoUsersAppAssignmentScreenRaw from "@/screens/demo-users/DemoUsersAppAs
 import DemoUsersViewAsScreenRaw from "@/screens/demo-users/DemoUsersViewAsScreen.tsx?raw"
 import EnvironmentSettingsScreenRaw from "@/screens/demo-users/EnvironmentSettingsScreen.tsx?raw"
 import EnvironmentsScreenRaw from "@/screens/demo-users/EnvironmentsScreen.tsx?raw"
+import MobileAppListScreenRaw from "@/screens/mobile-deployment/MobileAppListScreen.tsx?raw"
+import DeploymentCredentialsScreenRaw from "@/screens/mobile-deployment/DeploymentCredentialsScreen.tsx?raw"
+import DeployWizardChannelScreenRaw from "@/screens/mobile-deployment/DeployWizardChannelScreen.tsx?raw"
+import DeployWizardPlayScreenRaw from "@/screens/mobile-deployment/DeployWizardPlayScreen.tsx?raw"
+import DeployWizardFirebaseScreenRaw from "@/screens/mobile-deployment/DeployWizardFirebaseScreen.tsx?raw"
+import DeployInProgressScreenRaw from "@/screens/mobile-deployment/DeployInProgressScreen.tsx?raw"
+import DeploymentHistoryScreenRaw from "@/screens/mobile-deployment/DeploymentHistoryScreen.tsx?raw"
+import PlaySetupGuideScreenRaw from "@/screens/mobile-deployment/PlaySetupGuideScreen.tsx?raw"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -208,6 +224,158 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
   },
 
   // ── Add new features below this line ─────────────────────────────────────
+
+  {
+    id: "004",
+    name: "Mobile App Deployment (Post-CodeSign Distribution)",
+    prdRef: "#004",
+    version: "v1.0",
+    status: "draft",
+    owner: "rajendra.prasad",
+    lastUpdated: "2026-07-22",
+    overview: {
+      tagline: "Go from signed AAB to Google Play Internal Testing in under 10 minutes — without leaving Zoho Creator.",
+      problemStatement: "Zoho Creator's codesign pipeline stops at artifact generation. Customers must manually download signed APK/AAB/IPA files and upload them to Google Play Console or App Store Connect — repeating this error-prone process on every release with no visibility inside Creator.",
+      painPoints: [
+        "Manual download → re-upload cycle for every release to Play Store / App Store",
+        "No deployment history — no way to know which build was distributed where",
+        "Tester distribution via Firebase requires separate tooling outside Creator",
+        "Store credentials managed ad-hoc without security controls",
+        "No guided recovery path when Play Console API errors occur (e.g. draft-app constraint)",
+      ],
+      solutionStatement: "A Deployment Hub built on top of codesign: connect store credentials once, pick a channel (Google Play, Firebase, MDM, ad-hoc), configure the release, and monitor async job progress — all inside the Admin Dashboard Mobile hub.",
+      improvements: [
+        "Google Play deployment: upload AAB to Internal / Closed / Beta / Production tracks with staged rollout",
+        "Firebase App Distribution: distribute to tester emails or group aliases in one step",
+        "Deployment history: full audit log per signed app — channel, version, status, store links",
+        "Secure credential vault: EAR-encrypted service account JSON + re-validate on demand",
+        "First-time Play guide: step-by-step checklist to resolve draft-app constraint",
+      ],
+      navigationFlow: `Admin Dashboard → Mobile → Code Sign tab → row action Deploy
+  └─ [S-02: Deploy Wizard — Channel Select]
+       ├─ Google Play → [S-03: Play Config] → [S-05: In Progress] → [S-06: History]
+       │    └─ Draft app error → [S-07: First-Time Play Setup Guide]
+       └─ Firebase → [S-04: Firebase Config] → [S-05: In Progress] → [S-06: History]
+
+Admin Dashboard → Mobile → Settings → Store Accounts
+  └─ [S-01: Deployment Credentials]`,
+      screenFlow: [
+        { id: "mobile-app-list",          label: "Mobile Hub (Entry)",   type: "entry",  leadsTo: ["deploy-wizard-channel", "deployment-credentials", "deployment-history"] },
+        { id: "deployment-credentials",   label: "Store Credentials",   type: "entry",  leadsTo: ["deploy-wizard-channel"] },
+        { id: "deploy-wizard-channel",    label: "Channel Select",       type: "entry",  leadsTo: ["deploy-wizard-play", "deploy-wizard-firebase"] },
+        { id: "deploy-wizard-play",       label: "Play Config",          type: "detail", leadsTo: ["deploy-in-progress", "play-setup-guide"] },
+        { id: "deploy-wizard-firebase",   label: "Firebase Config",      type: "detail", leadsTo: ["deploy-in-progress"] },
+        { id: "deploy-in-progress",       label: "In Progress",          type: "detail", leadsTo: ["deployment-history"] },
+        { id: "deployment-history",       label: "Deployment History",   type: "detail", leadsTo: ["deploy-wizard-channel"] },
+        { id: "play-setup-guide",         label: "First-Time Play Guide", type: "detail", leadsTo: ["deploy-wizard-play"] },
+      ],
+    },
+    screens: [
+      {
+        id: "mobile-app-list",
+        name: "Mobile Hub — Entry Point",
+        factory: () => <MobileAppListScreen />,
+        sourcePath: "src/screens/mobile-deployment/MobileAppListScreen.tsx",
+        destPath: "features/004-mobile-deployment/screens/MobileAppListScreen.tsx",
+        rawSource: MobileAppListScreenRaw,
+        customComponents: [
+          { element: "absolutely-positioned <Search> icon over <Input>", reason: "oversight", dsAlternative: "InputPrefix with prefixIcon", parity: undefined },
+          { element: "inline SVG Apple/Android icons (no DS icon system)", reason: "DS component not available", dsAlternative: "DS Icon component if added", parity: "P3" },
+        ],
+      },
+      {
+        id: "deployment-credentials",
+        name: "Store Credentials (S-01)",
+        factory: () => <DeploymentCredentialsScreen />,
+        sourcePath: "src/screens/mobile-deployment/DeploymentCredentialsScreen.tsx",
+        destPath: "features/004-mobile-deployment/screens/DeploymentCredentialsScreen.tsx",
+        rawSource: DeploymentCredentialsScreenRaw,
+        customComponents: [
+          { element: "raw <button> credential type selector cards (step 1)", reason: "DS component not available", dsAlternative: "RadioCard inside RadioGroup", parity: undefined },
+          { element: "raw <Textarea> for JSON/p8 paste (no FileUpload)", reason: "DS component not available", dsAlternative: "FileUpload", parity: "P2" },
+          { element: "raw <p> empty state", reason: "DS component not available", dsAlternative: "EmptyState", parity: "P1" },
+        ],
+      },
+      {
+        id: "deploy-wizard-channel",
+        name: "Deploy Wizard — Channel Select (S-02)",
+        factory: () => <DeployWizardChannelScreen />,
+        sourcePath: "src/screens/mobile-deployment/DeployWizardChannelScreen.tsx",
+        destPath: "features/004-mobile-deployment/screens/DeployWizardChannelScreen.tsx",
+        rawSource: DeployWizardChannelScreenRaw,
+      },
+      {
+        id: "deploy-wizard-play",
+        name: "Deploy Wizard — Google Play Config (S-03)",
+        factory: () => <DeployWizardPlayScreen />,
+        sourcePath: "src/screens/mobile-deployment/DeployWizardPlayScreen.tsx",
+        destPath: "features/004-mobile-deployment/screens/DeployWizardPlayScreen.tsx",
+        rawSource: DeployWizardPlayScreenRaw,
+        customComponents: [
+          { element: "inline error <p> on release notes field", reason: "DS component not available", dsAlternative: "InlineAlert", parity: "P1" },
+        ],
+      },
+      {
+        id: "deploy-wizard-firebase",
+        name: "Deploy Wizard — Firebase Config (S-04)",
+        factory: () => <DeployWizardFirebaseScreen />,
+        sourcePath: "src/screens/mobile-deployment/DeployWizardFirebaseScreen.tsx",
+        destPath: "features/004-mobile-deployment/screens/DeployWizardFirebaseScreen.tsx",
+        rawSource: DeployWizardFirebaseScreenRaw,
+        customComponents: [
+          { element: "inline error <p> on testers field", reason: "DS component not available", dsAlternative: "InlineAlert", parity: "P1" },
+        ],
+      },
+      {
+        id: "deploy-in-progress",
+        name: "Deployment In Progress (S-05)",
+        factory: () => <DeployInProgressScreen />,
+        sourcePath: "src/screens/mobile-deployment/DeployInProgressScreen.tsx",
+        destPath: "features/004-mobile-deployment/screens/DeployInProgressScreen.tsx",
+        rawSource: DeployInProgressScreenRaw,
+        customComponents: [
+          { element: "inline <style> spin keyframe for Loader2 animation", reason: "component doesn't fit", dsAlternative: "Spinner DS component once available", parity: "P1" },
+        ],
+      },
+      {
+        id: "deployment-history",
+        name: "Deployment History (S-06)",
+        factory: () => <DeploymentHistoryScreen />,
+        sourcePath: "src/screens/mobile-deployment/DeploymentHistoryScreen.tsx",
+        destPath: "features/004-mobile-deployment/screens/DeploymentHistoryScreen.tsx",
+        rawSource: DeploymentHistoryScreenRaw,
+        customComponents: [
+          { element: "raw <p> empty state", reason: "DS component not available", dsAlternative: "EmptyState", parity: "P1" },
+          { element: "raw <p> pagination placeholder", reason: "DS component not available", dsAlternative: "Pagination", parity: "P1" },
+        ],
+      },
+      {
+        id: "play-setup-guide",
+        name: "First-Time Play Setup Guide (S-07)",
+        factory: () => <PlaySetupGuideScreen />,
+        sourcePath: "src/screens/mobile-deployment/PlaySetupGuideScreen.tsx",
+        destPath: "features/004-mobile-deployment/screens/PlaySetupGuideScreen.tsx",
+        rawSource: PlaySetupGuideScreenRaw,
+      },
+    ],
+    versionHistory: [
+      {
+        version: "v1.0",
+        date: "2026-07-22",
+        notes: [
+          "Initial generation from PRD §9.4 screen inventory",
+          "S-01 Store Credentials: 3-step add wizard (type → upload JSON → validate), credentials table with re-validate + delete",
+          "S-02 Channel Select: RadioCard picker for Play / Firebase / MDM / Ad-hoc with credential-gate",
+          "S-03 Play Config: track selector, staged rollout slider (production), release notes, submit-as-draft toggle, production AlertDialog confirm",
+          "S-04 Firebase Config: TagInput tester emails, release notes, deployment summary card",
+          "S-05 In Progress: 4-step progress list with simulated async state machine (Queued→Upload→Process→Confirm), success/failed outcomes",
+          "S-06 History: full deployment table (channel, track, version, status badges, retry on failed, Console links)",
+          "S-07 First-Time Play Guide: 6-step interactive checklist, downloadable AAB, Play Console link, retry gated on completion",
+          "Component gaps flagged: EmptyState (×2), Pagination (×1), InlineAlert (×2), FileUpload (×1), Spinner (×1)",
+        ],
+      },
+    ],
+  },
 
   {
     id: "003",

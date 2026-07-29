@@ -60,9 +60,9 @@ Never compose raw `<div>`, `<button>`, `<input>`, or `<span>` elements when a DS
 
 | Component | Import name | Purpose |
 |---|---|---|
-| Card | `Card`, `CardHeader`, `CardTitle`, `CardContent`, `CardFooter` | Content containers |
+| Card | `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`, `CardAction` | Content containers — add `interactive` prop for hover-border-blue on clickable cards |
 | Dialog | `Dialog`, `DialogTrigger`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogClose` | Modal dialogs |
-| AlertDialog | `AlertDialog`, `AlertDialogTrigger`, `AlertDialogContent`, `AlertDialogAction`, `AlertDialogCancel` | Destructive confirmations |
+| AlertDialog | `AlertDialog`, `AlertDialogTrigger`, `AlertDialogContent`, `AlertDialogHeader`, `AlertDialogIcon`, `AlertDialogTitle`, `AlertDialogDescription`, `AlertDialogFooter`, `AlertDialogAction`, `AlertDialogCancel` | Destructive confirmations — always include `<AlertDialogIcon />` as first child of `AlertDialogHeader`; set `variant` on `AlertDialogContent` for semantic colour |
 | Sheet | `Sheet`, `SheetTrigger`, `SheetContent`, `SheetHeader`, `SheetTitle` | Slide-in side panels |
 | Table | `Table`, `TableHeader`, `TableBody`, `TableRow`, `TableHead`, `TableCell` | Tabular data |
 | TopBar | `TopBar` | Global app header — always present |
@@ -82,6 +82,7 @@ Never compose raw `<div>`, `<button>`, `<input>`, or `<span>` elements when a DS
 | Input with both sides | `InputAffixed` | two raw `<span>` flanking an `<input>` |
 | Progress/capacity bar | `Progress` | raw `<div>` with fixed height and inline width |
 | Stat/capacity card | `Card` + `CardContent` | raw `<div>` with manual border |
+| Clickable feature/catalog card | `Card` with `interactive` prop | custom `<div>` with manual hover styles |
 | Mutually exclusive choice as card | `RadioCard` inside `RadioGroup` | custom card `<div>` |
 | Dismissible chip/pill/tag | `Tag` | hand-styled `<span>` |
 | Multi-value chip input | `TagInput` | raw `<input>` + custom chip divs |

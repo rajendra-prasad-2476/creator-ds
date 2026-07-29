@@ -117,6 +117,26 @@ function SelectContent({
     }
   }, [])
 
+  // When the search input is focused, capture keydown events at the document
+  // level so that any parent focus-trap (e.g. Sheet/Dialog) cannot swallow
+  // printable characters before they reach this input.
+  React.useEffect(() => {
+    if (!searchable) return
+    function handleCapture(e: KeyboardEvent) {
+      if (
+        document.activeElement === searchRef.current &&
+        e.key !== "Escape" &&
+        e.key !== "Tab"
+      ) {
+        e.stopImmediatePropagation()
+      }
+    }
+    document.addEventListener("keydown", handleCapture, { capture: true })
+    return () => {
+      document.removeEventListener("keydown", handleCapture, { capture: true })
+    }
+  }, [searchable])
+
   return (
     <SelectSearchContext.Provider value={query}>
       <SelectPrimitive.Portal>
@@ -160,7 +180,17 @@ function SelectContent({
                     onKeyDown={e => {
                       // Stop the Select from capturing keystrokes for typeahead/navigation
                       // (only allow Escape to bubble so the popup can close)
-                      if (e.key !== "Escape") e.stopPropagation()
+                      if (e.key !== "Escape") {
+                        e.stopPropagation()
+                        e.nativeEvent.stopImmediatePropagation()
+                      }
+                    }}
+                    onKeyDownCapture={e => {
+                      // Capture phase: prevent the Select / Dialog focus-trap from
+                      // swallowing printable characters before they reach this input
+                      if (e.key !== "Escape" && e.key !== "Tab") {
+                        e.stopPropagation()
+                      }
                     }}
                     placeholder={searchPlaceholder}
                     className={cn(

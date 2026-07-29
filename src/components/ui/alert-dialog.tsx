@@ -74,7 +74,7 @@ function AlertDialogContent({
           data-slot="alert-dialog-content"
           data-variant={variant}
           className={cn(
-            "group/alert-dialog-content fixed top-1/2 left-1/2 z-[201] flex w-full max-w-[500px] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-[var(--cds-radius-r)] border border-[var(--cds-neutral-border-low)] bg-white text-foreground shadow-lg duration-100 outline-none data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+            "group/alert-dialog-content fixed top-1/2 left-1/2 z-[201] flex w-full max-w-[500px] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-[var(--cds-radius-l)] border border-[var(--cds-neutral-border-low)] bg-white text-foreground shadow-lg duration-100 outline-none data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
             className
           )}
           {...props}
@@ -105,7 +105,7 @@ function AlertDialogHeader({
 
 /* ─── Status Icon / Media ─── */
 const statusIconVariants = cva(
-  "mb-1 flex items-center justify-center",
+  "mb-1.5 flex items-center justify-center",
   {
     variants: {
       variant: {
@@ -214,7 +214,7 @@ function AlertDialogTitle({
     <AlertDialogPrimitive.Title
       data-slot="alert-dialog-title"
       className={cn(
-        "text-[var(--cds-text-h5)] font-medium leading-[var(--cds-leading-h5)] text-[var(--cds-neutral-text-bold)]",
+        "text-[length:var(--cds-text-h5)] font-medium leading-[var(--cds-leading-h5)] text-[color:var(--cds-huegrey-text-dark)]",
         className
       )}
       {...props}
@@ -231,7 +231,7 @@ function AlertDialogDescription({
     <AlertDialogPrimitive.Description
       data-slot="alert-dialog-description"
       className={cn(
-        "text-[var(--cds-text-b2)] leading-[var(--cds-leading-b2)] text-[var(--cds-neutral-text-default)]",
+        "text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-huegrey-text-default)]",
         className
       )}
       {...props}
@@ -248,7 +248,7 @@ function AlertDialogFooter({
     <div
       data-slot="alert-dialog-footer"
       className={cn(
-        "flex items-center justify-center gap-2.5 border-t border-[var(--cds-neutral-border-low)] bg-white px-5 py-3",
+        "flex items-center justify-center gap-2.5 border-t border-[var(--cds-neutral-border-low)] bg-white px-5 py-3 rounded-b-[var(--cds-radius-l)]",
         className
       )}
       {...props}
@@ -305,9 +305,11 @@ function AlertDialogCancel({
       data-slot="alert-dialog-cancel"
       render={
         <Button
-          variant="outline"
+          variant="ghost"
           className={cn(
-            "min-w-[117px] rounded-[var(--cds-radius-s)] border-[var(--cds-neutral-border-default)]",
+            "min-w-[117px] rounded-[var(--cds-radius-s)]",
+            "!border-[var(--cds-huegrey-border-minimal)] !text-[var(--cds-huegrey-text-default)]",
+            "hover:!bg-[var(--cds-huegrey-surface-subtle)] hover:!border-[var(--cds-huegrey-border-minimal-hover)] hover:!text-[var(--cds-huegrey-text-default-hover)]",
             className
           )}
         />

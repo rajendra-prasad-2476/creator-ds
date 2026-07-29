@@ -296,13 +296,7 @@ function DeleteKeyDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={onCancel}>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            onClick={onConfirm}
-            style={{
-              background: "var(--cds-error-surface-default)",
-              color: "var(--cds-white)",
-            }}
-          >
+          <AlertDialogAction onClick={onConfirm}>
             Delete Key
           </AlertDialogAction>
         </AlertDialogFooter>

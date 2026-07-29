@@ -5,20 +5,30 @@
  * Structure:
  *   TopBar + LeftNav shell
  *   ├── Page header  — title · description · optional search
- *   └── Category cards — each card has a tab-style header + a 4-column link grid
+ *   └── Category cards — each category rendered as a CardOperations card
+ *       (floated title pill + 2-column link grid)
  *
  * Slots to customise:
  *   title          — page heading (e.g. "Operations")
  *   description    — subheading text
- *   categories     — array of LinkCategory (heading + links)
+ *   categories     — array of LinkCategory (heading + optional icon + links)
  *   showSearch     — whether to show a search input (default true)
+ *   cardColumns    — number of cards per row (default 3)
  */
 
 import * as React from "react"
 import { TopBar } from "@/components/ui/top-bar"
 import { LeftNav } from "@/components/ui/left-nav"
 import { Input } from "@/components/ui/input"
-import { Search } from "lucide-react"
+import { Search, LayoutGrid } from "lucide-react"
+import {
+  CardOperations,
+  CardOperationsPill,
+  CardOperationsBody,
+  CardOperationsGrid,
+  CardOperationsLink,
+} from "@/components/ui/card"
+import { cn } from "@/lib/utils"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -33,7 +43,12 @@ export interface LinkCategory {
   heading: string
   /** All the links inside this category */
   links: LinkCategoryLink[]
-  /** Number of columns to display links in (default 4) */
+  /**
+   * Optional icon for the pill header.
+   * Defaults to a small grid icon if omitted.
+   */
+  icon?: React.ReactNode
+  /** @deprecated Column count is no longer used — CardOperations always renders a 2-col grid */
   columns?: number
 }
 
@@ -45,6 +60,8 @@ export interface LinkCategoryTemplateProps {
   onSearch?: (query: string) => void
   /** Left-nav item id to highlight as active (e.g. "operations") */
   activeNavId?: string
+  /** Number of category cards per row (default 3) */
+  cardColumns?: 1 | 2 | 3 | 4
 }
 
 // ─── Default data ─────────────────────────────────────────────────────────────
@@ -52,7 +69,6 @@ export interface LinkCategoryTemplateProps {
 const DEFAULT_CATEGORIES: LinkCategory[] = [
   {
     heading: "Applications",
-    columns: 4,
     links: [
       { label: "Backup" },
       { label: "Blueprint Analytics" },
@@ -74,94 +90,45 @@ const DEFAULT_CATEGORIES: LinkCategory[] = [
   },
 ]
 
+// ─── Fallback icon ────────────────────────────────────────────────────────────
+
+function DefaultCategoryIcon() {
+  return <LayoutGrid size={16} color="var(--cds-huegrey-text-default)" />
+}
+
 // ─── CategoryCard ─────────────────────────────────────────────────────────────
 
 function CategoryCard({ category }: { category: LinkCategory }) {
-  const cols = category.columns ?? 4
-
   return (
-    <div
-      style={{
-        borderRadius: "var(--cds-radius-r)",
-        border: "1px solid var(--border)",
-        backgroundColor: "var(--cds-white)",
-        overflow: "hidden",
-      }}
-    >
-      {/* Category heading row — tab-style */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "var(--cds-gap-small)",
-          padding: "var(--cds-space-12) var(--cds-padding-section-h)",
-          borderBottom: "1px solid var(--border)",
-          backgroundColor: "var(--cds-huegrey-surface-subtle)",
-        }}
-      >
-        {/* small grid icon */}
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-          <rect x="0" y="0" width="6" height="6" rx="1" fill="var(--cds-huegrey-text-default)" />
-          <rect x="8" y="0" width="6" height="6" rx="1" fill="var(--cds-huegrey-text-default)" />
-          <rect x="0" y="8" width="6" height="6" rx="1" fill="var(--cds-huegrey-text-default)" />
-          <rect x="8" y="8" width="6" height="6" rx="1" fill="var(--cds-huegrey-text-default)" />
-        </svg>
-        <span
-          style={{
-            fontSize: "var(--cds-text-p2)",
-            lineHeight: "var(--cds-leading-p2)",
-            fontWeight: 600,
-            color: "var(--cds-huegrey-text-dark)",
-          }}
-        >
-          {category.heading}
-        </span>
-      </div>
-
-      {/* Link grid */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${cols}, 1fr)`,
-          gap: 0,
-          padding: "var(--cds-space-16) var(--cds-padding-section-h)",
-          rowGap: "var(--cds-space-8)",
-        }}
-      >
-        {category.links.map((link) => (
-          <a
-            key={link.label}
-            href={link.href ?? "#"}
-            onClick={
-              link.onClick
-                ? (e) => {
-                    e.preventDefault()
-                    link.onClick?.()
-                  }
-                : undefined
-            }
-            style={{
-              fontSize: "var(--cds-text-p2)",
-              lineHeight: "var(--cds-leading-p2)",
-              color: "var(--cds-huegrey-text-dark)",
-              textDecoration: "none",
-              padding: "var(--cds-space-4) 0",
-            }}
-            onMouseEnter={(e) => {
-              ;(e.currentTarget as HTMLAnchorElement).style.color =
-                "var(--cds-primary-text-default)"
-            }}
-            onMouseLeave={(e) => {
-              ;(e.currentTarget as HTMLAnchorElement).style.color =
-                "var(--cds-huegrey-text-dark)"
-            }}
-          >
-            {link.label}
-          </a>
-        ))}
-      </div>
-    </div>
+    <CardOperations>
+      <CardOperationsPill
+        icon={category.icon ?? <DefaultCategoryIcon />}
+        title={category.heading}
+      />
+      <CardOperationsBody>
+        <CardOperationsGrid>
+          {category.links.map((link) => (
+            <CardOperationsLink
+              key={link.label}
+              href={link.href}
+              onClick={link.onClick}
+            >
+              {link.label}
+            </CardOperationsLink>
+          ))}
+        </CardOperationsGrid>
+      </CardOperationsBody>
+    </CardOperations>
   )
+}
+
+// ─── Column map ───────────────────────────────────────────────────────────────
+
+const COLS_CLASS: Record<number, string> = {
+  1: "grid-cols-1",
+  2: "grid-cols-2",
+  3: "grid-cols-3",
+  4: "grid-cols-4",
 }
 
 // ─── Template ─────────────────────────────────────────────────────────────────
@@ -173,6 +140,7 @@ export default function LinkCategoryTemplate({
   showSearch = true,
   onSearch,
   activeNavId,
+  cardColumns = 3,
 }: LinkCategoryTemplateProps) {
   const [search, setSearch] = React.useState("")
 
@@ -186,45 +154,28 @@ export default function LinkCategoryTemplate({
       <TopBar />
       <div className="flex flex-1 overflow-hidden">
         <LeftNav activeId={activeNavId} />
-        <main
-          className="flex-1 overflow-y-auto"
-          style={{
-            padding: "var(--cds-padding-section-v) var(--cds-padding-section-h)",
-          }}
-        >
+        <main className="flex-1 overflow-y-auto px-[var(--cds-padding-section-h)] py-[var(--cds-padding-section-v)]">
+
           {/* ── Page header ── */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              justifyContent: "space-between",
-              gap: "var(--cds-gap-default)",
-              marginBottom: "var(--cds-space-24)",
-              flexWrap: "wrap",
-            }}
-          >
-            <div style={{ display: "flex", flexDirection: "column", gap: "var(--cds-gap-tight)" }}>
-              <h1
-                style={{
-                  fontSize: "var(--cds-text-p1)",
-                  lineHeight: "var(--cds-leading-p1)",
-                  color: "var(--cds-huegrey-text-dark)",
-                  fontWeight: 500,
-                  margin: 0,
-                }}
-              >
+          <div className={cn(
+            "flex items-start justify-between flex-wrap",
+            "gap-[var(--cds-gap-default)]",
+            "mb-[var(--cds-space-32)]"
+          )}>
+            <div className="flex flex-col gap-[var(--cds-gap-tight)]">
+              <h1 className={cn(
+                "m-0 font-medium",
+                "text-[length:var(--cds-text-p1)] leading-[var(--cds-leading-p1)]",
+                "text-[color:var(--cds-huegrey-text-dark)]"
+              )}>
                 {title}
               </h1>
               {description && (
-                <p
-                  style={{
-                    fontSize: "var(--cds-text-p2)",
-                    lineHeight: "var(--cds-leading-p2)",
-                    color: "var(--cds-huegrey-text-default)",
-                    maxWidth: 700,
-                    margin: 0,
-                  }}
-                >
+                <p className={cn(
+                  "m-0 max-w-[700px]",
+                  "text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)]",
+                  "text-[color:var(--cds-huegrey-text-default)]"
+                )}>
                   {description}
                 </p>
               )}
@@ -232,40 +183,28 @@ export default function LinkCategoryTemplate({
 
             {/* Search */}
             {showSearch && (
-              <div style={{ position: "relative", flexShrink: 0 }}>
+              <div className="relative shrink-0">
                 <Search
                   size={14}
-                  style={{
-                    position: "absolute",
-                    left: 10,
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    color: "var(--cds-huegrey-text-default)",
-                    pointerEvents: "none",
-                  }}
+                  className="absolute left-[10px] top-1/2 -translate-y-1/2 pointer-events-none text-[color:var(--cds-huegrey-text-default)]"
                 />
                 <Input
                   value={search}
                   onChange={handleSearch}
                   placeholder="Search"
-                  style={{ paddingLeft: 30, width: 220 }}
+                  className="pl-[30px] w-[220px]"
                 />
               </div>
             )}
           </div>
 
-          {/* ── Category cards ── */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "var(--cds-space-16)",
-            }}
-          >
+          {/* ── Category cards grid ── */}
+          <div className={cn("grid gap-[var(--cds-space-20)]", COLS_CLASS[cardColumns])}>
             {categories.map((cat) => (
               <CategoryCard key={cat.heading} category={cat} />
             ))}
           </div>
+
         </main>
       </div>
     </div>

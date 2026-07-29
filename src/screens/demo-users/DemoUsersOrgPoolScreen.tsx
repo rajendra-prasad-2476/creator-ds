@@ -48,6 +48,7 @@ import {
   AlertDialog,
   AlertDialogContent,
   AlertDialogHeader,
+  AlertDialogIcon,
   AlertDialogTitle,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -686,6 +687,7 @@ function AssignedAppsSheet({ user, apps, onClose, onRemove }: AssignedAppsSheetP
       <AlertDialog open={!!removeTarget} onOpenChange={(o) => !o && setRemoveTarget(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
+            <AlertDialogIcon />
             <AlertDialogTitle>Remove access from {removeTarget?.appName}?</AlertDialogTitle>
             <AlertDialogDescription>
               {user.displayName} will lose access to <strong>{removeTarget?.appName}</strong> ({removeTarget?.environment}). The identity remains in the org pool and can be reassigned. This cannot be undone.
@@ -700,7 +702,6 @@ function AssignedAppsSheet({ user, apps, onClose, onRemove }: AssignedAppsSheetP
                   setRemoveTarget(null)
                 }
               }}
-              style={{ background: "var(--cds-error-surface-default)" }}
             >
               Yes, Remove Access
             </AlertDialogAction>
@@ -725,6 +726,7 @@ function DeactivateDialog({ user, onClose, onConfirm }: DeactivateDialogProps) {
     <AlertDialog open={!!user} onOpenChange={(o) => !o && onClose()}>
       <AlertDialogContent>
         <AlertDialogHeader>
+          <AlertDialogIcon />
           <AlertDialogTitle>Deactivate {user.displayName}?</AlertDialogTitle>
           <AlertDialogDescription>
             {user.assignedApps > 0
@@ -734,7 +736,7 @@ function DeactivateDialog({ user, onClose, onConfirm }: DeactivateDialogProps) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={onClose}>Keep Active</AlertDialogCancel>
-          <AlertDialogAction onClick={() => { onConfirm(user.id); onClose() }} style={{ background: "var(--cds-error-surface-default, #CC1914)" }}>
+          <AlertDialogAction onClick={() => { onConfirm(user.id); onClose() }}>
             Deactivate
           </AlertDialogAction>
         </AlertDialogFooter>

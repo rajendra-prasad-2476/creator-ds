@@ -38,6 +38,7 @@ import {
   AlertDialog,
   AlertDialogContent,
   AlertDialogHeader,
+  AlertDialogIcon,
   AlertDialogTitle,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -333,6 +334,7 @@ function RemoveDialog({ assignment, onClose, onConfirm }: RemoveDialogProps) {
     <AlertDialog open={!!assignment} onOpenChange={(o) => !o && onClose()}>
       <AlertDialogContent>
         <AlertDialogHeader>
+          <AlertDialogIcon />
           <AlertDialogTitle>Remove {assignment.displayName}?</AlertDialogTitle>
           <AlertDialogDescription>
             This removes the demo user from this app and environment. The identity remains in the org pool and can be reassigned. This action cannot be undone.
@@ -342,7 +344,6 @@ function RemoveDialog({ assignment, onClose, onConfirm }: RemoveDialogProps) {
           <AlertDialogCancel onClick={onClose}>No, Keep</AlertDialogCancel>
           <AlertDialogAction
             onClick={() => { onConfirm(assignment.id); onClose() }}
-            style={{ background: "var(--cds-error-surface-default)" }}
           >
             Yes, Remove
           </AlertDialogAction>
