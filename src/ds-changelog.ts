@@ -33,10 +33,23 @@ export interface DSChangeEntry {
 }
 
 /** Current DS version — surfaced as the version badge in the showcase TopBar. */
-export const DS_VERSION = "1.15.0"
+export const DS_VERSION = "1.16.0"
 
 /** Newest entry first. */
 export const DS_CHANGELOG: DSChangeEntry[] = [
+  {
+    version: "1.16.0",
+    date: "2026-07-30",
+    changes: [
+      {
+        type: "added",
+        scope: "BuilderShell",
+        summary:
+          "New BuilderShell organism + sub-components for the app builder layout. Includes: BuilderTopBar (dark top bar with app icon tile, Design/Workflow/Settings centre tabs, Upgrade pill, Access CTA), BuilderLeftNav (dark collapsible entity tree with form/report/page/workflow/stage item types, user row), BuilderViewportToolbar (Desktop/Tablet/Phone device switcher + theme/layout tool icons), and BuilderShell (full layout shell composing all zones — left nav auto-collapses on tablet/phone viewport). Right-hand PropertiesPanel is a named slot (propertiesPanel + propertiesPanelTitle props).",
+        parity: "BuilderShell",
+      },
+    ],
+  },
   {
     version: "1.15.0",
     date: "2026-07-30",

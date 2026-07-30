@@ -271,6 +271,9 @@ Never put page-level navigation inside `<main>`. Never skip `TopBar` or `LeftNav
 | `TopBar` | `top-bar.tsx` | Global app header (always present) |
 | `LeftNav` | `left-nav.tsx` | Global sidebar navigation (always present) |
 | `FullPageDialog` | `full-page-dialog.tsx` | Full-screen dialog shell with header, sidebar nav (section or stepper), content area, and optional hints panel |
+| `BuilderTopBar` | `builder-top-bar.tsx` | App builder top bar — dark nav with coloured app icon tile, Design/Workflow/Settings centre tabs, Upgrade pill, Access CTA |
+| `BuilderLeftNav` | `builder-left-nav.tsx` | App builder entity tree sidebar — dark collapsible nav with form/report/page/workflow/stage items and user row |
+| `BuilderShell` | `builder-shell.tsx` | Full app builder layout shell — composes BuilderTopBar + BuilderLeftNav + viewport toolbar (Desktop/Tablet/Phone) + canvas + right properties panel slot |
 | `List` | `list.tsx` | Vertical list of data rows — optional checkbox, avatar, title + badge, meta text, action CTA, remove |
 
 ---
@@ -399,22 +402,109 @@ Typography (font-size / line-height)
 Before composing a screen from scratch, **always check whether a template already covers the layout**.
 Templates live in `src/templates/` and export typed props for every slot.
 
-| Template file | Pattern | Use when |
-|---|---|---|
-| `CardGridTemplate` | Title + search/filter bar + responsive tile grid | App galleries, solution lists, any browsable card collection |
-| `TabbedSectionsTemplate` | Page header + tabs + grouped content cards per tab | Multi-category resource pages (Microservices, Marketplace, etc.) |
-| `SplitPanelTemplate` | Search list + two status columns | Deployment / environment views with multi-stage pipelines |
-| `LinkCategoryTemplate` | Page header + grouped navigation link cards | Settings / Operations landing pages with named sub-sections |
-| `BreadcrumbDetailTemplate` | Breadcrumb + page header + tabs with 3 content variants (card-grid \| empty \| table) | Any inner detail or sub-section page reached via navigation |
-| `BillingTemplate` | Page header + tabs + plan summary card + stat tile grid | Subscription, billing, usage, or plan management pages |
+---
 
-### How to use a template
+### 6.1 Shell decision — pick the right shell first
+
+Every screen belongs to exactly one shell. Choose the shell before choosing a template.
+
+| Shell | Layout | When |
+|---|---|---|
+| **Dashboard shell** | `TopBar` + `LeftNav` + scrollable content | All admin / management screens (Solutions, Microservices, Environments, Operations, Settings, Billing, etc.) |
+| **FullPageDialog shell** | Full-screen overlay — header bar + sidebar nav + content + optional hints panel | Multi-step wizards and multi-section configuration flows (no `LeftNav`) |
+| **Builder shell** | `BuilderTopBar` + optional `BuilderLeftNav` + `BuilderViewportToolbar` + canvas + optional properties panel | App / form / report builder canvas. Use `BuilderShell` from `@/components/ui/builder-shell`. Left nav auto-collapses on tablet/phone viewport. Right properties panel is a named slot. |
+
+---
+
+### 6.2 Template categories (dashboard shell only)
+
+Templates are grouped into three categories. Only dashboard-shell screens use these templates.
+
+#### Collection — browsing and managing sets of items
+
+| Template | Pattern | Use when |
+|---|---|---|
+| `CardGridTemplate` | Title + search/filter bar + responsive tile grid | The screen's job is to browse / create items — apps, solutions, users, records |
+| `TabbedSectionsTemplate` | Page header + tabs + grouped content cards per tab | The screen categorises a large set of resources into tabs — Microservices, Marketplace, Integrations |
+
+#### Structure — navigation and multi-column layouts
+
+| Template | Pattern | Use when |
+|---|---|---|
+| `SplitPanelTemplate` | Search list + two status columns | The screen compares items across pipeline stages — Environments, Deployments, Approvals |
+| `LinkCategoryTemplate` | Page header + grouped navigation link cards | The screen is a settings / ops hub linking into sub-features — Operations, Security landing |
+| `BreadcrumbDetailTemplate` | Breadcrumb + page header + tabs (card-grid \| empty \| table) | The screen is an inner detail page reached by drilling into a list or category |
+
+#### Domain-specific — locked to one product use case
+
+| Template | Pattern | Use when |
+|---|---|---|
+| `BillingTemplate` | Page header + Subscription/Usage tabs + plan summary card + stat grid | The screen manages subscription, plan, or usage — not reusable for other domains |
+
+---
+
+### 6.3 Template selection — decision rules
+
+When reading a PRD screen description, apply this decision tree:
+
+```
+Step 1 — Shell
+  └─ Multi-step wizard / full-screen configuration?  →  FullPageDialog (stop here)
+  └─ Dashboard / admin page?                         →  Dashboard shell → Step 2
+
+Step 2 — Template category
+  └─ Primary job: browse or manage a collection?     →  Collection category
+  └─ Primary job: navigate or compare data?          →  Structure category
+  └─ Subscription / billing specific?                →  Domain-specific
+
+Step 3 — Exact template
+  Collection:
+    └─ Flat grid of cards / tiles                    →  CardGridTemplate
+    └─ Items grouped into named tab categories       →  TabbedSectionsTemplate
+
+  Structure:
+    └─ Items compared across pipeline stages         →  SplitPanelTemplate
+    └─ Settings hub with links into sub-features     →  LinkCategoryTemplate
+    └─ Inner detail page with breadcrumb             →  BreadcrumbDetailTemplate
+
+  Domain-specific:
+    └─ Plan / subscription / usage management        →  BillingTemplate
+
+  No match (≥20% structural difference from all above):
+    └─ Compose from scratch using DS shell + components
+       Log gap in docs/ds-parity.csv
+```
+
+**Signal words in PRD descriptions:**
+
+| PRD says… | Template |
+|---|---|
+| "list of", "gallery", "my apps", "create new", "browse" | `CardGridTemplate` |
+| "categories", "All / Tab1 / Tab2", "catalogue", "hub" | `TabbedSectionsTemplate` |
+| "Dev / Stage / Prod", "pipeline", "deploy status", "compare" | `SplitPanelTemplate` |
+| "operations", "settings landing", "quick links", "sub-features" | `LinkCategoryTemplate` |
+| "detail page", "back to X", "breadcrumb", "inner page" | `BreadcrumbDetailTemplate` |
+| "wizard", "steps", "multi-step", "configure X", "setup" | `FullPageDialog` |
+| "plan", "subscription", "billing", "usage" | `BillingTemplate` |
+
+---
+
+### 6.4 How to use a template
 
 ```tsx
-// 1. Import the template
-import CardGridTemplate from "@/templates/CardGridTemplate"
+// Collection templates
+import CardGridTemplate from "@/templates/collection/CardGridTemplate"
+import TabbedSectionsTemplate from "@/templates/collection/TabbedSectionsTemplate"
 
-// 2. Pass only the props you need — all have sensible defaults
+// Structure templates
+import SplitPanelTemplate from "@/templates/structure/SplitPanelTemplate"
+import LinkCategoryTemplate from "@/templates/structure/LinkCategoryTemplate"
+import BreadcrumbDetailTemplate from "@/templates/structure/BreadcrumbDetailTemplate"
+
+// Domain-specific templates
+import BillingTemplate from "@/templates/domain/BillingTemplate"
+
+// Pass only the props you need — all have sensible defaults
 export default function MySolutionsScreen() {
   return (
     <CardGridTemplate

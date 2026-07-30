@@ -180,6 +180,18 @@ export type {
   FullPageDialogStep,
   FullPageDialogStepStatus,
 } from "@/components/ui/full-page-dialog"
+export { BuilderTopBar } from "@/components/ui/builder-top-bar"
+export type { BuilderTopBarProps, BuilderTab } from "@/components/ui/builder-top-bar"
+export { BuilderLeftNav } from "@/components/ui/builder-left-nav"
+export type {
+  BuilderLeftNavProps,
+  BuilderNavSection,
+  BuilderNavItem,
+  BuilderNavItemType,
+  BuilderLeftNavUser,
+} from "@/components/ui/builder-left-nav"
+export { BuilderShell } from "@/components/ui/builder-shell"
+export type { BuilderShellProps, BuilderViewport } from "@/components/ui/builder-shell"
 
 // ─── Utilities ────────────────────────────────────────────────────────────────
 export { cn } from "@/lib/utils"

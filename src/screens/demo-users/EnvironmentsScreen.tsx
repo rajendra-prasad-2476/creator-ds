@@ -17,7 +17,7 @@
 
 import * as React from "react"
 import { createPortal } from "react-dom"
-import SplitPanelTemplate from "@/templates/SplitPanelTemplate"
+import SplitPanelTemplate from "@/templates/structure/SplitPanelTemplate"
 import { useNavigation } from "@/screens/navigation"
 import {
   Sheet,
