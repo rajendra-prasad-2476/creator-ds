@@ -195,7 +195,7 @@ function CardHorizontalTitle({ className, ...props }: React.ComponentProps<"p">)
       data-slot="card-horizontal-title"
       className={cn(
         "truncate font-semibold",
-        "text-[length:var(--cds-text-h4)] leading-[var(--cds-leading-h4)]",
+        "text-[length:var(--cds-text-p1)] leading-[var(--cds-leading-p1)]",
         "text-[color:var(--cds-huegrey-text-dark)]",
         className
       )}

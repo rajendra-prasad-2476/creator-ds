@@ -20,11 +20,15 @@ import { FullPageDialog } from "@/components/ui/full-page-dialog";
 import type { FullPageDialogStep } from "@/components/ui/full-page-dialog";
 import { List } from "@/components/ui/list";
 import type { ListItemData } from "@/components/ui/list";
-import { BarChart3, Plus, Filter, ArrowUpDown, Eye, Edit, Trash2, Database, Layers, Globe, PenLine, Link2, Key, Copy, CheckCircle2, LayoutGrid, GitFork, Lock } from "lucide-react";
+import { BarChart3, Plus, Filter, ArrowUpDown, Eye, Edit, Trash2, Database, Layers, Globe, PenLine, Link2, Key, Copy, CheckCircle2, LayoutGrid, GitFork, Lock, ChevronDown, User, Search } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useState } from "react";
 import { ContentSwitcher } from "@/components/ui/content-switcher";
 import { Switch } from "@/components/ui/switch";
+import { BuilderShell } from "@/components/ui/builder-shell";
+import type { BuilderViewport, BuilderNavItemType } from "@/components/ui/builder-shell";
+import { BuilderLeftNav } from "@/components/ui/builder-left-nav";
+import { ProductIllustration } from "@/components/ui/product-illustration";
 
 function FullPageDialogDemo() {
   const [navStyle, setNavStyle] = useState<"section" | "stepper">("section")
@@ -197,6 +201,504 @@ function ListDemo() {
   )
 }
 
+/* ─── BuilderShell demo sub-components ─── */
+
+const BUILDER_NAV_SECTIONS = [
+  {
+    id: "design-items",
+    label: "Design Work Items",
+    defaultExpanded: true,
+    items: [
+      { id: "form-1", label: "Design Work Items", type: "form" as BuilderNavItemType },
+      { id: "report-1", label: "Design Work Items Report", type: "report" as BuilderNavItemType },
+    ],
+  },
+  {
+    id: "stage-history",
+    label: "Stage History",
+    defaultExpanded: false,
+    items: [
+      { id: "stage-1", label: "Stage History", type: "stage" as BuilderNavItemType },
+    ],
+  },
+]
+
+const MEGA_MENU_COLUMNS = [
+  {
+    id: "forms",
+    label: "Forms",
+    items: [
+      { id: "form-1", label: "Design Work Items", type: "form" as BuilderNavItemType },
+      { id: "stage-1", label: "Stage History",    type: "stage" as BuilderNavItemType },
+    ],
+  },
+  {
+    id: "reports",
+    label: "Reports",
+    filteredBy: ["Design Work Items"],
+    items: [
+      { id: "report-1", label: "Design Work Items Report", type: "report" as BuilderNavItemType },
+    ],
+  },
+  {
+    id: "workflows",
+    label: "Workflows",
+    filteredBy: ["Design Work Items"],
+    items: [],
+    emptyMessage: "- No workflows to display -",
+  },
+  {
+    id: "pages",
+    label: "Pages",
+    items: [],
+    emptyMessage: "- No pages to display -",
+  },
+]
+
+function CanvasContent({ viewport }: { viewport: BuilderViewport }) {
+
+  /* ── Shared form fields (Design Work Items form) ── */
+  const formFields = [
+    { label: "Work Item Name", placeholder: "Enter single line value", required: true },
+    { label: "Figma File URL", placeholder: "https://" },
+    { label: "Figma File Key", placeholder: "Enter single line value" },
+    { label: "Figma Version Name", placeholder: "Enter single line value" },
+    { label: "Created By", placeholder: "Enter email address" },
+  ]
+
+  /* ── PHONE viewport — phone bezel + form + bottom nav (image 2) ── */
+  if (viewport === "phone") {
+    return (
+      <div className="flex h-full items-center justify-center p-[var(--cds-space-16)]">
+        <div
+          className="flex flex-col overflow-hidden shadow-xl"
+          style={{ width: 290, height: 560, borderRadius: 32, border: "7px solid #1B1E2D" }}
+        >
+          {/* Notch */}
+          <div className="flex h-6 shrink-0 items-center justify-center bg-[#5C2D91]">
+            <div className="h-1 w-14 rounded-full bg-white/20" />
+          </div>
+          {/* App header */}
+          <div className="flex h-10 shrink-0 items-center px-4 bg-[#5C2D91]">
+            <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "15px", fontWeight: 500, color: "white" }}>
+              Design Work Items
+            </span>
+          </div>
+          {/* Form */}
+          <div className="flex flex-1 flex-col overflow-y-auto bg-white">
+            {formFields.map(({ label, placeholder, required }) => (
+              <div key={label} className="flex flex-col gap-1.5 border-b border-[var(--border)] px-4 py-3">
+                <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "13px", color: "#26282B" }}>
+                  {label}{required && <span style={{ color: "#CC1914" }}> *</span>}
+                </span>
+                <div className="flex h-9 items-center rounded-[6px] border border-[var(--border)] px-3">
+                  <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "12px", color: "#9EA1A9" }}>{placeholder}</span>
+                </div>
+              </div>
+            ))}
+            <div className="flex flex-col gap-1.5 border-b border-[var(--border)] px-4 py-3">
+              <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "13px", color: "#26282B" }}>Current Stage</span>
+              <div className="flex h-9 items-center justify-between rounded-[6px] border border-[var(--border)] px-3">
+                <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "12px", color: "#9EA1A9" }}>Select value</span>
+                <ChevronDown size={13} className="text-[var(--cds-huegrey-text-default)]" />
+              </div>
+            </div>
+          </div>
+          {/* Bottom navigation */}
+          <div className="flex h-14 shrink-0 items-center justify-around border-t border-[var(--border)] bg-white px-1">
+            {[
+              { label: "Design Wo...", active: true },
+              { label: "Design Wo...", active: false },
+              { label: "Stage...", active: false },
+              { label: "Stage...", active: false },
+            ].map(({ label, active }, i) => (
+              <div key={i} className="flex flex-col items-center gap-0.5">
+                <div
+                  className="h-5 w-5 rounded-[3px]"
+                  style={{ backgroundColor: active ? "#5C2D91" : "#E5E5E7" }}
+                />
+                <span style={{ fontSize: "9px", fontFamily: "'Zoho Puvi', sans-serif", color: active ? "#5C2D91" : "#9EA1A9" }}>
+                  {label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  /* ── TABLET viewport — tablet bezel + icon nav + form (image 1) ── */
+  if (viewport === "tablet") {
+    return (
+      <div className="flex h-full items-center justify-center p-[var(--cds-space-16)]">
+        <div
+          className="flex flex-col overflow-hidden shadow-xl"
+          style={{ width: 560, height: 430, borderRadius: 16, border: "6px solid #1B1E2D" }}
+        >
+          {/* Browser chrome dots */}
+          <div className="flex h-7 shrink-0 items-center gap-1.5 border-b border-[var(--border)] bg-[#F5F5F5] px-3">
+            <div className="h-2 w-2 rounded-full bg-[#FF5F57]" />
+            <div className="h-2 w-2 rounded-full bg-[#FEBC2E]" />
+            <div className="h-2 w-2 rounded-full bg-[#28C840]" />
+          </div>
+          {/* App layout: icon nav + content */}
+          <div className="flex flex-1 overflow-hidden">
+            {/* Compact icon-only nav */}
+            <div className="flex w-[60px] shrink-0 flex-col items-center gap-2 bg-[var(--cds-primary-surface-bold,#041644)] py-3">
+              <div
+                className="mb-1 flex h-8 w-8 items-center justify-center rounded-full bg-[#2563EB]"
+                style={{ fontSize: "10px", fontFamily: "'Zoho Puvi', sans-serif", fontWeight: 700, color: "white" }}
+              >
+                FPT
+              </div>
+              {/* Active nav item */}
+              <div className="flex w-full flex-col items-center gap-0.5 rounded-[4px] bg-white/15 px-1 py-1.5">
+                <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
+                  <rect x="1.5" y="1.5" width="11" height="11" rx="1.5" stroke="white" strokeWidth="0.9" />
+                  <path d="M4 4.5h6M4 7h6M4 9.5h4" stroke="white" strokeWidth="0.9" strokeLinecap="round" />
+                </svg>
+                <span style={{ fontSize: "8px", color: "white", textAlign: "center", fontFamily: "'Zoho Puvi', sans-serif", lineHeight: 1.1 }}>Design Work Items</span>
+              </div>
+              {/* Stage nav item */}
+              <div className="flex w-full flex-col items-center gap-0.5 px-1 py-1.5">
+                <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
+                  <rect x="1.5" y="4" width="4" height="6" rx="1" stroke="rgba(255,255,255,0.5)" strokeWidth="0.9" />
+                  <rect x="8.5" y="4" width="4" height="6" rx="1" stroke="rgba(255,255,255,0.5)" strokeWidth="0.9" />
+                  <path d="M5.5 7h3" stroke="rgba(255,255,255,0.5)" strokeWidth="0.9" strokeLinecap="round" />
+                </svg>
+                <span style={{ fontSize: "8px", color: "rgba(255,255,255,0.5)", textAlign: "center", fontFamily: "'Zoho Puvi', sans-serif", lineHeight: 1.1 }}>Stage History</span>
+              </div>
+            </div>
+            {/* Content */}
+            <div className="flex flex-1 flex-col overflow-hidden bg-white">
+              {/* Purple gradient header */}
+              <div
+                className="flex h-20 shrink-0 items-center gap-3 px-5"
+                style={{ background: "linear-gradient(135deg, #5C2D91 0%, #C2185B 100%)" }}
+              >
+                <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-white/20">
+                  <User size={24} className="text-white/60" />
+                </div>
+                <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "18px", fontWeight: 500, color: "white" }}>
+                  👋 Hello, Rajendra Prasad
+                </span>
+                <div className="ml-auto flex gap-2">
+                  {[0, 1, 2].map((i) => (
+                    <div key={i} className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20">
+                      <div className="h-3 w-3 rounded-full bg-white/40" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Form heading */}
+              <div className="border-b border-[var(--border)] px-4 py-2">
+                <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "13px", color: "#26282B", fontWeight: 500 }}>Design Work Items</span>
+              </div>
+              {/* Compact form rows */}
+              {formFields.slice(0, 3).map(({ label, placeholder, required }) => (
+                <div key={label} className="flex items-center gap-4 border-b border-[var(--border)] px-4 py-2">
+                  <span className="w-32 shrink-0" style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "12px", color: "#696C74" }}>
+                    {label}{required && <span style={{ color: "#CC1914" }}> *</span>}
+                  </span>
+                  <div className="flex flex-1 h-7 items-center rounded-[4px] border border-[var(--border)] px-2">
+                    <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "11px", color: "#9EA1A9" }}>{placeholder}</span>
+                  </div>
+                </div>
+              ))}
+              <div className="flex items-center gap-4 border-b border-[var(--border)] px-4 py-2">
+                <span className="w-32 shrink-0" style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "12px", color: "#696C74" }}>Current Stage</span>
+                <div className="flex flex-1 h-7 items-center justify-between rounded-[4px] border border-[var(--border)] px-2">
+                  <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "11px", color: "#9EA1A9" }}>-Select-</span>
+                  <ChevronDown size={11} className="text-[var(--cds-huegrey-text-default)]" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  /* ── WEB viewport — browser frame + entity nav (BuilderLeftNav) + form ── */
+  return (
+    <div className="flex h-full overflow-hidden p-[var(--cds-space-12)]">
+      <div className="flex flex-1 flex-col overflow-hidden rounded-[var(--cds-radius-r)] border border-[var(--border)] shadow-sm">
+        {/* Browser chrome */}
+        <div className="flex h-8 shrink-0 items-center gap-1.5 border-b border-[var(--border)] bg-[#F5F5F5] px-3">
+          <div className="h-2.5 w-2.5 rounded-full bg-[#FF5F57]" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#FEBC2E]" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#28C840]" />
+        </div>
+        {/* App layout: entity nav (dark) + content */}
+        <div className="flex flex-1 overflow-hidden">
+          {/* BuilderLeftNav — app entity tree, shown inside the browser live preview */}
+          <BuilderLeftNav
+            appName="Figma Plugin Test"
+            appInitials="FPT"
+            appIconColor="#5C2D91"
+            sections={BUILDER_NAV_SECTIONS}
+            activeItemId="form-1"
+            user={{ name: "Rajendra Prasad", initials: "RP" }}
+          />
+          {/* App content area */}
+          <div className="flex flex-1 flex-col overflow-hidden bg-white">
+            {/* Purple gradient header */}
+            <div
+              className="flex h-24 shrink-0 items-center gap-4 px-6"
+              style={{ background: "linear-gradient(135deg, #5C2D91 0%, #C2185B 100%)" }}
+            >
+              <div className="flex h-14 w-14 items-center justify-center rounded-[14px] bg-white/20">
+                <User size={28} className="text-white/60" />
+              </div>
+              <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "20px", fontWeight: 500, color: "white" }}>
+                👋 Hello, Rajendra Prasad
+              </span>
+            </div>
+            {/* Form section */}
+            <div className="border-b border-[var(--border)] px-6 py-3">
+              <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "15px", color: "#26282B", fontWeight: 500 }}>
+                Design Work Items
+              </span>
+            </div>
+            <div className="flex flex-1 flex-col overflow-y-auto">
+              {formFields.map(({ label, placeholder, required }) => (
+                <div key={label} className="flex items-center gap-6 border-b border-[var(--border)] px-6 py-3">
+                  <span className="w-36 shrink-0" style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "13px", color: "#696C74" }}>
+                    {label}{required && <span style={{ color: "#CC1914" }}> *</span>}
+                  </span>
+                  <div className="flex flex-1 h-9 items-center rounded-[6px] border border-[var(--border)] px-3">
+                    <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "13px", color: "#9EA1A9" }}>{placeholder}</span>
+                  </div>
+                </div>
+              ))}
+              <div className="flex items-center gap-6 border-b border-[var(--border)] px-6 py-3">
+                <span className="w-36 shrink-0" style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "13px", color: "#696C74" }}>Current Stage</span>
+                <div className="flex flex-1 h-9 items-center justify-between rounded-[6px] border border-[var(--border)] px-3">
+                  <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "13px", color: "#9EA1A9" }}>-Select-</span>
+                  <ChevronDown size={14} className="text-[var(--cds-huegrey-text-default)]" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function PropertiesPanelContent({ viewport }: { viewport: BuilderViewport }) {
+  const [activeView, setActiveView] = useState<"quick" | "detail">("quick")
+  const [activeTab, setActiveTab] = useState<"layout" | "actions">("layout")
+
+  const layoutOptions = viewport === "phone"
+    ? [{ label: "List 1-col" }, { label: "List 2-col" }, { label: "Card compact" }]
+    : viewport === "tablet"
+    ? [{ label: "Table 3-col" }, { label: "Card grid" }, { label: "List rows" }]
+    : [{ label: "Full table" }, { label: "Card 2-col" }, { label: "Card 3-col" }, { label: "List compact" }, { label: "Custom" }]
+
+  return (
+    <div className="flex flex-col h-full" style={{ fontFamily: "'Zoho Puvi', sans-serif" }}>
+      {/* Quick View / Detail View toggle */}
+      <div className="flex border-b border-[var(--border)]">
+        {(["quick", "detail"] as const).map((v) => (
+          <button
+            key={v}
+            type="button"
+            onClick={() => setActiveView(v)}
+            className={[
+              "flex-1 py-2.5 text-[length:var(--cds-text-p3)] transition-colors",
+              activeView === v
+                ? "text-[var(--cds-primary-text-default)] border-b-2 border-[var(--cds-primary-surface-default)] font-medium"
+                : "text-[var(--cds-huegrey-text-default)] hover:text-[var(--cds-huegrey-text-dark)]",
+            ].join(" ")}
+          >
+            {v === "quick" ? "Quick View" : "Detail View"}
+          </button>
+        ))}
+      </div>
+
+      {/* Layout / Actions toggle */}
+      <div className="flex border-b border-[var(--border)]">
+        {(["layout", "actions"] as const).map((t) => (
+          <button
+            key={t}
+            type="button"
+            onClick={() => setActiveTab(t)}
+            className={[
+              "flex-1 py-2 text-[length:var(--cds-text-p3)] capitalize transition-colors",
+              activeTab === t
+                ? "bg-[var(--cds-primary-surface-subtle)] text-[var(--cds-primary-text-default)] font-medium rounded-[var(--cds-radius-s)] mx-1 my-1"
+                : "text-[var(--cds-huegrey-text-default)] hover:text-[var(--cds-huegrey-text-dark)]",
+            ].join(" ")}
+          >
+            {t.charAt(0).toUpperCase() + t.slice(1)}
+          </button>
+        ))}
+      </div>
+
+      {/* Layout options grid */}
+      {activeTab === "layout" && (
+        <div className="flex flex-col gap-[var(--cds-gap-default)] p-[var(--cds-padding-card)]">
+          <div className="grid grid-cols-2 gap-[var(--cds-gap-small)]">
+            {layoutOptions.slice(0, 4).map((opt, i) => (
+              <div
+                key={opt.label}
+                className={[
+                  "flex flex-col items-start gap-2 rounded-[var(--cds-radius-r)] border p-3 cursor-pointer transition-colors",
+                  i === 0
+                    ? "border-[var(--cds-primary-surface-default)] bg-[var(--cds-primary-surface-subtle)]"
+                    : "border-[var(--border)] hover:border-[var(--cds-primary-surface-default)]",
+                ].join(" ")}
+              >
+                {/* Layout preview lines */}
+                <div className="flex w-full flex-col gap-1">
+                  <div className="h-1.5 w-full rounded-full bg-[var(--cds-primary-surface-default)] opacity-40" />
+                  <div className="h-1.5 w-3/4 rounded-full bg-[var(--cds-primary-surface-default)] opacity-30" />
+                  <div className="h-1.5 w-1/2 rounded-full bg-[var(--cds-primary-surface-default)] opacity-20" />
+                </div>
+                <span className="text-[length:var(--cds-text-p4)] text-[var(--cds-huegrey-text-default)]">{opt.label}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Custom layout */}
+          <div>
+            <span className="text-[length:var(--cds-text-p3)] text-[var(--cds-huegrey-text-default)] font-medium">Custom Layout</span>
+            <div className="mt-2 flex items-center justify-center rounded-[var(--cds-radius-r)] border border-dashed border-[var(--border)] p-6 cursor-pointer hover:border-[var(--cds-primary-surface-default)] transition-colors">
+              <div className="flex flex-col items-center gap-1">
+                <Plus size={20} className="text-[var(--cds-huegrey-text-default)]" />
+                <span className="text-[length:var(--cds-text-p3)] text-[var(--cds-huegrey-text-default)]">Create New Layout</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === "actions" && (
+        <div className="flex flex-col gap-2 p-[var(--cds-padding-card)]">
+          <span className="text-[length:var(--cds-text-p3)] text-[var(--cds-huegrey-text-default)]">No actions configured for this view.</span>
+        </div>
+      )}
+    </div>
+  )
+}
+
+const WORKFLOW_SUB_TABS = [
+  "Form workflows", "Schedules", "Approvals", "Payments",
+  "Blueprints", "Batch workflows", "Functions",
+].map((label) => ({ id: label.toLowerCase().replace(/\s+/g, "-"), label }))
+
+function WorkflowCanvas() {
+  return (
+    <div className="flex h-full flex-col items-center justify-center gap-[var(--cds-gap-default)] bg-white p-[var(--cds-padding-section-h)]">
+      <ProductIllustration type="workflow-form-event" state="Default" />
+      <div className="flex flex-col items-center gap-[var(--cds-gap-tight)] text-center">
+        <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "14px", color: "#696C74" }}>
+          Run actions while forms are being filled out or while records
+        </span>
+        <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "14px", color: "#696C74" }}>
+          are being edited or deleted.
+        </span>
+      </div>
+      <button
+        type="button"
+        className="rounded-[var(--cds-radius-s)] bg-[var(--cds-primary-surface-default,#0D4EF2)] px-[var(--cds-space-20)] py-[var(--cds-space-8)] text-white"
+        style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "14px", fontWeight: 500 }}
+      >
+        Create Workflow
+      </button>
+      <button
+        type="button"
+        className="flex items-center gap-[var(--cds-gap-tight)] text-[var(--cds-primary-text-default,#0D4EF2)]"
+        style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "13px" }}
+      >
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="0.9"/>
+          <path d="M5 7l2 2 4-4" stroke="currentColor" strokeWidth="0.9" strokeLinecap="round"/>
+        </svg>
+        See how it works
+      </button>
+    </div>
+  )
+}
+
+function BuilderShellDemo() {
+  const [viewport, setViewport] = useState<BuilderViewport>("web")
+  const [activeTab, setActiveTab] = useState<"design" | "workflow" | "settings">("design")
+  const [activeSubTab, setActiveSubTab] = useState(WORKFLOW_SUB_TABS[0].id)
+
+  const viewportLabel = viewport === "web" ? "Web" : viewport === "tablet" ? "Tablet" : "Phone"
+  const isWorkflow = activeTab === "workflow"
+
+  return (
+    <div className="flex flex-col gap-[var(--cds-gap-default)]">
+      {/* Controls */}
+      <div className="flex items-center gap-[var(--cds-gap-default)]">
+        <span
+          className="text-[length:var(--cds-text-p3)] text-[var(--cds-huegrey-text-default)]"
+          style={{ fontFamily: "'Zoho Puvi', sans-serif" }}
+        >
+          Viewport:
+        </span>
+        <ContentSwitcher
+          value={viewport === "web" ? "Web" : viewport === "tablet" ? "Tablet" : "Phone"}
+          items={["Web", "Tablet", "Phone"]}
+          onValueChange={(v) => setViewport(v === "Tablet" ? "tablet" : v === "Phone" ? "phone" : "web")}
+        />
+      </div>
+
+      {/* Shell preview — constrained height */}
+      <div className="overflow-hidden rounded-[var(--cds-radius-r)] border border-[var(--border)]">
+        <BuilderShell
+          className="h-[500px]"
+          viewport={viewport}
+          onViewportChange={setViewport}
+          topBar={{
+            appName: "Figma Plugin Test",
+            appInitials: "FPT",
+            appIconColor: "#5C2D91",
+            activePageName: isWorkflow ? "Workflow" : "Design Work Items Report",
+            activeTab,
+            onTabChange: setActiveTab,
+          }}
+          megaMenuColumns={MEGA_MENU_COLUMNS}
+          megaMenuActiveId="form-1"
+          tabSubNav={isWorkflow ? {
+            tabs: WORKFLOW_SUB_TABS,
+            activeTabId: activeSubTab,
+            onTabChange: setActiveSubTab,
+            actions: (
+              <div className="flex items-center gap-[var(--cds-gap-small)]">
+                {/* Search */}
+                <div className="flex h-8 items-center gap-[var(--cds-gap-tight)] rounded-[var(--cds-radius-s)] border border-[var(--border)] bg-white px-[var(--cds-space-8)]" style={{ width: 200 }}>
+                  <Search size={13} className="text-[var(--cds-huegrey-text-default)] shrink-0" />
+                  <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "13px", color: "#9EA1A9" }}>
+                    Search for Workflows or Acti...
+                  </span>
+                </div>
+                {/* New Workflow */}
+                <button
+                  type="button"
+                  className="flex h-8 items-center rounded-[var(--cds-radius-s)] bg-[var(--cds-primary-surface-default,#0D4EF2)] px-[var(--cds-space-12)] text-white"
+                  style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "13px", fontWeight: 500 }}
+                >
+                  New Workflow
+                </button>
+              </div>
+            ),
+          } : undefined}
+          showPropertiesPanel={!isWorkflow}
+          propertiesPanelTitle={`Report Customization · ${viewportLabel}`}
+          propertiesPanel={<PropertiesPanelContent viewport={viewport} />}
+        >
+          {isWorkflow ? <WorkflowCanvas /> : <CanvasContent viewport={viewport} />}
+        </BuilderShell>
+      </div>
+    </div>
+  )
+}
+
 export function OrganismsSection() {
   return (
     <div className="space-y-8">
@@ -332,7 +834,7 @@ export function OrganismsSection() {
               <Avatar size="xl" shape="squircle">
                 <AvatarFallback color="primary">AI</AvatarFallback>
               </Avatar>
-              <p className="text-[length:var(--cds-text-h4)] leading-[var(--cds-leading-h4)] font-medium text-[color:var(--cds-huegrey-text-dark)]">AI Models</p>
+              <p className="text-[length:var(--cds-text-p1)] leading-[var(--cds-leading-p1)] font-medium text-[color:var(--cds-huegrey-text-dark)]">AI Models</p>
               <p className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-huegrey-text-default)]">Subtext description for the AI model service.</p>
               <div className="flex items-center justify-between pt-[var(--cds-space-4)]">
                 <div className="flex items-center gap-[var(--cds-gap-small)]">
@@ -351,7 +853,7 @@ export function OrganismsSection() {
               <div className="flex size-10 items-center justify-center rounded-[var(--cds-radius-r)] bg-[var(--cds-primary-surface-subtle)]">
                 <Link2 size={20} className="text-[color:var(--cds-primary-text-default)]" />
               </div>
-              <p className="text-[length:var(--cds-text-h4)] leading-[var(--cds-leading-h4)] font-medium text-[color:var(--cds-huegrey-text-dark)]">Zoho Analytics</p>
+              <p className="text-[length:var(--cds-text-p1)] leading-[var(--cds-leading-p1)] font-medium text-[color:var(--cds-huegrey-text-dark)]">Zoho Analytics</p>
               <div className="flex items-center gap-[var(--cds-gap-tight)]">
                 <span className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-huegrey-text-default)]">zoho_analytics_connection</span>
                 <Copy size={14} className="text-[color:var(--cds-huegrey-text-default)] shrink-0" />
@@ -367,7 +869,7 @@ export function OrganismsSection() {
               <Avatar size="xl" shape="squircle">
                 <AvatarFallback color="avocado">CA</AvatarFallback>
               </Avatar>
-              <p className="text-[length:var(--cds-text-h4)] leading-[var(--cds-leading-h4)] font-medium text-[color:var(--cds-huegrey-text-dark)]">After Trip Public</p>
+              <p className="text-[length:var(--cds-text-p1)] leading-[var(--cds-leading-p1)] font-medium text-[color:var(--cds-huegrey-text-dark)]">After Trip Public</p>
               <div className="flex items-center gap-[var(--cds-gap-tight)] flex-wrap">
                 <span className="text-[length:var(--cds-text-p2)] font-medium text-[color:var(--cds-primary-text-default)]">POST</span>
                 <span className="text-[length:var(--cds-text-p2)] text-[color:var(--cds-huegrey-text-default)]">zoho_analytics_connection</span>
@@ -390,7 +892,7 @@ export function OrganismsSection() {
               <Avatar size="xl" shape="squircle">
                 <AvatarFallback color="russet">AR</AvatarFallback>
               </Avatar>
-              <p className="text-[length:var(--cds-text-h4)] leading-[var(--cds-leading-h4)] font-medium text-[color:var(--cds-huegrey-text-dark)]">AR Library</p>
+              <p className="text-[length:var(--cds-text-p1)] leading-[var(--cds-leading-p1)] font-medium text-[color:var(--cds-huegrey-text-dark)]">AR Library</p>
               <div className="flex items-center justify-between pt-[var(--cds-space-4)]">
                 <div className="flex items-center gap-[var(--cds-gap-tight)]">
                   <span className="flex items-center justify-center border border-[var(--cds-huegrey-border-fairish)] rounded-[var(--cds-radius-s)] px-[var(--cds-space-6)] py-[var(--cds-space-1)] text-[length:var(--cds-text-p2)] text-[color:var(--cds-huegrey-text-dark)] min-w-[21px]">3</span>
@@ -810,6 +1312,23 @@ export function OrganismsSection() {
         </CardHeader>
         <CardContent>
           <ListDemo />
+        </CardContent>
+      </Card>
+
+      {/* Builder Shell */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Builder Shell</CardTitle>
+          <CardDescription>
+            Full app-builder layout shell. Composes BuilderTopBar (dark nav with app icon tile,
+            Design/Workflow/Settings tabs, Upgrade + Access CTAs), BuilderLeftNav (collapsible
+            entity tree with form/report/page/workflow/stage items), a viewport toolbar
+            (Desktop/Tablet/Phone switcher + theme tools), a scrollable canvas, and an optional
+            right-hand properties panel. Left nav auto-collapses on Tablet/Phone viewport.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="p-[var(--cds-padding-card)]">
+          <BuilderShellDemo />
         </CardContent>
       </Card>
     </div>
