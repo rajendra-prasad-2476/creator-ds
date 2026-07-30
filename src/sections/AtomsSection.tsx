@@ -49,6 +49,12 @@ import {
   Zap,
   Volume2,
 } from "lucide-react";
+import { useState } from "react";
+import {
+  ProductIllustration,
+} from "@/components/ui/product-illustration";
+import type { ProductIllustrationType, ProductIllustrationState } from "@/components/ui/product-illustration";
+import { ContentSwitcher } from "@/components/ui/content-switcher";
 
 export function AtomsSection() {
   return (
@@ -955,6 +961,71 @@ export function AtomsSection() {
       </Card>
 
       {/* Tooltip is showcased in the Molecules section */}
+
+      {/* ProductIllustration */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Product Illustration</CardTitle>
+          <CardDescription>
+            22 scenario illustrations × Default / Active states. Use in empty-state panels, creation wizards, and type-selector tiles.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <_ProductIllustrationShowcase />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+const ALL_TYPES: ProductIllustrationType[] = [
+  "create-report",
+  "create-form",
+  "create-page",
+  "create-workflow",
+  "page-blank",
+  "page-template",
+  "report-list",
+  "report-kanban",
+  "report-pivot-chart",
+  "report-pivot-table",
+  "report-sheet",
+  "report-calendar",
+  "report-timeline",
+  "report-map",
+  "workflow-form-event",
+  "workflow-schedule",
+  "workflow-function",
+  "workflow-batch-record",
+  "workflow-approval",
+  "workflow-payment",
+  "workflow-business-process",
+  "workflow-payment-checkout",
+];
+
+function _ProductIllustrationShowcase() {
+  const [state, setState] = useState<ProductIllustrationState>("Default");
+  return (
+    <div className="space-y-4">
+      <ContentSwitcher
+        value={state}
+        items={["Default", "Active"]}
+        onValueChange={(v) => setState(v as ProductIllustrationState)}
+        size="sm"
+      />
+      <div className="grid gap-[var(--cds-gap-default)] grid-cols-[repeat(auto-fill,minmax(140px,1fr))]">
+        {ALL_TYPES.map((type) => (
+          <div
+            key={type}
+            className="flex flex-col items-center gap-[var(--cds-gap-tight)] p-[var(--cds-padding-card)] rounded-[var(--cds-radius-r)] border border-[var(--border)]"
+          >
+            <ProductIllustration type={type} state={state} />
+            <p className="text-[length:var(--cds-text-p4)] leading-[var(--cds-leading-p4)] text-[color:var(--cds-huegrey-text-default)] text-center">
+              {type}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

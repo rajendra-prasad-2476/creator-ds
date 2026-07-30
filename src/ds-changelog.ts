@@ -33,10 +33,23 @@ export interface DSChangeEntry {
 }
 
 /** Current DS version — surfaced as the version badge in the showcase TopBar. */
-export const DS_VERSION = "1.14.0"
+export const DS_VERSION = "1.15.0"
 
 /** Newest entry first. */
 export const DS_CHANGELOG: DSChangeEntry[] = [
+  {
+    version: "1.15.0",
+    date: "2026-07-30",
+    changes: [
+      {
+        type: "added",
+        scope: "ProductIllustration",
+        summary:
+          "New ProductIllustration atom: 22 scenario illustrations × Default / Active states (44 SVG assets). Use in empty-state panels, creation wizards, and type-selector tiles. Props: type (22 scenarios: create-report, create-form, create-page, create-workflow, page-blank, page-template, report-*, workflow-*), state (Default | Active), className, alt. SVG assets committed to public/illustrations/. Implemented from Figma node 7402:3230.",
+        parity: "ProductIllustration",
+      },
+    ],
+  },
   {
     version: "1.14.0",
     date: "2026-07-30",

@@ -41,6 +41,14 @@ export { Blanket } from "@/components/ui/blanket"
 export { Progress } from "@/components/ui/progress"
 export { Separator } from "@/components/ui/separator"
 export { Tag } from "@/components/ui/tag"
+export {
+  ProductIllustration,
+} from "@/components/ui/product-illustration"
+export type {
+  ProductIllustrationType,
+  ProductIllustrationState,
+  ProductIllustrationProps,
+} from "@/components/ui/product-illustration"
 
 // ─── Molecules ────────────────────────────────────────────────────────────────
 export {

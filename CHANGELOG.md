@@ -2,7 +2,12 @@
 
 > Generated from `src/ds-changelog.ts` — do not edit by hand. Run `npm run ds:changelog`.
 
-Current version: **v1.14.0**
+Current version: **v1.15.0**
+
+## v1.15.0 — 2026-07-30
+
+### Added
+- **ProductIllustration** — New ProductIllustration atom: 22 scenario illustrations × Default / Active states (44 SVG assets). Use in empty-state panels, creation wizards, and type-selector tiles. Props: type (22 scenarios: create-report, create-form, create-page, create-workflow, page-blank, page-template, report-*, workflow-*), state (Default | Active), className, alt. SVG assets committed to public/illustrations/. Implemented from Figma node 7402:3230. _(ds-parity: ProductIllustration)_
 
 ## v1.14.0 — 2026-07-30
 

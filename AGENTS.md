@@ -217,6 +217,7 @@ Never put page-level navigation inside `<main>`. Never skip `TopBar` or `LeftNav
 | `Blanket` | `blanket.tsx` | Scrim/overlay backdrop behind Sheets, Dialogs, Sliders & custom overlays |
 | `RadioCard` | `radio-card.tsx` | Selectable card for mutually-exclusive choices (use inside RadioGroup) |
 | `Tag` | `tag.tsx` | Dismissible chip/pill (4 style variants × 2 sizes) — use `closeable` + `onClose` for interactive tags |
+| `ProductIllustration` | `product-illustration.tsx` | Scenario illustrations for empty states and creation wizards — 22 types × Default / Active states |
 
 ### Molecules
 | Component | Import | Use for |
@@ -298,6 +299,7 @@ When a design intent could map to multiple components, follow this table.
 | Mutually exclusive choice displayed as a card (with description) | `RadioCard` inside `RadioGroup` | custom card `<div>` with manual radio indicator |
 | Display a label, category, or keyword as a pill | `Tag` | hand-styled `<span>` or `<div>` badge |
 | Allow users to enter multiple values as dismissible chips | `TagInput` | raw `<input>` beside custom chip divs |
+| Show a scenario illustration in an empty state or creation wizard | `ProductIllustration` | hand-drawn `<img>` or inline SVG per screen |
 | Show a temporary status message | `Sonner` (toast) | raw `<div>` alert banners |
 | Filter a list between 2–6 views | `ContentSwitcher` | `Tabs`, custom radio buttons |
 | Navigate between page sections | `Tabs` | `ContentSwitcher`, `NavigationMenu` |
