@@ -122,6 +122,7 @@
 /* ─── 2. Tailwind CSS ───────────────────────────────────────────────────────── */
 @import "tailwindcss";
 @import "tw-animate-css";
+@source not "../**/*.md";
 
 /* ─── 3. CDS Design Tokens — Creator Theme ──────────────────────────────────── */
 :root {

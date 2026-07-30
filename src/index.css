@@ -106,6 +106,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@source not "../**/*.md";
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
