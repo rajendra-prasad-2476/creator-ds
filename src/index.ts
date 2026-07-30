@@ -159,6 +159,8 @@ export {
 } from "@/components/ui/table"
 export { TopBar } from "@/components/ui/top-bar"
 export { LeftNav } from "@/components/ui/left-nav"
+export { List, ListRow } from "@/components/ui/list"
+export type { ListItemData, ListSize, ListRowProps, ListProps } from "@/components/ui/list"
 export {
   FullPageDialog,
 } from "@/components/ui/full-page-dialog"

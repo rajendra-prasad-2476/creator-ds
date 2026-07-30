@@ -2,7 +2,12 @@
 
 > Generated from `src/ds-changelog.ts` — do not edit by hand. Run `npm run ds:changelog`.
 
-Current version: **v1.13.0**
+Current version: **v1.14.0**
+
+## v1.14.0 — 2026-07-30
+
+### Added
+- **List** — New List organism: structured vertical list of data rows with optional checkbox (multi-select), avatar square, title + badge, meta text, action button, and remove (×) control. Supports Large (64px) and Default (52px) row density. Controlled and uncontrolled selection via selectedIds / onSelectionChange. Implemented from Figma node 6685:9545. _(ds-parity: List)_
 
 ## v1.13.0 — 2026-07-29
 

@@ -270,6 +270,7 @@ Never put page-level navigation inside `<main>`. Never skip `TopBar` or `LeftNav
 | `TopBar` | `top-bar.tsx` | Global app header (always present) |
 | `LeftNav` | `left-nav.tsx` | Global sidebar navigation (always present) |
 | `FullPageDialog` | `full-page-dialog.tsx` | Full-screen dialog shell with header, sidebar nav (section or stepper), content area, and optional hints panel |
+| `List` | `list.tsx` | Vertical list of data rows — optional checkbox, avatar, title + badge, meta text, action CTA, remove |
 
 ---
 
@@ -280,6 +281,7 @@ When a design intent could map to multiple components, follow this table.
 | Intent | Use this | Never use |
 |---|---|---|
 | Multi-step wizard or multi-section full-screen form | `FullPageDialog` | custom full-screen div with manual header + sidebar |
+| Structured scannable rows (name + badge + action) without sortable columns | `List` | `Table`, custom `<div>` rows, bare `<ul>` |
 | User confirms a destructive action | `AlertDialog` | `Dialog`, `window.confirm()` |
 | User enables/disables a setting with semantic colour (e.g. success on, error off) | `Toggle` | custom `<div>` switch or `Switch` |
 | Simple binary on/off toggle, no colour variant needed | `Switch` | `Toggle`, custom `<div>` |
@@ -543,6 +545,7 @@ export default function OperationsScreen() {
   - Wrong: `<div style={{ display: "flex", gap: "var(--cds-gap-small)", fontSize: "var(--cds-text-p2)" }}>`
   - Correct: `<div className="flex gap-[var(--cds-gap-small)] text-[length:var(--cds-text-p2)]">`
 - Do not create a custom modal, drawer, or tooltip — use `Dialog`, `Sheet`, `Tooltip`
+- Do not build a custom row-list with `<ul>`/`<li>` or flex `<div>` rows when `List` exists
 - Do not build a custom overlay/scrim backdrop — use `Blanket` (Dialog/Sheet already render it automatically)
 - Do not add `console.log` or debug output to production screen files
 - Do not generate placeholder images with external URLs (use `Avatar` or `Tile` components)

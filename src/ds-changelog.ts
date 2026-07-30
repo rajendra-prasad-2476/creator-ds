@@ -33,10 +33,23 @@ export interface DSChangeEntry {
 }
 
 /** Current DS version — surfaced as the version badge in the showcase TopBar. */
-export const DS_VERSION = "1.13.0"
+export const DS_VERSION = "1.14.0"
 
 /** Newest entry first. */
 export const DS_CHANGELOG: DSChangeEntry[] = [
+  {
+    version: "1.14.0",
+    date: "2026-07-30",
+    changes: [
+      {
+        type: "added",
+        scope: "List",
+        summary:
+          "New List organism: structured vertical list of data rows with optional checkbox (multi-select), avatar square, title + badge, meta text, action button, and remove (×) control. Supports Large (64px) and Default (52px) row density. Controlled and uncontrolled selection via selectedIds / onSelectionChange. Implemented from Figma node 6685:9545.",
+        parity: "List",
+      },
+    ],
+  },
   {
     version: "1.13.0",
     date: "2026-07-29",

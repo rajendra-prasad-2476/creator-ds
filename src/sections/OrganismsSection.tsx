@@ -18,6 +18,8 @@ import { TopBar } from "@/components/ui/top-bar";
 import { LeftNav } from "@/components/ui/left-nav";
 import { FullPageDialog } from "@/components/ui/full-page-dialog";
 import type { FullPageDialogStep } from "@/components/ui/full-page-dialog";
+import { List } from "@/components/ui/list";
+import type { ListItemData } from "@/components/ui/list";
 import { BarChart3, Plus, Filter, ArrowUpDown, Eye, Edit, Trash2, Database, Layers, Globe, PenLine, Link2, Key, Copy, CheckCircle2, LayoutGrid, GitFork, Lock } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useState } from "react";
@@ -120,6 +122,79 @@ function BlanketDemo() {
       </div>
     </div>
   );
+}
+
+const LIST_DEMO_ITEMS: ListItemData[] = [
+  {
+    id: "1",
+    title: "Application Name",
+    badge: { label: "Approved", colour: "success" },
+    avatarText: "EM",
+    avatarColour: "#CC3359",
+    meta: "3 times",
+    actionLabel: "Connect",
+    onAction: () => {},
+    onRemove: () => {},
+  },
+  {
+    id: "2",
+    title: "CRM Connector",
+    badge: { label: "Active", colour: "primary" },
+    avatarText: "CR",
+    avatarColour: "#0D4EF2",
+    meta: "12 times",
+    actionLabel: "Connect",
+    onAction: () => {},
+    onRemove: () => {},
+  },
+  {
+    id: "3",
+    title: "Invoice Automation",
+    subText: "Sends PDF invoices via SMTP",
+    badge: { label: "Pending", colour: "warning" },
+    avatarText: "IN",
+    avatarColour: "#D25704",
+    meta: "1 time",
+    actionLabel: "Enable",
+    onAction: () => {},
+    onRemove: () => {},
+  },
+  {
+    id: "4",
+    title: "User Sync",
+    badge: { label: "Error", colour: "error" },
+    avatarText: "US",
+    avatarColour: "#CC1914",
+    meta: "0 times",
+    actionLabel: "Retry",
+    onAction: () => {},
+    onRemove: () => {},
+  },
+]
+
+function ListDemo() {
+  const [selectable, setSelectable] = useState(true)
+  const [size, setSize] = useState<"Large" | "Default">("Large")
+
+  return (
+    <div className="flex flex-col gap-[var(--cds-space-16)]">
+      <div className="flex items-center gap-[var(--cds-gap-default)]">
+        <ContentSwitcher
+          items={["Large", "Default"]}
+          value={size}
+          onValueChange={(v) => setSize(v as "Large" | "Default")}
+          size="sm"
+        />
+        <div className="flex items-center gap-[var(--cds-gap-small)]">
+          <Switch checked={selectable} onCheckedChange={setSelectable} />
+          <span className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-huegrey-text-default)]">
+            Selectable
+          </span>
+        </div>
+      </div>
+      <List items={LIST_DEMO_ITEMS} size={size} selectable={selectable} />
+    </div>
+  )
 }
 
 export function OrganismsSection() {
@@ -720,6 +795,21 @@ export function OrganismsSection() {
         </CardHeader>
         <CardContent>
           <FullPageDialogDemo />
+        </CardContent>
+      </Card>
+
+      {/* List */}
+      <Card>
+        <CardHeader>
+          <CardTitle>List</CardTitle>
+          <CardDescription>
+            Structured vertical list of data rows with optional checkboxes, avatar, badge, meta
+            text, action CTA, and remove button. Supports Large (64px) and Default (52px) row
+            density. Toggle selectable mode and size below.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ListDemo />
         </CardContent>
       </Card>
     </div>
