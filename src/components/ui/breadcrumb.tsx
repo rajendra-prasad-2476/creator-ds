@@ -66,7 +66,7 @@ function BreadcrumbLink({
       href={href}
       data-slot="breadcrumb-link"
       className={cn(
-        "font-['Zoho_Puvi'] text-[14px] leading-[18px] font-normal text-[#696c74] hover:text-[#37383c] transition-colors cursor-pointer",
+        "font-['Zoho_Puvi'] text-[14px] leading-[18px] font-normal text-[color:var(--cds-huegrey-text-default)] hover:text-[color:var(--cds-huegrey-surface-bold)] transition-colors cursor-pointer",
         className
       )}
       {...props}
@@ -82,7 +82,7 @@ function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
       aria-disabled="true"
       aria-current="page"
       className={cn(
-        "font-['Zoho_Puvi'] text-[14px] leading-[18px] font-normal text-[#000000]",
+        "font-['Zoho_Puvi'] text-[14px] leading-[18px] font-normal text-[color:var(--cds-huegrey-text-dark)]",
         className
       )}
       {...props}
@@ -101,7 +101,7 @@ function BreadcrumbSeparator({
       role="presentation"
       aria-hidden="true"
       className={cn(
-        "font-['Zoho_Puvi'] text-[14px] leading-[18px] font-normal text-[#696c74] select-none",
+        "font-['Zoho_Puvi'] text-[14px] leading-[18px] font-normal text-[color:var(--cds-huegrey-text-default)] select-none",
         className
       )}
       {...props}
@@ -171,7 +171,7 @@ function BreadcrumbDropdownItem({
         onClick={handleToggle}
         aria-haspopup="listbox"
         aria-expanded={open}
-        className="inline-flex items-center gap-[6px] font-['Zoho_Puvi'] text-[14px] leading-[18px] font-normal text-[#37383c] hover:text-[#000000] transition-colors focus:outline-none"
+        className="inline-flex items-center gap-[6px] font-['Zoho_Puvi'] text-[14px] leading-[18px] font-normal text-[color:var(--cds-huegrey-surface-bold)] hover:text-[color:var(--cds-huegrey-text-dark)] transition-colors focus:outline-none"
       >
         <span>{label}</span>
         <ChevronDown
@@ -187,7 +187,7 @@ function BreadcrumbDropdownItem({
         <div
           role="listbox"
           style={dropdownStyle}
-          className="min-w-[140px] w-max rounded-[var(--cds-radius-r,6px)] bg-white border border-[#d5d6d9] shadow-[0px_12px_16px_0px_rgba(38,40,43,0.08),0px_2px_2px_0px_rgba(5,5,6,0.05)]"
+          className="min-w-[140px] w-max rounded-[var(--cds-radius-r,6px)] bg-[var(--cds-white)] border border-[var(--cds-huegrey-border-minimal)] shadow-[0px_12px_16px_0px_rgba(38,40,43,0.08),0px_2px_2px_0px_rgba(5,5,6,0.05)]"
         >
           {/* Simple list */}
           {options && !groups && (
@@ -205,7 +205,7 @@ function BreadcrumbDropdownItem({
                 <div key={gi}>
                   {group.groupLabel && (
                     <div className="px-[10px] py-[4px]">
-                      <span className="font-['Zoho_Puvi'] text-[14px] leading-[18px] font-normal text-[#9ea0a7]">
+                      <span className="font-['Zoho_Puvi'] text-[14px] leading-[18px] font-normal text-[color:var(--cds-huegrey-text-fairish)]">
                         {group.groupLabel}
                       </span>
                     </div>
@@ -246,20 +246,20 @@ function DropdownListItem({
       className={cn(
         "flex items-center justify-between gap-[10px] px-[10px] py-[9px] rounded-[var(--cds-radius-r,6px)] cursor-pointer",
         option.selected
-          ? "bg-[#f7f9fd]"
-          : "bg-white hover:bg-[#f7f9fd]"
+          ? "bg-[var(--cds-secondary-surface-subtle)]"
+          : "bg-[var(--cds-white)] hover:bg-[var(--cds-secondary-surface-subtle)]"
       )}
     >
       <span
         className={cn(
           "font-['Zoho_Puvi'] text-[14px] leading-[18px] font-normal whitespace-nowrap",
-          option.selected ? "text-[#000000]" : "text-[#696c74]"
+          option.selected ? "text-[color:var(--cds-huegrey-text-dark)]" : "text-[color:var(--cds-huegrey-text-default)]"
         )}
       >
         {option.label}
       </span>
       {option.selected && (
-        <Check className="w-[14px] h-[14px] text-[#696c74] shrink-0" />
+        <Check className="w-[14px] h-[14px] text-[color:var(--cds-huegrey-text-default)] shrink-0" />
       )}
     </div>
   )

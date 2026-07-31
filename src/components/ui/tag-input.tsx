@@ -96,7 +96,7 @@ const TagInput = React.forwardRef<HTMLDivElement, TagInputProps>(
           // Container mirrors SelectTrigger / Input height & border tokens
           "flex min-h-[36px] w-full flex-wrap items-center gap-[6px]",
           "rounded-[var(--cds-radius-r)] border border-[var(--cds-huegrey-border-fairish)]",
-          "bg-white px-[11px] py-[5px] cursor-text transition-colors",
+          "bg-[var(--cds-white)] px-[11px] py-[5px] cursor-text transition-colors",
           // Focus ring
           "focus-within:border-[var(--cds-primary-border-default)]",
           "focus-within:shadow-[var(--cds-shadow-primary-minimal)]",

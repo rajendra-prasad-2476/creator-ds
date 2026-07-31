@@ -38,14 +38,14 @@ const COLOUR_MAP: Record<BadgeColour, ColourTokens> = {
   success: {
     prominentBg: "var(--cds-success-surface-low, #E3FCEE)",
     subtleBg: "var(--cds-success-surface-subtle, #F6FEF9)",
-    border: "#078841",
-    text: "#078841",
+    border: "var(--cds-success-border-default, #078841)",
+    text: "var(--cds-success-text-default, #078841)",
   },
   warning: {
     prominentBg: "var(--cds-warning-surface-low, #FEEDE1)",
     subtleBg: "var(--cds-warning-surface-subtle, #FFF9F5)",
     border: "var(--cds-warning-border-default, #D25704)",
-    text: "#BE4E04",
+    text: "var(--cds-warning-text-default, #D25704)",
   },
   error: {
     prominentBg: "var(--cds-error-surface-low, #FCE4E3)",

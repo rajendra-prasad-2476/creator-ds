@@ -63,7 +63,7 @@ function InputOTPSlot({
         // Base — 36×36 px, individually bordered cell (not connected)
         "relative flex size-[36px] shrink-0 items-center justify-center",
         "rounded-[var(--cds-radius-r)] border border-[var(--cds-huegrey-border-fairish)]",
-        "bg-white transition-colors outline-none",
+        "bg-[var(--cds-white)] transition-colors outline-none",
         // Typography — P2 Semibold (600 weight)
         "text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] font-semibold",
         "text-[var(--cds-huegrey-text-dark)]",

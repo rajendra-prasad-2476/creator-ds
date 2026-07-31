@@ -46,7 +46,7 @@ function SelectTrigger({
         // Base — 36 px height, CDS radius-r, full width
         "flex h-[36px] w-full items-center justify-between gap-[8px]",
         "rounded-[var(--cds-radius-r)] border border-[var(--cds-huegrey-border-fairish)]",
-        "bg-white px-[11px] outline-none select-none transition-colors",
+        "bg-[var(--cds-white)] px-[11px] outline-none select-none transition-colors",
         // Typography — P2 Regular
         "text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)]",
         "text-[var(--cds-huegrey-text-dark)]",
@@ -155,7 +155,7 @@ function SelectContent({
               "relative isolate z-50 flex flex-col",
               "w-(--anchor-width) min-w-36 max-h-(--available-height)",
               "rounded-[var(--cds-radius-r)] border border-[var(--cds-huegrey-border-minimal)]",
-              "bg-white shadow-[var(--cds-shadow-base)]",
+              "bg-[var(--cds-white)] shadow-[var(--cds-shadow-base)]",
               "origin-(--transform-origin)",
               // Animation
               "duration-100",
@@ -195,7 +195,7 @@ function SelectContent({
                     placeholder={searchPlaceholder}
                     className={cn(
                       "h-[30px] w-full rounded-[var(--cds-radius-s)] border border-[var(--cds-huegrey-border-fairish)]",
-                      "bg-white pl-[28px] pr-[28px] outline-none",
+                      "bg-[var(--cds-white)] pl-[28px] pr-[28px] outline-none",
                       "text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[var(--cds-huegrey-text-dark)]",
                       "placeholder:text-[var(--cds-huegrey-text-fairish)]",
                       "focus:border-[var(--cds-primary-border-default)]",
@@ -356,7 +356,7 @@ function SelectScrollUpButton({
     <SelectPrimitive.ScrollUpArrow
       data-slot="select-scroll-up-button"
       className={cn(
-        "flex w-full cursor-default items-center justify-center bg-white py-1",
+        "flex w-full cursor-default items-center justify-center bg-[var(--cds-white)] py-1",
         className
       )}
       {...props}
@@ -374,7 +374,7 @@ function SelectScrollDownButton({
     <SelectPrimitive.ScrollDownArrow
       data-slot="select-scroll-down-button"
       className={cn(
-        "flex w-full cursor-default items-center justify-center bg-white py-1",
+        "flex w-full cursor-default items-center justify-center bg-[var(--cds-white)] py-1",
         className
       )}
       {...props}

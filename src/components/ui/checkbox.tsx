@@ -11,7 +11,7 @@ function Checkbox({ className, ...props }: CheckboxPrimitive.Root.Props) {
         // Base — 14 px box matching Figma
         "group peer relative flex size-[14px] shrink-0 items-center justify-center",
         "rounded-[var(--cds-radius-s)] border border-[var(--cds-huegrey-border-fairish)]",
-        "bg-white transition-colors outline-none",
+        "bg-[var(--cds-white)] transition-colors outline-none",
         // Unchecked hover — white bg + primary border
         "hover:border-[var(--cds-primary-border-default)] hover:bg-[var(--cds-primary-surface-subtle)]",
         // Focus ring

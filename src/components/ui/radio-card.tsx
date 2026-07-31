@@ -30,7 +30,7 @@ function RadioCard({ className, label, description, ...props }: RadioCardProps) 
         // Card shell
         "group flex w-full cursor-pointer items-start gap-[8px] text-left",
         "rounded-[var(--cds-radius-r)] border border-[var(--cds-huegrey-border-fairish)]",
-        "bg-white px-[14px] pt-[12px] pb-[14px] outline-none transition-colors",
+        "bg-[var(--cds-white)] px-[14px] pt-[12px] pb-[14px] outline-none transition-colors",
         // Focus ring
         "focus-visible:ring-2 focus-visible:ring-[var(--cds-primary-border-default)]/30 focus-visible:border-[var(--cds-primary-border-default)]",
         // Disabled
