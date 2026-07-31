@@ -1,8 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge, type BadgeColour } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ThemeProvider } from "@/components/ui/theme-provider";
+import { ThemePlayground } from "@/components/ui/theme-playground";
 import { DS_VERSION, LATEST_RELEASE, type DSChangeType } from "@/ds-changelog";
 
 const CHANGE_COLOUR: Record<DSChangeType, BadgeColour> = {
@@ -406,109 +405,16 @@ export function FoundationSection() {
         </CardContent>
       </Card>
 
-      {/* ThemeProvider */}
+      {/* ThemeProvider Playground */}
       <Card>
         <CardHeader>
-          <CardTitle>ThemeProvider</CardTitle>
+          <CardTitle>ThemeProvider — Interactive Playground</CardTitle>
           <CardDescription>
-            Wrap any subtree to inject brand token overrides. All DS components inside automatically pick up the theme — no component changes needed.
+            Pick a preset or build a custom brand theme. The live preview updates instantly and the generated snippet is ready to copy into your app.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Creator default */}
-            <div className="flex flex-col gap-2">
-              <p className="text-[length:var(--cds-text-p3)] font-semibold text-[color:var(--cds-huegrey-text-default)] uppercase tracking-wide">Creator (default)</p>
-              <div className="rounded-[var(--cds-radius-r)] border border-[var(--border)] overflow-hidden">
-                <div className="h-8 flex items-center px-3 bg-[var(--cds-primary-surface-bold)]">
-                  <span className="text-white text-[length:var(--cds-text-p3)] font-medium">Creator</span>
-                </div>
-                <div className="p-3 flex flex-col gap-2 bg-[var(--cds-white)]">
-                  <Button size="sm" className="w-full">Primary Action</Button>
-                  <div className="h-1.5 rounded-full bg-[var(--cds-primary-surface-subtle)]">
-                    <div className="h-full w-3/5 rounded-full bg-[var(--cds-primary-surface-default)]" />
-                  </div>
-                </div>
-              </div>
-              <p className="text-[length:var(--cds-text-p3)] text-[color:var(--cds-huegrey-text-default)] font-mono">#0D4EF2 (Creator blue)</p>
-            </div>
-
-            {/* CRM red */}
-            <div className="flex flex-col gap-2">
-              <p className="text-[length:var(--cds-text-p3)] font-semibold text-[color:var(--cds-huegrey-text-default)] uppercase tracking-wide">Zoho QEngine</p>
-              <ThemeProvider
-                primaryColor="#089949"
-                primaryColorBold="#044D24"
-                primaryColorSubtle="#E8F5ED"
-              >
-                <div className="rounded-[var(--cds-radius-r)] border border-[var(--border)] overflow-hidden">
-                  <div className="h-8 flex items-center px-3 bg-[var(--cds-primary-surface-bold)]">
-                    <span className="text-white text-[length:var(--cds-text-p3)] font-medium">QEngine</span>
-                  </div>
-                  <div className="p-3 flex flex-col gap-2 bg-[var(--cds-white)]">
-                    <Button size="sm" className="w-full">Primary Action</Button>
-                    <div className="h-1.5 rounded-full bg-[var(--cds-primary-surface-subtle)]">
-                      <div className="h-full w-3/5 rounded-full bg-[var(--cds-primary-surface-default)]" />
-                    </div>
-                  </div>
-                </div>
-              </ThemeProvider>
-              <p className="text-[length:var(--cds-text-p3)] text-[color:var(--cds-huegrey-text-default)] font-mono">#089949 (QEngine green)</p>
-            </div>
-
-            {/* Desk green */}
-            <div className="flex flex-col gap-2">
-              <p className="text-[length:var(--cds-text-p3)] font-semibold text-[color:var(--cds-huegrey-text-default)] uppercase tracking-wide">Zoho Bookings</p>
-              <ThemeProvider
-                primaryColor="#5646A5"
-                primaryColorBold="#2A2260"
-                primaryColorSubtle="#F0EEFF"
-              >
-                <div className="rounded-[var(--cds-radius-r)] border border-[var(--border)] overflow-hidden">
-                  <div className="h-8 flex items-center px-3 bg-[var(--cds-primary-surface-bold)]">
-                    <span className="text-white text-[length:var(--cds-text-p3)] font-medium">Bookings</span>
-                  </div>
-                  <div className="p-3 flex flex-col gap-2 bg-[var(--cds-white)]">
-                    <Button size="sm" className="w-full">Primary Action</Button>
-                    <div className="h-1.5 rounded-full bg-[var(--cds-primary-surface-subtle)]">
-                      <div className="h-full w-3/5 rounded-full bg-[var(--cds-primary-surface-default)]" />
-                    </div>
-                  </div>
-                </div>
-              </ThemeProvider>
-              <p className="text-[length:var(--cds-text-p3)] text-[color:var(--cds-huegrey-text-default)] font-mono">#5646A5 (Bookings purple)</p>
-            </div>
-          </div>
-
-          <Separator />
-
-          <div className="space-y-2">
-            <p className="text-[length:var(--cds-text-p2)] font-semibold text-[color:var(--cds-huegrey-text-dark)]">Usage</p>
-            <pre className="rounded-[var(--cds-radius-r)] bg-[var(--cds-huegrey-surface-subtle)] p-[var(--cds-padding-card)] text-[length:var(--cds-text-p3)] text-[color:var(--cds-huegrey-text-dark)] overflow-x-auto">{`import { ThemeProvider } from "@zoho-creator/ds-react"
-
-// Minimal — brand color only
-<ThemeProvider primaryColor="#E8410E">
-  <App />
-</ThemeProvider>
-
-// Full branding
-<ThemeProvider
-  primaryColor="#E8410E"
-  primaryColorBold="#7A1B00"
-  primaryColorSubtle="#FFF3F0"
-  font="'Inter', sans-serif"
->
-  <App />
-</ThemeProvider>
-
-// Fine-grained token overrides
-<ThemeProvider
-  primaryColor="#E8410E"
-  tokens={{ "--cds-radius-r": "2px" }}
->
-  <App />
-</ThemeProvider>`}</pre>
-          </div>
+        <CardContent>
+          <ThemePlayground />
         </CardContent>
       </Card>
     </div>

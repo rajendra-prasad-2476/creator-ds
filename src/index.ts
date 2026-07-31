@@ -198,6 +198,7 @@ export type { BuilderShellProps, BuilderViewport } from "@/components/ui/builder
 // ─── Theming ──────────────────────────────────────────────────────────────────
 export { ThemeProvider } from "@/components/ui/theme-provider"
 export type { ThemeProviderProps, ThemeTokens } from "@/components/ui/theme-provider"
+export { ThemePlayground } from "@/components/ui/theme-playground"
 
 // ─── Utilities ────────────────────────────────────────────────────────────────
 export { cn } from "@/lib/utils"
