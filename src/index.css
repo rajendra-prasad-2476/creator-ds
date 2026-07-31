@@ -449,6 +449,144 @@
     --cds-shadow-error-bold:    0 20px 24px -4px rgba(236,26,19,0.12), 0 2px 2px 0 rgba(236,26,19,0.05);
 }
 
+/* ─── Dark mode token overrides ────────────────────────────────────────────── */
+/* Applied when the `dark` class is present on an ancestor element.             */
+/* @custom-variant dark (&:is(.dark *)) is registered in the Tailwind config.   */
+.dark {
+  /* ── Shadcn base tokens ── */
+  --background:       #0F1117;
+  --foreground:       #E8E9EB;
+  --card:             #16181D;
+  --card-foreground:  #E8E9EB;
+  --muted:            #1E2026;
+  --muted-foreground: #9EA0A7;
+  --border:           #2C2E33;
+  --ring:             #4D7BF5;
+
+  /* ── White / Black ── */
+  --cds-white: #16181D;
+  --cds-black: #000000;
+
+  /* ── Primary (blue stays blue — surfaces invert to dark tints) ── */
+  --cds-primary-surface-subtle:        #0D1A3A;
+  --cds-primary-surface-subtle-hover:  #112048;
+  --cds-primary-surface-low:           #1A2E5A;
+  --cds-primary-surface-minimal:       #2A4490;
+  --cds-primary-surface-default:       #4D7BF5;
+  --cds-primary-surface-default-hover: #3D6BEA;
+  --cds-primary-surface-bold:          #020C27;
+  --cds-primary-surface-bold-hover:    #010818;
+  --cds-primary-text-default:          #4D7BF5;
+  --cds-primary-text-bold:             #7EA3F8;
+  --cds-primary-text-dark:             #A4BFFB;
+  --cds-primary-border-default:        #4D7BF5;
+  --cds-primary-border-minimal:        #2A4490;
+  --cds-primary-border-low:            #1A2E5A;
+  --cds-primary-border-subtle:         #0D1A3A;
+
+  /* ── Secondary ── */
+  --cds-secondary-surface-default:       #2A3A6A;
+  --cds-secondary-surface-default-hover: #223060;
+  --cds-secondary-surface-subtle:        #0D1220;
+  --cds-secondary-surface-subtle-hover:  #111828;
+  --cds-secondary-surface-low:           #1A2440;
+  --cds-secondary-text-default:          #7A90CC;
+  --cds-secondary-text-default-hover:    #6A80BC;
+  --cds-secondary-border-default:        #2A3A6A;
+  --cds-secondary-border-default-hover:  #223060;
+  --cds-secondary-border-low:            #1A2440;
+  --cds-secondary-border-low-hover:      #1E2A4A;
+
+  /* ── Success (green stays green — surfaces invert) ── */
+  --cds-success-surface-default:       #0A9E4D;
+  --cds-success-surface-default-hover: #088E44;
+  --cds-success-surface-low:           #0A2018;
+  --cds-success-surface-subtle:        #061510;
+  --cds-success-surface-subtle-hover:  #081A14;
+  --cds-success-text-default:          #2ECC78;
+  --cds-success-text-default-hover:    #26BA6C;
+  --cds-success-text-bold:             #6EE4A4;
+  --cds-success-border-default:        #0A9E4D;
+  --cds-success-border-default-hover:  #088E44;
+  --cds-success-border-low:            #0A2018;
+  --cds-success-border-low-hover:      #0C2A1E;
+
+  /* ── Warning (orange stays orange) ── */
+  --cds-warning-surface-default:       #E86010;
+  --cds-warning-surface-default-hover: #D4560E;
+  --cds-warning-surface-low:           #211208;
+  --cds-warning-surface-subtle:        #160C04;
+  --cds-warning-surface-subtle-hover:  #1C1006;
+  --cds-warning-text-default:          #F5924A;
+  --cds-warning-text-default-hover:    #E8823C;
+  --cds-warning-text-bold:             #FAB87A;
+  --cds-warning-border-default:        #E86010;
+  --cds-warning-border-default-hover:  #D4560E;
+  --cds-warning-border-low:            #211208;
+  --cds-warning-border-low-hover:      #2A160A;
+
+  /* ── Error (red stays red) ── */
+  --cds-error-surface-default:       #E02020;
+  --cds-error-surface-default-hover: #CC1C1C;
+  --cds-error-surface-low:           #200A0A;
+  --cds-error-surface-subtle:        #150606;
+  --cds-error-surface-subtle-hover:  #1A0808;
+  --cds-error-text-default:          #F26060;
+  --cds-error-text-default-hover:    #E45050;
+  --cds-error-text-bold:             #F89090;
+  --cds-error-border-default:        #E02020;
+  --cds-error-border-default-hover:  #CC1C1C;
+  --cds-error-border-low:            #200A0A;
+  --cds-error-border-low-hover:      #280C0C;
+
+  /* ── Info (same as primary in dark) ── */
+  --cds-info-surface-default:       #4D7BF5;
+  --cds-info-surface-default-hover: #3D6BEA;
+  --cds-info-surface-low:           #1A2E5A;
+  --cds-info-surface-subtle:        #0D1A3A;
+  --cds-info-surface-subtle-hover:  #112048;
+  --cds-info-text-default:          #4D7BF5;
+  --cds-info-text-default-hover:    #3D6BEA;
+  --cds-info-text-bold:             #7EA3F8;
+  --cds-info-border-default:        #4D7BF5;
+  --cds-info-border-default-hover:  #3D6BEA;
+  --cds-info-border-low:            #1A2E5A;
+  --cds-info-border-low-hover:      #2A4490;
+
+  /* ── Neutral (grays invert) ── */
+  --cds-neutral-surface-default:  #9EA0A7;
+  --cds-neutral-surface-subtle:   #16181D;
+  --cds-neutral-surface-bold:     #E8E9EB;
+  --cds-neutral-text-default:     #9EA0A7;
+  --cds-neutral-text-bold:        #C8CAD0;
+  --cds-neutral-text-dark:        #E8E9EB;
+  --cds-neutral-border-default:   #9EA0A7;
+  --cds-neutral-border-low:       #2C2E33;
+  --cds-neutral-border-subtle:    #1E2026;
+
+  /* ── Huegrey (grays invert) ── */
+  --cds-huegrey-surface-default:        #9EA0A7;
+  --cds-huegrey-surface-default-hover:  #8B8D93;
+  --cds-huegrey-surface-subtle:         #16181D;
+  --cds-huegrey-surface-subtle-hover:   #1E2026;
+  --cds-huegrey-surface-low:            #2C2E33;
+  --cds-huegrey-surface-bold:           #E8E9EB;
+  --cds-huegrey-text-default:           #9EA0A7;
+  --cds-huegrey-text-default-hover:     #8B8D93;
+  --cds-huegrey-text-dark:              #E8E9EB;
+  --cds-huegrey-text-bold:              #C8CAD0;
+  --cds-huegrey-border-default:         #9EA0A7;
+  --cds-huegrey-border-default-hover:   #8B8D93;
+  --cds-huegrey-border-low:             #2C2E33;
+  --cds-huegrey-border-low-hover:       #363840;
+  --cds-huegrey-border-minimal:         #3A3C42;
+  --cds-huegrey-border-minimal-hover:   #484A52;
+  --cds-huegrey-border-fairish:         #4A4C54;
+  --cds-huegrey-border-fairish-hover:   #585A62;
+  --cds-huegrey-text-fairish:           #6C6E76;
+  --cds-huegrey-text-fairish-hover:     #7A7C84;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

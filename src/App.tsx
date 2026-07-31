@@ -10,13 +10,24 @@ import { MoleculesSection } from "@/sections/MoleculesSection";
 import { OrganismsSection } from "@/sections/OrganismsSection";
 import { TemplatesSection } from "@/sections/TemplatesSection";
 import { ParitySection } from "@/sections/ParitySection";
+import { useState } from "react";
 
 function App() {
+  const [darkMode, setDarkMode] = useState(false)
+
   return (
     <TooltipProvider>
+      <div className={darkMode ? "dark" : ""}>
       <div className="min-h-screen bg-background">
         {/* Top Bar */}
-        <TopBar docTitle="CTS Design System" docVersion={`v${DS_VERSION}`} docType="HTML" userInitials="RJ" />
+        <TopBar
+          docTitle="CTS Design System"
+          docVersion={`v${DS_VERSION}`}
+          docType="HTML"
+          userInitials="RJ"
+          darkMode={darkMode}
+          onDarkModeToggle={() => setDarkMode(d => !d)}
+        />
 
         <main className="mx-auto max-w-7xl px-8 py-8">
           <div className="mb-8">
@@ -93,6 +104,7 @@ function App() {
             <p>CTS Design System — Built from Figma with Shadcn/ui + Tailwind CSS</p>            <p>Font: Zoho Puvi • Theme: Creator</p>
           </div>
         </footer>
+      </div>
       </div>
     </TooltipProvider>
   );

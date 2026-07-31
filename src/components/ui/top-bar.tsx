@@ -110,6 +110,10 @@ export interface TopBarProps {
   docType?: string
   workspaceName?: string
   userInitials?: string
+  /** Current dark mode state — controls the toggle icon. */
+  darkMode?: boolean
+  /** Callback fired when the dark mode toggle is clicked. */
+  onDarkModeToggle?: () => void
   className?: string
 }
 
@@ -120,6 +124,8 @@ export function TopBar({
   docType = "HTML",
   workspaceName = "All Organizations",
   userInitials = "RJ",
+  darkMode = false,
+  onDarkModeToggle,
   className,
 }: TopBarProps) {
   return (
@@ -136,6 +142,29 @@ export function TopBar({
 
       {/* Right: Controls */}
       <div className="flex items-center gap-3">
+        {/* Dark mode toggle */}
+        {onDarkModeToggle && (
+          <button
+            type="button"
+            onClick={onDarkModeToggle}
+            aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+            className="flex items-center justify-center rounded-[4px] p-1.5 outline-none transition-colors hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white/50"
+          >
+            {darkMode ? (
+              /* Sun icon */
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <circle cx="12" cy="12" r="4"/>
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+              </svg>
+            ) : (
+              /* Moon icon */
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+              </svg>
+            )}
+          </button>
+        )}
+
         {/* Feature Preview link */}
         <a
           href="/features.html"
