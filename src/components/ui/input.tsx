@@ -27,7 +27,7 @@ function Input({ className, type, status, ...props }: InputProps) {
         // Shape & spacing — radius-r (6px), 11px horizontal padding
         "rounded-[var(--cds-radius-r)] border px-[11px]",
         // Default — white bg, fairish border, dark body text
-        "bg-white border-[var(--cds-huegrey-border-fairish)] text-[var(--cds-huegrey-text-dark)]",
+        "bg-[var(--cds-white)] border-[var(--cds-huegrey-border-fairish)] text-[var(--cds-huegrey-text-dark)]",
         // Placeholder
         "placeholder:text-[var(--cds-huegrey-text-fairish)]",
         // Transitions

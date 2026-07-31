@@ -32,12 +32,12 @@ const buttonVariants = cva(
 
         // Border — white bg, blue 1px border + blue text
         outline:
-          "bg-white border border-[var(--cds-primary-border-default)] text-[var(--cds-primary-text-default)] " +
+          "bg-[var(--cds-white)] border border-[var(--cds-primary-border-default)] text-[var(--cds-primary-text-default)] " +
           "hover:bg-[var(--cds-primary-surface-subtle)] hover:border-[var(--cds-primary-surface-default-hover)] hover:text-[var(--cds-primary-surface-default-hover)]",
 
         // Minimal Border — white bg, very subtle border (#DDE6FD), blue text
         ghost:
-          "bg-white border border-[var(--cds-primary-border-low)] text-[var(--cds-primary-text-default)] " +
+          "bg-[var(--cds-white)] border border-[var(--cds-primary-border-low)] text-[var(--cds-primary-text-default)] " +
           "hover:bg-[var(--cds-primary-surface-subtle)] hover:border-[var(--cds-primary-border-minimal)]",
 
         // Minimal Fill — light blue bg (#E7EDFE), blue text
@@ -162,44 +162,44 @@ type SplitStyleMap = Record<SplitButtonStyle, SplitStyleEntry>
 const splitIntentMap: Record<SplitButtonIntent, SplitStyleMap> = {
   primary: {
     default: { parts: "bg-[var(--cds-primary-surface-default)] text-white hover:bg-[var(--cds-primary-surface-default-hover)]", sep: "bg-white/30", hasBorder: false },
-    outline: { parts: "bg-white border border-[var(--cds-primary-border-default)] text-[var(--cds-primary-text-default)] hover:bg-[var(--cds-primary-surface-subtle)] hover:border-[var(--cds-primary-surface-default-hover)] hover:text-[var(--cds-primary-surface-default-hover)]", sep: "bg-[var(--cds-primary-border-default)]", hasBorder: true },
-    ghost:   { parts: "bg-white border border-[var(--cds-primary-border-low)] text-[var(--cds-primary-text-default)] hover:bg-[var(--cds-primary-surface-subtle)] hover:border-[var(--cds-primary-border-minimal)]", sep: "bg-[var(--cds-primary-border-low)]", hasBorder: true },
+    outline: { parts: "bg-[var(--cds-white)] border border-[var(--cds-primary-border-default)] text-[var(--cds-primary-text-default)] hover:bg-[var(--cds-primary-surface-subtle)] hover:border-[var(--cds-primary-surface-default-hover)] hover:text-[var(--cds-primary-surface-default-hover)]", sep: "bg-[var(--cds-primary-border-default)]", hasBorder: true },
+    ghost:   { parts: "bg-[var(--cds-white)] border border-[var(--cds-primary-border-low)] text-[var(--cds-primary-text-default)] hover:bg-[var(--cds-primary-surface-subtle)] hover:border-[var(--cds-primary-border-minimal)]", sep: "bg-[var(--cds-primary-border-low)]", hasBorder: true },
     subtle:  { parts: "bg-[var(--cds-primary-surface-subtle-hover)] text-[var(--cds-primary-text-default)] hover:bg-[var(--cds-primary-surface-low)] hover:text-[var(--cds-primary-surface-default-hover)]", sep: "bg-[var(--cds-primary-border-low)]", hasBorder: false },
   },
   secondary: {
     default: { parts: "bg-[var(--cds-secondary-surface-default)] text-white hover:bg-[var(--cds-secondary-surface-default-hover)]", sep: "bg-white/30", hasBorder: false },
-    outline: { parts: "bg-white border border-[var(--cds-secondary-border-default)] text-[var(--cds-secondary-text-default)] hover:bg-[var(--cds-secondary-surface-subtle)] hover:border-[var(--cds-secondary-border-default-hover)] hover:text-[var(--cds-secondary-text-default-hover)]", sep: "bg-[var(--cds-secondary-border-default)]", hasBorder: true },
-    ghost:   { parts: "bg-white border border-[var(--cds-secondary-border-low)] text-[var(--cds-secondary-text-default)] hover:bg-[var(--cds-secondary-surface-subtle)] hover:border-[var(--cds-secondary-border-low-hover)] hover:text-[var(--cds-secondary-text-default-hover)]", sep: "bg-[var(--cds-secondary-border-low)]", hasBorder: true },
+    outline: { parts: "bg-[var(--cds-white)] border border-[var(--cds-secondary-border-default)] text-[var(--cds-secondary-text-default)] hover:bg-[var(--cds-secondary-surface-subtle)] hover:border-[var(--cds-secondary-border-default-hover)] hover:text-[var(--cds-secondary-text-default-hover)]", sep: "bg-[var(--cds-secondary-border-default)]", hasBorder: true },
+    ghost:   { parts: "bg-[var(--cds-white)] border border-[var(--cds-secondary-border-low)] text-[var(--cds-secondary-text-default)] hover:bg-[var(--cds-secondary-surface-subtle)] hover:border-[var(--cds-secondary-border-low-hover)] hover:text-[var(--cds-secondary-text-default-hover)]", sep: "bg-[var(--cds-secondary-border-low)]", hasBorder: true },
     subtle:  { parts: "bg-[var(--cds-secondary-surface-subtle-hover)] text-[var(--cds-secondary-text-default)] hover:bg-[var(--cds-secondary-surface-low)] hover:text-[var(--cds-secondary-text-default-hover)]", sep: "bg-[var(--cds-secondary-border-low)]", hasBorder: false },
   },
   success: {
     default: { parts: "bg-[var(--cds-success-surface-default)] text-white hover:bg-[var(--cds-success-surface-default-hover)]", sep: "bg-white/30", hasBorder: false },
-    outline: { parts: "bg-white border border-[var(--cds-success-border-default)] text-[var(--cds-success-text-default)] hover:bg-[var(--cds-success-surface-subtle)] hover:border-[var(--cds-success-border-default-hover)] hover:text-[var(--cds-success-text-default-hover)]", sep: "bg-[var(--cds-success-border-default)]", hasBorder: true },
-    ghost:   { parts: "bg-white border border-[var(--cds-success-border-low)] text-[var(--cds-success-text-default)] hover:bg-[var(--cds-success-surface-subtle)] hover:border-[var(--cds-success-border-low-hover)] hover:text-[var(--cds-success-text-default-hover)]", sep: "bg-[var(--cds-success-border-low)]", hasBorder: true },
+    outline: { parts: "bg-[var(--cds-white)] border border-[var(--cds-success-border-default)] text-[var(--cds-success-text-default)] hover:bg-[var(--cds-success-surface-subtle)] hover:border-[var(--cds-success-border-default-hover)] hover:text-[var(--cds-success-text-default-hover)]", sep: "bg-[var(--cds-success-border-default)]", hasBorder: true },
+    ghost:   { parts: "bg-[var(--cds-white)] border border-[var(--cds-success-border-low)] text-[var(--cds-success-text-default)] hover:bg-[var(--cds-success-surface-subtle)] hover:border-[var(--cds-success-border-low-hover)] hover:text-[var(--cds-success-text-default-hover)]", sep: "bg-[var(--cds-success-border-low)]", hasBorder: true },
     subtle:  { parts: "bg-[var(--cds-success-surface-subtle-hover)] text-[var(--cds-success-text-default)] hover:bg-[var(--cds-success-surface-low)] hover:text-[var(--cds-success-text-default-hover)]", sep: "bg-[var(--cds-success-border-low)]", hasBorder: false },
   },
   info: {
     default: { parts: "bg-[var(--cds-info-surface-default)] text-white hover:bg-[var(--cds-info-surface-default-hover)]", sep: "bg-white/30", hasBorder: false },
-    outline: { parts: "bg-white border border-[var(--cds-info-border-default)] text-[var(--cds-info-text-default)] hover:bg-[var(--cds-info-surface-subtle)] hover:border-[var(--cds-info-border-default-hover)] hover:text-[var(--cds-info-text-default-hover)]", sep: "bg-[var(--cds-info-border-default)]", hasBorder: true },
-    ghost:   { parts: "bg-white border border-[var(--cds-info-border-low)] text-[var(--cds-info-text-default)] hover:bg-[var(--cds-info-surface-subtle)] hover:border-[var(--cds-info-border-low-hover)] hover:text-[var(--cds-info-text-default-hover)]", sep: "bg-[var(--cds-info-border-low)]", hasBorder: true },
+    outline: { parts: "bg-[var(--cds-white)] border border-[var(--cds-info-border-default)] text-[var(--cds-info-text-default)] hover:bg-[var(--cds-info-surface-subtle)] hover:border-[var(--cds-info-border-default-hover)] hover:text-[var(--cds-info-text-default-hover)]", sep: "bg-[var(--cds-info-border-default)]", hasBorder: true },
+    ghost:   { parts: "bg-[var(--cds-white)] border border-[var(--cds-info-border-low)] text-[var(--cds-info-text-default)] hover:bg-[var(--cds-info-surface-subtle)] hover:border-[var(--cds-info-border-low-hover)] hover:text-[var(--cds-info-text-default-hover)]", sep: "bg-[var(--cds-info-border-low)]", hasBorder: true },
     subtle:  { parts: "bg-[var(--cds-info-surface-subtle-hover)] text-[var(--cds-info-text-default)] hover:bg-[var(--cds-info-surface-low)] hover:text-[var(--cds-info-text-default-hover)]", sep: "bg-[var(--cds-info-border-low)]", hasBorder: false },
   },
   warning: {
     default: { parts: "bg-[var(--cds-warning-surface-default)] text-white hover:bg-[var(--cds-warning-surface-default-hover)]", sep: "bg-white/30", hasBorder: false },
-    outline: { parts: "bg-white border border-[var(--cds-warning-border-default)] text-[var(--cds-warning-text-default)] hover:bg-[var(--cds-warning-surface-subtle)] hover:border-[var(--cds-warning-border-default-hover)] hover:text-[var(--cds-warning-text-default-hover)]", sep: "bg-[var(--cds-warning-border-default)]", hasBorder: true },
-    ghost:   { parts: "bg-white border border-[var(--cds-warning-border-low)] text-[var(--cds-warning-text-default)] hover:bg-[var(--cds-warning-surface-subtle)] hover:border-[var(--cds-warning-border-low-hover)] hover:text-[var(--cds-warning-text-default-hover)]", sep: "bg-[var(--cds-warning-border-low)]", hasBorder: true },
+    outline: { parts: "bg-[var(--cds-white)] border border-[var(--cds-warning-border-default)] text-[var(--cds-warning-text-default)] hover:bg-[var(--cds-warning-surface-subtle)] hover:border-[var(--cds-warning-border-default-hover)] hover:text-[var(--cds-warning-text-default-hover)]", sep: "bg-[var(--cds-warning-border-default)]", hasBorder: true },
+    ghost:   { parts: "bg-[var(--cds-white)] border border-[var(--cds-warning-border-low)] text-[var(--cds-warning-text-default)] hover:bg-[var(--cds-warning-surface-subtle)] hover:border-[var(--cds-warning-border-low-hover)] hover:text-[var(--cds-warning-text-default-hover)]", sep: "bg-[var(--cds-warning-border-low)]", hasBorder: true },
     subtle:  { parts: "bg-[var(--cds-warning-surface-subtle-hover)] text-[var(--cds-warning-text-default)] hover:bg-[var(--cds-warning-surface-low)] hover:text-[var(--cds-warning-text-default-hover)]", sep: "bg-[var(--cds-warning-border-low)]", hasBorder: false },
   },
   error: {
     default: { parts: "bg-[var(--cds-error-surface-default)] text-white hover:bg-[var(--cds-error-surface-default-hover)]", sep: "bg-white/30", hasBorder: false },
-    outline: { parts: "bg-white border border-[var(--cds-error-border-default)] text-[var(--cds-error-text-default)] hover:bg-[var(--cds-error-surface-subtle)] hover:border-[var(--cds-error-border-default-hover)] hover:text-[var(--cds-error-text-default-hover)]", sep: "bg-[var(--cds-error-border-default)]", hasBorder: true },
-    ghost:   { parts: "bg-white border border-[var(--cds-error-border-low)] text-[var(--cds-error-text-default)] hover:bg-[var(--cds-error-surface-subtle)] hover:border-[var(--cds-error-border-low-hover)] hover:text-[var(--cds-error-text-default-hover)]", sep: "bg-[var(--cds-error-border-low)]", hasBorder: true },
+    outline: { parts: "bg-[var(--cds-white)] border border-[var(--cds-error-border-default)] text-[var(--cds-error-text-default)] hover:bg-[var(--cds-error-surface-subtle)] hover:border-[var(--cds-error-border-default-hover)] hover:text-[var(--cds-error-text-default-hover)]", sep: "bg-[var(--cds-error-border-default)]", hasBorder: true },
+    ghost:   { parts: "bg-[var(--cds-white)] border border-[var(--cds-error-border-low)] text-[var(--cds-error-text-default)] hover:bg-[var(--cds-error-surface-subtle)] hover:border-[var(--cds-error-border-low-hover)] hover:text-[var(--cds-error-text-default-hover)]", sep: "bg-[var(--cds-error-border-low)]", hasBorder: true },
     subtle:  { parts: "bg-[var(--cds-error-surface-subtle-hover)] text-[var(--cds-error-text-default)] hover:bg-[var(--cds-error-surface-low)] hover:text-[var(--cds-error-text-default-hover)]", sep: "bg-[var(--cds-error-border-low)]", hasBorder: false },
   },
   huegrey: {
     default: { parts: "bg-[var(--cds-huegrey-surface-default)] text-white hover:bg-[var(--cds-huegrey-surface-default-hover)]", sep: "bg-white/30", hasBorder: false },
-    outline: { parts: "bg-white border border-[var(--cds-huegrey-border-default)] text-[var(--cds-huegrey-text-default)] hover:bg-[var(--cds-huegrey-surface-subtle)] hover:border-[var(--cds-huegrey-border-default-hover)] hover:text-[var(--cds-huegrey-text-default-hover)]", sep: "bg-[var(--cds-huegrey-border-default)]", hasBorder: true },
-    ghost:   { parts: "bg-white border border-[var(--cds-huegrey-border-minimal)] text-[var(--cds-huegrey-text-default)] hover:bg-[var(--cds-huegrey-surface-subtle)] hover:border-[var(--cds-huegrey-border-minimal-hover)] hover:text-[var(--cds-huegrey-text-default-hover)]", sep: "bg-[var(--cds-huegrey-border-minimal)]", hasBorder: true },
+    outline: { parts: "bg-[var(--cds-white)] border border-[var(--cds-huegrey-border-default)] text-[var(--cds-huegrey-text-default)] hover:bg-[var(--cds-huegrey-surface-subtle)] hover:border-[var(--cds-huegrey-border-default-hover)] hover:text-[var(--cds-huegrey-text-default-hover)]", sep: "bg-[var(--cds-huegrey-border-default)]", hasBorder: true },
+    ghost:   { parts: "bg-[var(--cds-white)] border border-[var(--cds-huegrey-border-minimal)] text-[var(--cds-huegrey-text-default)] hover:bg-[var(--cds-huegrey-surface-subtle)] hover:border-[var(--cds-huegrey-border-minimal-hover)] hover:text-[var(--cds-huegrey-text-default-hover)]", sep: "bg-[var(--cds-huegrey-border-minimal)]", hasBorder: true },
     subtle:  { parts: "bg-[var(--cds-huegrey-surface-subtle-hover)] text-[var(--cds-huegrey-text-default)] hover:bg-[var(--cds-huegrey-surface-low)] hover:text-[var(--cds-huegrey-text-default-hover)]", sep: "bg-[var(--cds-huegrey-border-minimal)]", hasBorder: false },
   },
 }

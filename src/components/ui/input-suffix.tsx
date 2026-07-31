@@ -83,7 +83,7 @@ function InputSuffix({
           "rounded-l-[var(--cds-radius-r)] rounded-r-none mr-[-1px]",
           "border outline-none transition-[border-color,box-shadow]",
           // Default colours
-          "bg-white border-[var(--cds-huegrey-border-fairish)] text-[var(--cds-huegrey-text-dark)]",
+          "bg-[var(--cds-white)] border-[var(--cds-huegrey-border-fairish)] text-[var(--cds-huegrey-text-dark)]",
           "placeholder:text-[var(--cds-huegrey-text-fairish)]",
           // Container hover → primary border (non-disabled only)
           "group-hover/isuf:enabled:border-[var(--cds-primary-border-default)]",
@@ -128,7 +128,7 @@ function InputSuffix({
             "rounded-r-[var(--cds-radius-r)] rounded-l-none",
             "border outline-none transition-[border-color,background-color]",
             // Default
-            "bg-white border-[var(--cds-huegrey-border-fairish)]",
+            "bg-[var(--cds-white)] border-[var(--cds-huegrey-border-fairish)]",
             // Container hover
             "group-hover/isuf:enabled:border-[var(--cds-primary-border-default)]",
             // Disabled

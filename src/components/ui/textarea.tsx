@@ -26,7 +26,7 @@ function Textarea({ className, status, ...props }: TextareaProps) {
         // Shape & spacing — radius-r (6px), 12px H / 10px V padding
         "rounded-[var(--cds-radius-r)] border px-3 py-[10px]",
         // Default — white bg, fairish border, dark body text
-        "bg-white border-[var(--cds-huegrey-border-fairish)] text-[var(--cds-huegrey-text-dark)]",
+        "bg-[var(--cds-white)] border-[var(--cds-huegrey-border-fairish)] text-[var(--cds-huegrey-text-dark)]",
         // Placeholder
         "placeholder:text-[var(--cds-huegrey-text-fairish)]",
         // Transitions

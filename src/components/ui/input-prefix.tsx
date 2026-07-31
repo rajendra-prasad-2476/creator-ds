@@ -187,7 +187,7 @@ function InputPrefix({
             "rounded-r-[var(--cds-radius-r)] rounded-l-none",
             "border outline-none transition-[border-color,box-shadow]",
             // Default colours
-            "bg-white border-[var(--cds-huegrey-border-fairish)] text-[var(--cds-huegrey-text-dark)]",
+            "bg-[var(--cds-white)] border-[var(--cds-huegrey-border-fairish)] text-[var(--cds-huegrey-text-dark)]",
             "placeholder:text-[var(--cds-huegrey-text-fairish)]",
             // Container hover → primary border (non-disabled)
             "group-hover/iprfx:enabled:border-[var(--cds-primary-border-default)]",

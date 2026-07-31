@@ -170,7 +170,7 @@ function InputAffixed({
           // No radius — both ends are shared with CTAs
           "rounded-none border outline-none transition-[border-color,box-shadow]",
           // Default colours
-          "bg-white border-[var(--cds-huegrey-border-fairish)] text-[var(--cds-huegrey-text-dark)]",
+          "bg-[var(--cds-white)] border-[var(--cds-huegrey-border-fairish)] text-[var(--cds-huegrey-text-dark)]",
           "placeholder:text-[var(--cds-huegrey-text-fairish)]",
           // Container hover → primary border (non-disabled)
           "group-hover/iaffx:enabled:border-[var(--cds-primary-border-default)]",
