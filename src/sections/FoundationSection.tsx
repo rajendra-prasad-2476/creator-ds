@@ -460,9 +460,9 @@ export function FoundationSection() {
             <div className="flex flex-col gap-2">
               <p className="text-[length:var(--cds-text-p3)] font-semibold text-[color:var(--cds-huegrey-text-default)] uppercase tracking-wide">Zoho Bookings</p>
               <ThemeProvider
-                primaryColor="#5856D6"
-                primaryColorBold="#2D2B6B"
-                primaryColorSubtle="#F3F1FF"
+                primaryColor="#5646A5"
+                primaryColorBold="#2A2260"
+                primaryColorSubtle="#F0EEFF"
               >
                 <div className="rounded-[var(--cds-radius-r)] border border-[var(--border)] overflow-hidden">
                   <div className="h-8 flex items-center px-3 bg-[var(--cds-primary-surface-bold)]">
@@ -476,7 +476,7 @@ export function FoundationSection() {
                   </div>
                 </div>
               </ThemeProvider>
-              <p className="text-[length:var(--cds-text-p3)] text-[color:var(--cds-huegrey-text-default)] font-mono">#5856D6 (Bookings purple)</p>
+              <p className="text-[length:var(--cds-text-p3)] text-[color:var(--cds-huegrey-text-default)] font-mono">#5646A5 (Bookings purple)</p>
             </div>
           </div>
 
