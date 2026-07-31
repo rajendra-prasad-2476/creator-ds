@@ -10,14 +10,21 @@ import { MoleculesSection } from "@/sections/MoleculesSection";
 import { OrganismsSection } from "@/sections/OrganismsSection";
 import { TemplatesSection } from "@/sections/TemplatesSection";
 import { ParitySection } from "@/sections/ParitySection";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Toaster } from "@/components/ui/sonner";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false)
 
+  // Toggle dark class on <html> so portal elements (dropdown, popover,
+  // dialog, tooltip, select) also inherit dark mode CSS variables.
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", darkMode)
+  }, [darkMode])
+
   return (
     <TooltipProvider>
-      <div className={darkMode ? "dark" : ""}>
+      <Toaster richColors position="top-right" />
       <div className="min-h-screen bg-background text-foreground">
         {/* Top Bar */}
         <TopBar
@@ -104,7 +111,6 @@ function App() {
             <p>CTS Design System — Built from Figma with Shadcn/ui + Tailwind CSS</p>            <p>Font: Zoho Puvi • Theme: Creator</p>
           </div>
         </footer>
-      </div>
       </div>
     </TooltipProvider>
   );

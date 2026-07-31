@@ -149,49 +149,49 @@ function DefaultStatusIcon({ variant }: { variant: PopupAlertVariant }) {
     case "alert":
       return (
         <svg width="57" height="37" viewBox="0 0 57 37" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="28.5" cy="18.5" rx="28.5" ry="17.5" fill="#F2F5F8" />
-          <circle cx="28.5" cy="18.5" r="17.5" fill="white" stroke="#E71F43" strokeWidth="1.5" />
+          <ellipse cx="28.5" cy="18.5" rx="28.5" ry="17.5" fill="var(--cds-huegrey-surface-low)" />
+          <circle cx="28.5" cy="18.5" r="17.5" fill="var(--cds-white)" stroke="#E71F43" strokeWidth="1.5" />
           <circle cx="28.5" cy="28" r="1" fill="#E71F43" />
           <rect x="23" y="15" width="11" height="11" rx="1" fill="#E71F43" fillOpacity="0.15" stroke="#E71F43" strokeWidth="1.5" />
           <line x1="21" y1="13" x2="36" y2="13" stroke="#E71F43" strokeWidth="1.5" strokeLinecap="round" />
           <path d="M26 10L28.5 7L31 10" stroke="#E71F43" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-          <circle cx="47" cy="32" r="2.5" fill="white" stroke="#E71F43" strokeWidth="1.2" />
-          <circle cx="7" cy="3" r="1.5" fill="white" stroke="#E71F43" strokeWidth="1.2" />
+          <circle cx="47" cy="32" r="2.5" fill="var(--cds-white)" stroke="#E71F43" strokeWidth="1.2" />
+          <circle cx="7" cy="3" r="1.5" fill="var(--cds-white)" stroke="#E71F43" strokeWidth="1.2" />
         </svg>
       )
     case "success":
       return (
         <svg width="57" height="37" viewBox="0 0 57 37" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="28.5" cy="18.5" rx="28.5" ry="17.5" fill="#F2F5F8" />
-          <circle cx="28.5" cy="18.5" r="17.5" fill="white" stroke="#05B801" strokeWidth="1.5" />
+          <ellipse cx="28.5" cy="18.5" rx="28.5" ry="17.5" fill="var(--cds-huegrey-surface-low)" />
+          <circle cx="28.5" cy="18.5" r="17.5" fill="var(--cds-white)" stroke="#05B801" strokeWidth="1.5" />
           <circle cx="28.5" cy="28" r="1" fill="#05B801" />
           <path d="M21 18.5L26 23.5L36 13.5" stroke="#05B801" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" fillOpacity="0.5" />
-          <circle cx="47" cy="32" r="2.5" fill="white" stroke="#05B801" strokeWidth="1.2" />
-          <circle cx="7" cy="3" r="1.5" fill="white" stroke="#05B801" strokeWidth="1.2" />
+          <circle cx="47" cy="32" r="2.5" fill="var(--cds-white)" stroke="#05B801" strokeWidth="1.2" />
+          <circle cx="7" cy="3" r="1.5" fill="var(--cds-white)" stroke="#05B801" strokeWidth="1.2" />
         </svg>
       )
     case "info":
       return (
         <svg width="57" height="37" viewBox="0 0 57 37" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="28.5" cy="18.5" rx="28.5" ry="17.5" fill="#F2F5F8" />
-          <circle cx="28.5" cy="18.5" r="17.5" fill="white" stroke="#295BF9" strokeWidth="1.5" />
+          <ellipse cx="28.5" cy="18.5" rx="28.5" ry="17.5" fill="var(--cds-huegrey-surface-low)" />
+          <circle cx="28.5" cy="18.5" r="17.5" fill="var(--cds-white)" stroke="#295BF9" strokeWidth="1.5" />
           <circle cx="28.5" cy="28" r="1" fill="#295BF9" />
           <rect x="26" y="15" width="5" height="10" rx="1" fill="#295BF9" fillOpacity="0.15" stroke="#295BF9" strokeWidth="1.5" />
           <rect x="26" y="10" width="5" height="5" rx="1" fill="#295BF9" fillOpacity="0.15" />
-          <circle cx="47" cy="32" r="2.5" fill="white" stroke="#295BF9" strokeWidth="1.2" />
-          <circle cx="7" cy="3" r="1.5" fill="white" stroke="#295BF9" strokeWidth="1.2" />
+          <circle cx="47" cy="32" r="2.5" fill="var(--cds-white)" stroke="#295BF9" strokeWidth="1.2" />
+          <circle cx="7" cy="3" r="1.5" fill="var(--cds-white)" stroke="#295BF9" strokeWidth="1.2" />
         </svg>
       )
     case "warning":
       return (
         <svg width="57" height="39" viewBox="0 0 57 39" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="28.5" cy="20.5" rx="28.5" ry="17.5" fill="#F2F5F8" />
-          <path d="M8 35L28.5 3L49 35H8Z" fill="white" stroke="#FC6340" strokeWidth="1.5" strokeLinejoin="round" />
+          <ellipse cx="28.5" cy="20.5" rx="28.5" ry="17.5" fill="var(--cds-huegrey-surface-low)" />
+          <path d="M8 35L28.5 3L49 35H8Z" fill="var(--cds-white)" stroke="#FC6340" strokeWidth="1.5" strokeLinejoin="round" />
           <circle cx="28.5" cy="30" r="2" fill="#FC6340" />
           <rect x="26" y="15" width="5" height="10" rx="1" fill="#FC6340" fillOpacity="0.15" stroke="#FC6340" strokeWidth="1.5" />
           <rect x="26" y="10" width="5" height="5" rx="1" fill="#FC6340" fillOpacity="0.15" />
-          <circle cx="47" cy="34" r="2.5" fill="white" stroke="#FC6340" strokeWidth="1.2" />
-          <circle cx="5" cy="4" r="1.5" fill="white" stroke="#FC6340" strokeWidth="1.2" />
+          <circle cx="47" cy="34" r="2.5" fill="var(--cds-white)" stroke="#FC6340" strokeWidth="1.2" />
+          <circle cx="5" cy="4" r="1.5" fill="var(--cds-white)" stroke="#FC6340" strokeWidth="1.2" />
         </svg>
       )
   }

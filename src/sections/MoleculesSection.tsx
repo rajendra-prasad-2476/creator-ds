@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "@/components/ui/input-otp";
@@ -947,9 +948,9 @@ export function MoleculesSection() {
         <CardContent>
           <p className="text-sm text-muted-foreground mb-3">Toast notifications are triggered programmatically via the <code className="bg-muted px-1 rounded text-xs">toast()</code> function from Sonner.</p>
           <div className="flex flex-wrap gap-3">
-            <Button variant="outline" size="sm" onClick={() => {}}>Default Toast</Button>
-            <Button variant="outline" size="sm" onClick={() => {}}>Success Toast</Button>
-            <Button variant="outline" size="sm" onClick={() => {}}>Error Toast</Button>
+            <Button variant="outline" size="sm" onClick={() => toast("File saved successfully.")}>Default Toast</Button>
+            <Button variant="outline" size="sm" onClick={() => toast.success("Changes saved!")}>Success Toast</Button>
+            <Button variant="outline" size="sm" onClick={() => toast.error("Something went wrong.")}>Error Toast</Button>
           </div>
         </CardContent>
       </Card>

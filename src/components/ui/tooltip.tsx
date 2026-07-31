@@ -109,7 +109,7 @@ function TooltipContent({
             "bg-[var(--cds-secondary-surface-default-hover)]",
             // typography — P2 regular white
             "text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)]",
-            "text-[var(--cds-white)] font-normal",
+            "text-white font-normal",
             // entrance / exit animation
             "origin-(--transform-origin)",
             "data-[state=delayed-open]:animate-in data-[state=delayed-open]:fade-in-0 data-[state=delayed-open]:zoom-in-95",
@@ -235,11 +235,11 @@ function RichTooltipContent({
           {heading && (
             <div className="flex items-start gap-[var(--cds-space-6)] shrink-0 w-full">
               {headingIcon && (
-                <span className="mt-[2px] shrink-0 size-[14px] overflow-hidden text-[var(--cds-white)]">
+                <span className="mt-[2px] shrink-0 size-[14px] overflow-hidden text-white">
                   {headingIcon}
                 </span>
               )}
-              <p className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[var(--cds-white)] font-normal whitespace-nowrap shrink-0">
+              <p className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-white font-normal whitespace-nowrap shrink-0">
                 {heading}
               </p>
             </div>
@@ -247,14 +247,14 @@ function RichTooltipContent({
 
           {/* ── Body: Text ── */}
           {contentType === "text" && children != null && (
-            <p className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[var(--cds-white)] font-normal break-words w-full min-w-0">
+            <p className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-white font-normal break-words w-full min-w-0">
               {children}
             </p>
           )}
 
           {/* ── Body: Ordered list ── */}
           {contentType === "list" && listItems && listItems.length > 0 && (
-            <ol className="list-decimal text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[var(--cds-white)] font-normal w-full ps-[21px]">
+            <ol className="list-decimal text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-white font-normal w-full ps-[21px]">
               {listItems.map((item, i) => (
                 <li key={i}>{item}</li>
               ))}
@@ -270,11 +270,11 @@ function RichTooltipContent({
                   className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] font-normal whitespace-pre-wrap break-words w-full"
                 >
                   {/* label in primary-minimal blue */}
-                  <span className="text-[var(--cds-primary-surface-minimal)]">{row.label}</span>
+                  <span className="text-[#C0D1FC]">{row.label}</span>
                   {/* separator in muted huegrey */}
-                  <span className="text-[var(--cds-huegrey-border-fairish)]">{"       :       "}</span>
+                  <span className="text-white/40">{"       :       "}</span>
                   {/* value in white */}
-                  <span className="text-[var(--cds-white)]">{row.value}</span>
+                  <span className="text-white">{row.value}</span>
                 </p>
               ))}
             </div>
