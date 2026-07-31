@@ -195,5 +195,9 @@ export type {
 export { BuilderShell } from "@/components/ui/builder-shell"
 export type { BuilderShellProps, BuilderViewport } from "@/components/ui/builder-shell"
 
+// ─── Theming ──────────────────────────────────────────────────────────────────
+export { ThemeProvider } from "@/components/ui/theme-provider"
+export type { ThemeProviderProps, ThemeTokens } from "@/components/ui/theme-provider"
+
 // ─── Utilities ────────────────────────────────────────────────────────────────
 export { cn } from "@/lib/utils"
