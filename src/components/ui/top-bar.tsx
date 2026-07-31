@@ -136,6 +136,24 @@ export function TopBar({
 
       {/* Right: Controls */}
       <div className="flex items-center gap-3">
+        {/* Feature Preview link */}
+        <a
+          href="/features.html"
+          className="flex items-center gap-1.5 rounded-[4px] px-2.5 py-1.5 text-white/90 text-[13px] leading-[18px] whitespace-nowrap outline-none transition-colors hover:bg-white/10 hover:text-white focus-visible:ring-2 focus-visible:ring-white/50"
+          style={{ fontFamily: "'Zoho Puvi', sans-serif" }}
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          Feature Preview
+        </a>
+
+        {/* Separator */}
+        <div
+          className="h-[18px] w-px shrink-0"
+          style={{ backgroundColor: "rgba(192, 209, 252, 0.3)" }}
+        />
+
         {docTitle ? (
           /* Documentation context info */
           <div className="flex items-center gap-2">
