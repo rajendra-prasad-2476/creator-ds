@@ -90,7 +90,7 @@ function App() {
         {/* Footer */}
         <footer className="border-t border-border bg-card px-8 py-6 mt-12">
           <div className="mx-auto max-w-7xl flex items-center justify-between text-sm text-muted-foreground">
-            <p>CTS Design System — Built from Figma with Shadcn/ui + Tailwind CSS</p>            <a href="/features.html" style={{ color: "var(--cds-primary-text-default)", fontSize: 14 }}>Feature Previews →</a>            <p>Font: Zoho Puvi • Theme: Creator</p>
+            <p>CTS Design System — Built from Figma with Shadcn/ui + Tailwind CSS</p>            <p>Font: Zoho Puvi • Theme: Creator</p>
           </div>
         </footer>
       </div>
