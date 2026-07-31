@@ -43,7 +43,7 @@ function RadioCard({ className, label, description, ...props }: RadioCardProps) 
       <div
         className={cn(
           "mt-[2px] flex size-[14px] shrink-0 items-center justify-center",
-          "rounded-full border border-[var(--cds-huegrey-border-fairish)] bg-white transition-colors",
+          "rounded-full border border-[var(--cds-huegrey-border-fairish)] bg-[var(--cds-white)] transition-colors",
           // Hover: blue border
           "group-hover:border-[var(--cds-primary-border-default)] group-hover:bg-[var(--cds-primary-surface-subtle)]",
           // Checked: filled primary blue
@@ -53,7 +53,7 @@ function RadioCard({ className, label, description, ...props }: RadioCardProps) 
         )}
       >
         <RadioPrimitive.Indicator className="flex items-center justify-center">
-          <span className="size-[5px] rounded-full bg-white" />
+          <span className="size-[5px] rounded-full bg-[var(--cds-white)]" />
         </RadioPrimitive.Indicator>
       </div>
 
