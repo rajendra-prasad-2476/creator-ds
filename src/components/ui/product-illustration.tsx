@@ -73,7 +73,7 @@ export function ProductIllustration({
     <img
       src={src}
       alt={alt ?? defaultAlt}
-      className={cn("block shrink-0", className)}
+      className={cn("block shrink-0 dark:opacity-90 dark:brightness-[0.88]", className)}
       draggable={false}
     />
   )

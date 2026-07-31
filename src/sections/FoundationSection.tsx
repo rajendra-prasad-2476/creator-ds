@@ -383,7 +383,7 @@ export function FoundationSection() {
                 {row.colours.map((c) => (
                   <div key={c.label} className="flex flex-col items-center gap-3">
                     <div
-                      className="w-full aspect-square rounded-[20px] bg-white border border-[#f4f5f6]"
+                      className="w-full aspect-square rounded-[20px] bg-[var(--cds-white)] border border-[var(--cds-huegrey-border-low)]"
                       style={{ boxShadow: c.shadow }}
                     />
                     <div className="text-center space-y-0.5">

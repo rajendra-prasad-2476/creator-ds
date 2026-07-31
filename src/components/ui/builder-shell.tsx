@@ -138,7 +138,7 @@ function BuilderViewportToolbar({
     <div
       className={cn(
         "flex h-10 w-full shrink-0 items-center justify-between",
-        "border-b border-[var(--border,#E5E5E7)] bg-white",
+        "border-b border-[var(--border,#E5E5E7)] bg-[var(--cds-white)]",
         "px-[var(--cds-padding-section-h)]"
       )}
     >
@@ -194,8 +194,8 @@ function FlyoutUserSection({ user }: { user: BuilderFlyoutUser }) {
   return (
     <div className="flex shrink-0 flex-col items-center gap-[var(--cds-gap-small)] border-t border-[var(--border,#E5E5E7)] px-[var(--cds-padding-card)] py-[var(--cds-space-20)]">
       {/* Avatar */}
-      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#E8E9EB]">
-        <User size={24} className="text-[#9EA1A9]" />
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--cds-huegrey-surface-low)]">
+        <User size={24} className="text-[color:var(--cds-huegrey-text-default)]" />
       </div>
       {/* Name */}
       <span
@@ -239,7 +239,7 @@ function BuilderSubNavBar({ subNav }: { subNav: BuilderTabSubNav }) {
     <div
       className={cn(
         "flex h-10 w-full shrink-0 items-center justify-between",
-        "border-b border-[var(--border,#E5E5E7)] bg-white",
+        "border-b border-[var(--border,#E5E5E7)] bg-[var(--cds-white)]",
         "px-[var(--cds-padding-section-h)]"
       )}
     >
@@ -359,7 +359,7 @@ function BuilderMegaMenu({
       <div
         className={cn(
           "absolute inset-0 z-40",
-          "flex flex-col bg-white",
+          "flex flex-col bg-[var(--cds-white)]",
           "shadow-[0_8px_24px_rgba(0,0,0,0.12)]"
         )}
         role="dialog"
@@ -562,7 +562,7 @@ export function BuilderShell({
         {/* Right: customisation / properties panel */}
         {showPropertiesPanel && (
           <aside
-            className="flex w-[280px] shrink-0 flex-col border-l border-[var(--border,#E5E5E7)] bg-white"
+            className="flex w-[280px] shrink-0 flex-col border-l border-[var(--border,#E5E5E7)] bg-[var(--cds-white)]"
             data-slot="builder-properties-panel"
           >
             {propertiesPanelTitle && (

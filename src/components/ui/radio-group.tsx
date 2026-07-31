@@ -45,7 +45,7 @@ function RadioGroupItem({ className, ...props }: RadioPrimitive.Root.Props) {
         className="flex size-[14px] items-center justify-center"
       >
         {/* 5 px white centre dot */}
-        <span className="size-[5px] rounded-full bg-white" />
+        <span className="size-[5px] rounded-full bg-[var(--cds-white)]" />
       </RadioPrimitive.Indicator>
     </RadioPrimitive.Root>
   )
