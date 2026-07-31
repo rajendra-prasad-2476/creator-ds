@@ -1,3 +1,4 @@
+import * as React from "react"
 import { cn } from "@/lib/utils"
 
 /* ─── Creator Logo Icon ─── */
@@ -73,8 +74,36 @@ function TopBarAvatar({ initials = "RJ", className }: { initials?: string; class
   )
 }
 
+/* ─── Default Creator logo slot ─── */
+function DefaultLogoSlot() {
+  return (
+    <div className="flex items-center gap-2">
+      <CreatorLogoIcon />
+      <span
+        className="text-white text-[18px] font-normal leading-5 whitespace-nowrap"
+        style={{ fontFamily: "'Zoho Puvi', sans-serif" }}
+      >
+        Creator
+      </span>
+    </div>
+  )
+}
+
 /* ─── TopBar ─── */
 export interface TopBarProps {
+  /**
+   * Custom logo / brand slot rendered on the left.
+   * Defaults to the Creator logo + "Creator" wordmark.
+   * Pass any ReactNode — an <img>, an SVG, or a composed element.
+   *
+   * @example
+   * // Replace with your product logo
+   * <TopBar logo={<img src="/crm-logo.svg" height={24} alt="Zoho CRM" />} />
+   *
+   * // Logo + product name
+   * <TopBar logo={<><MyLogo /><span className="text-white text-lg">CRM</span></>} />
+   */
+  logo?: React.ReactNode
   /** When set, replaces the workspace selector with documentation context info */
   docTitle?: string
   docVersion?: string
@@ -85,6 +114,7 @@ export interface TopBarProps {
 }
 
 export function TopBar({
+  logo,
   docTitle,
   docVersion = "v1.0",
   docType = "HTML",
@@ -101,16 +131,8 @@ export function TopBar({
         className
       )}
     >
-      {/* Left: Logo */}
-      <div className="flex items-center gap-2">
-        <CreatorLogoIcon />
-        <span
-          className="text-white text-[18px] font-normal leading-5 whitespace-nowrap"
-          style={{ fontFamily: "'Zoho Puvi', sans-serif" }}
-        >
-          Creator
-        </span>
-      </div>
+      {/* Left: Logo — custom or Creator default */}
+      {logo ?? <DefaultLogoSlot />}
 
       {/* Right: Controls */}
       <div className="flex items-center gap-3">
