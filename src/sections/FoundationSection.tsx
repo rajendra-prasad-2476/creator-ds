@@ -435,15 +435,15 @@ export function FoundationSection() {
 
             {/* CRM red */}
             <div className="flex flex-col gap-2">
-              <p className="text-[length:var(--cds-text-p3)] font-semibold text-[color:var(--cds-huegrey-text-default)] uppercase tracking-wide">Zoho CRM</p>
+              <p className="text-[length:var(--cds-text-p3)] font-semibold text-[color:var(--cds-huegrey-text-default)] uppercase tracking-wide">Zoho QEngine</p>
               <ThemeProvider
-                primaryColor="#E8410E"
-                primaryColorBold="#7A1B00"
-                primaryColorSubtle="#FFF3F0"
+                primaryColor="#089949"
+                primaryColorBold="#044D24"
+                primaryColorSubtle="#E8F5ED"
               >
                 <div className="rounded-[var(--cds-radius-r)] border border-[var(--border)] overflow-hidden">
                   <div className="h-8 flex items-center px-3 bg-[var(--cds-primary-surface-bold)]">
-                    <span className="text-white text-[length:var(--cds-text-p3)] font-medium">CRM</span>
+                    <span className="text-white text-[length:var(--cds-text-p3)] font-medium">QEngine</span>
                   </div>
                   <div className="p-3 flex flex-col gap-2 bg-[var(--cds-white)]">
                     <Button size="sm" className="w-full">Primary Action</Button>
@@ -453,20 +453,20 @@ export function FoundationSection() {
                   </div>
                 </div>
               </ThemeProvider>
-              <p className="text-[length:var(--cds-text-p3)] text-[color:var(--cds-huegrey-text-default)] font-mono">#E8410E (CRM orange-red)</p>
+              <p className="text-[length:var(--cds-text-p3)] text-[color:var(--cds-huegrey-text-default)] font-mono">#089949 (QEngine green)</p>
             </div>
 
             {/* Desk green */}
             <div className="flex flex-col gap-2">
-              <p className="text-[length:var(--cds-text-p3)] font-semibold text-[color:var(--cds-huegrey-text-default)] uppercase tracking-wide">Zoho Desk</p>
+              <p className="text-[length:var(--cds-text-p3)] font-semibold text-[color:var(--cds-huegrey-text-default)] uppercase tracking-wide">Zoho Bookings</p>
               <ThemeProvider
-                primaryColor="#078841"
-                primaryColorBold="#024D24"
-                primaryColorSubtle="#F0FBF4"
+                primaryColor="#5856D6"
+                primaryColorBold="#2D2B6B"
+                primaryColorSubtle="#F3F1FF"
               >
                 <div className="rounded-[var(--cds-radius-r)] border border-[var(--border)] overflow-hidden">
                   <div className="h-8 flex items-center px-3 bg-[var(--cds-primary-surface-bold)]">
-                    <span className="text-white text-[length:var(--cds-text-p3)] font-medium">Desk</span>
+                    <span className="text-white text-[length:var(--cds-text-p3)] font-medium">Bookings</span>
                   </div>
                   <div className="p-3 flex flex-col gap-2 bg-[var(--cds-white)]">
                     <Button size="sm" className="w-full">Primary Action</Button>
@@ -476,7 +476,7 @@ export function FoundationSection() {
                   </div>
                 </div>
               </ThemeProvider>
-              <p className="text-[length:var(--cds-text-p3)] text-[color:var(--cds-huegrey-text-default)] font-mono">#078841 (Desk green)</p>
+              <p className="text-[length:var(--cds-text-p3)] text-[color:var(--cds-huegrey-text-default)] font-mono">#5856D6 (Bookings purple)</p>
             </div>
           </div>
 
