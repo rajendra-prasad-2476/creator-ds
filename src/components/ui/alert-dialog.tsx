@@ -74,7 +74,7 @@ function AlertDialogContent({
           data-slot="alert-dialog-content"
           data-variant={variant}
           className={cn(
-            "group/alert-dialog-content fixed top-1/2 left-1/2 z-[201] flex w-full max-w-[500px] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-[var(--cds-radius-l)] border border-[var(--cds-neutral-border-low)] bg-white text-foreground shadow-lg duration-100 outline-none data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+            "group/alert-dialog-content fixed top-1/2 left-1/2 z-[201] flex w-full max-w-[500px] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-[var(--cds-radius-l)] border border-[var(--cds-neutral-border-low)] bg-[var(--cds-white)] text-foreground shadow-lg duration-100 outline-none data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
             className
           )}
           {...props}
@@ -248,7 +248,7 @@ function AlertDialogFooter({
     <div
       data-slot="alert-dialog-footer"
       className={cn(
-        "flex items-center justify-center gap-2.5 border-t border-[var(--cds-neutral-border-low)] bg-white px-5 py-3 rounded-b-[var(--cds-radius-l)]",
+        "flex items-center justify-center gap-2.5 border-t border-[var(--cds-neutral-border-low)] bg-[var(--cds-white)] px-5 py-3 rounded-b-[var(--cds-radius-l)]",
         className
       )}
       {...props}

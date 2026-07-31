@@ -22,7 +22,7 @@ function RadioGroupItem({ className, ...props }: RadioPrimitive.Root.Props) {
       className={cn(
         // Base — 14 px circle matching Figma
         "peer relative flex aspect-square size-[14px] shrink-0 rounded-full outline-none",
-        "border border-[var(--cds-huegrey-border-fairish)] bg-white transition-colors",
+        "border border-[var(--cds-huegrey-border-fairish)] bg-[var(--cds-white)] transition-colors",
         // Hover
         "hover:border-[var(--cds-primary-border-default)] hover:bg-[var(--cds-primary-surface-subtle)]",
         // Focus ring
