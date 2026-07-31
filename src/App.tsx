@@ -18,7 +18,7 @@ function App() {
   return (
     <TooltipProvider>
       <div className={darkMode ? "dark" : ""}>
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background text-foreground">
         {/* Top Bar */}
         <TopBar
           docTitle="CTS Design System"
