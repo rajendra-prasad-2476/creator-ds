@@ -1,6 +1,6 @@
 {
-  "name": "@creator-kit/creator-ds-react",
-  "version": "1.1.1",
+  "name": "@rajendra-prasad-2476/creator-ds-react",
+  "version": "1.16.0",
   "description": "Creator Design System — React component library for Zoho Creator",
   "author": "Zoho Creator Design Team",
   "license": "MIT",
@@ -26,6 +26,14 @@
       "import": "./dist/styles.css",
       "default": "./dist/styles.css"
     }
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "restricted"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rajendra-prasad-2476/creator-ds.git"
   },
   "sideEffects": [
     "./dist/styles.css",
@@ -118,13 +126,5 @@
     "components",
     "figma-make",
     "ui-library"
-  ],
-  "publishConfig": {
-    "registry": "https://registry.figma.com/npm/22c15a36-5e69-4ce4-a8fd-0d380442771d/registry/",
-    "access": "restricted"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/rajendra-prasad-2476/creator-ds.git"
-  }
+  ]
 }
