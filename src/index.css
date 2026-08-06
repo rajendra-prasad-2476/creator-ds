@@ -617,6 +617,20 @@
     }
 }
 
+/* ===== Creator DS — Brand mesh gradient background ===== */
+/* Soft radial blobs in brand colours, layered over --background. Token-driven via
+   color-mix() so it auto-adapts to dark mode / theme without any hardcoded hex. */
+.cds-mesh-bg {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(at 14% 20%, color-mix(in srgb, var(--cds-primary-surface-default) 20%, transparent) 0%, transparent 52%),
+    radial-gradient(at 86% 12%, color-mix(in srgb, var(--chart-4) 16%, transparent) 0%, transparent 48%),
+    radial-gradient(at 92% 78%, color-mix(in srgb, var(--cds-success-surface-default) 14%, transparent) 0%, transparent 50%),
+    radial-gradient(at 8% 82%, color-mix(in srgb, var(--cds-warning-surface-default) 12%, transparent) 0%, transparent 48%),
+    radial-gradient(at 50% 50%, color-mix(in srgb, var(--cds-primary-surface-default) 6%, transparent) 0%, transparent 70%);
+  background-attachment: fixed;
+}
+
 /* ===== Creator DS — Animation utilities ===== */
 @keyframes spin {
   from { transform: rotate(0deg); }

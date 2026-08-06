@@ -17,6 +17,7 @@ export default defineConfig({
         main: path.resolve(__dirname, 'index.html'),
         features: path.resolve(__dirname, 'features.html'),
         preview: path.resolve(__dirname, 'preview.html'),
+        slides: path.resolve(__dirname, 'slides.html'),
       },
     },
   },

@@ -286,7 +286,7 @@ const STATUS_CONFIG: Record<ParityStatus, {
 const PRIORITY_CONFIG: Record<ParityPriority, { color: string; bg: string }> = {
   P1: { color: "var(--cds-error-text-default, #CC1914)", bg: "var(--cds-error-surface-subtle, #FFF5F5)" },
   P2: { color: "var(--cds-warning-text-default, #D25704)", bg: "var(--cds-warning-surface-subtle, #FFF8F0)" },
-  P3: { color: "var(--cds-huegrey-text-default, #696C74)", bg: "var(--cds-surface-subtle, #F5F5F5)" },
+  P3: { color: "var(--cds-huegrey-text-default, #696C74)", bg: "var(--cds-huegrey-surface-subtle)" },
 }
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
@@ -342,7 +342,7 @@ function CategoryTag({ category }: { category: ParityCategory }) {
       fontSize: "var(--cds-text-p4)",
       fontWeight: 500,
       color: "var(--cds-huegrey-text-default)",
-      background: "var(--cds-surface-subtle, #F5F5F5)",
+      background: "var(--cds-huegrey-surface-subtle)",
       border: "1px solid var(--border)",
       whiteSpace: "nowrap",
     }}>
@@ -376,7 +376,7 @@ function CoverageBar({ data }: { data: ParityRow[] }) {
           <StatChip count={done} label="Done" color="var(--cds-success-text-default, #078841)" bg="var(--cds-success-surface-subtle)" border="var(--cds-success-border-low-hover, #9FCFB8)" />
           <StatChip count={partial} label="Partial" color="var(--cds-warning-text-default, #D25704)" bg="var(--cds-warning-surface-subtle)" border="var(--cds-warning-border-low-hover, #F5C99E)" />
           <StatChip count={missing} label="Missing" color="var(--cds-error-text-default, #CC1914)" bg="var(--cds-error-surface-subtle)" border="var(--cds-error-border-low-hover, #F5ABAA)" />
-          <StatChip count={total} label="Total" color="var(--cds-huegrey-text-default)" bg="var(--cds-surface-subtle, #F5F5F5)" border="var(--border)" />
+          <StatChip count={total} label="Total" color="var(--cds-huegrey-text-default)" bg="var(--cds-huegrey-surface-subtle)" border="var(--border)" />
         </div>
       </div>
 
@@ -436,8 +436,8 @@ function ParityTableRow({ row, isLast }: { row: ParityRow; isLast: boolean }) {
       borderBottom: isLast ? "none" : "1px solid var(--border)",
       transition: "background 0.1s",
     }}
-      onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.background = "var(--cds-surface-subtle, #FAFAFA)" }}
-      onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.background = "transparent" }}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.background = "var(--cds-huegrey-surface-subtle)" }}
+      onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.background = "" }}
     >
       {/* Component name + Figma link */}
       <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
@@ -484,7 +484,7 @@ function ParityCard({ row }: { row: ParityRow }) {
       padding: "var(--cds-padding-card)",
       borderRadius: "var(--cds-radius-l)",
       border: `1px solid ${statusCfg.border}`,
-      background: "var(--cds-white)",
+      background: "var(--cds-card-bg, var(--card))",
       display: "flex",
       flexDirection: "column",
       gap: "var(--cds-space-8)",
@@ -506,7 +506,7 @@ function ParityCard({ row }: { row: ParityRow }) {
         <CategoryTag category={row.category} />
         <PriorityTag priority={row.priority} />
         {row.figmaNodeId && (
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 3, fontSize: "var(--cds-text-p4)", color: "var(--cds-primary-text-default)", padding: "1px 7px", borderRadius: "var(--cds-radius-xs)", background: "var(--cds-primary-surface-subtle, #EEF2FE)" }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 3, fontSize: "var(--cds-text-p4)", color: "var(--cds-primary-text-default)", padding: "1px 7px", borderRadius: "var(--cds-radius-xs)", background: "var(--cds-primary-surface-subtle)" }}>
             <ExternalLink size={9} /> Figma
           </span>
         )}
@@ -626,7 +626,7 @@ export function ParitySection() {
                 fontSize: "var(--cds-text-p3)",
                 fontWeight: 500,
                 border: filterStatus === s ? "1.5px solid var(--cds-primary-border-default, #0D4EF2)" : "1px solid var(--border)",
-                background: filterStatus === s ? "var(--cds-primary-surface-subtle, #EEF2FE)" : "var(--cds-white)",
+                background: filterStatus === s ? "var(--cds-primary-surface-subtle)" : "var(--card)",
                 color: filterStatus === s ? "var(--cds-primary-text-default)" : "var(--cds-huegrey-text-default)",
                 cursor: "pointer",
                 fontFamily: "inherit",
@@ -649,7 +649,7 @@ export function ParitySection() {
                 fontSize: "var(--cds-text-p3)",
                 fontWeight: 500,
                 border: filterCategory === c ? "1.5px solid var(--cds-huegrey-border-fairish, #B0B3BB)" : "1px solid var(--border)",
-                background: filterCategory === c ? "var(--cds-surface-subtle, #F5F5F5)" : "var(--cds-white)",
+                background: filterCategory === c ? "var(--cds-huegrey-surface-subtle)" : "var(--card)",
                 color: filterCategory === c ? "var(--cds-huegrey-text-dark)" : "var(--cds-huegrey-text-default)",
                 cursor: "pointer",
                 fontFamily: "inherit",
@@ -685,7 +685,7 @@ export function ParitySection() {
             gridTemplateColumns: "180px 90px 110px 60px 1fr",
             gap: "var(--cds-space-12)",
             padding: "var(--cds-space-8) var(--cds-padding-card)",
-            background: "var(--cds-surface-subtle, #F5F5F5)",
+            background: "var(--cds-huegrey-surface-subtle)",
             borderBottom: "1px solid var(--border)",
             borderRadius: "var(--cds-radius-l) var(--cds-radius-l) 0 0",
           }}>
@@ -752,7 +752,7 @@ export function ParitySection() {
             </div>
             <div>
               <div style={{ fontSize: "var(--cds-text-p3)", fontWeight: 700, color: "var(--cds-huegrey-text-dark)", marginBottom: "var(--cds-space-8)" }}>Placeholder pattern for Missing components</div>
-              <pre style={{ margin: 0, background: "var(--cds-surface-subtle, #F5F5F5)", padding: "var(--cds-space-12)", borderRadius: "var(--cds-radius-r)", fontSize: 11, lineHeight: 1.6, overflowX: "auto" }}>
+              <pre style={{ margin: 0, background: "var(--cds-huegrey-surface-subtle)", padding: "var(--cds-space-12)", borderRadius: "var(--cds-radius-r)", fontSize: 11, lineHeight: 1.6, overflowX: "auto" }}>
 {`{/* TODO: replace with <Spinner /> once built
      — ds-parity P1 */}`}
               </pre>

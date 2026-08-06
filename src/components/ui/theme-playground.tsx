@@ -345,15 +345,15 @@ export function ThemePlayground() {
   }
 
   return (
-    <div className="flex flex-col gap-[var(--cds-gap-default)] lg:flex-row lg:gap-[var(--cds-space-24)]">
+    <div className="flex flex-col gap-[var(--cds-gap-default)] md:flex-row md:gap-[var(--cds-space-24)]">
 
       {/* ── Controls panel ── */}
-      <div className="flex flex-col gap-[var(--cds-gap-default)] lg:w-72 shrink-0">
+      <div className="flex flex-col gap-[var(--cds-gap-default)] md:w-72 md:min-w-[18rem] shrink-0">
 
         {/* Presets */}
         <div className="flex flex-col gap-[var(--cds-gap-tight)]">
           <span className="text-[length:var(--cds-text-p3)] font-semibold uppercase tracking-wide text-[color:var(--cds-huegrey-text-default)]">Presets</span>
-          <div className="flex gap-[var(--cds-gap-small)]">
+          <div className="flex flex-wrap gap-[var(--cds-gap-small)]">
             {PRESETS.map(p => (
               <button
                 key={p.id}
@@ -505,7 +505,7 @@ export function ThemePlayground() {
       </div>
 
       {/* ── Right side: Live preview + Snippet ── */}
-      <div className="flex flex-1 flex-col gap-[var(--cds-gap-default)]">
+      <div className="flex flex-1 min-w-0 flex-col gap-[var(--cds-gap-default)]">
 
         {/* Live preview */}
         <div className="flex flex-col gap-[var(--cds-gap-tight)]">
@@ -559,7 +559,7 @@ export function ThemePlayground() {
           <pre className={cn(
             "rounded-[var(--cds-radius-r)] border border-[var(--border)] p-[var(--cds-padding-card)]",
             "bg-[var(--cds-huegrey-surface-subtle)] text-[length:var(--cds-text-p3)]",
-            "text-[color:var(--cds-huegrey-text-dark)] overflow-x-auto whitespace-pre leading-relaxed font-mono"
+            "text-[color:var(--cds-huegrey-text-dark)] overflow-x-auto whitespace-pre leading-relaxed font-mono min-w-0"
           )}>
             {snippet}
           </pre>

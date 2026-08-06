@@ -1,10 +1,11 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
-import { Atom, Combine, Component, Palette, LayoutTemplate, GitCompareArrows } from "lucide-react";
+import { Sparkles, Palette, LayoutTemplate, GitCompareArrows, LayoutGrid } from "lucide-react";
 import { TopBar } from "@/components/ui/top-bar";
 import { DS_VERSION } from "@/ds-changelog";
 import { FoundationSection } from "@/sections/FoundationSection";
+import { ComponentsSection } from "@/sections/ComponentsSection";
 import { AtomsSection } from "@/sections/AtomsSection";
 import { MoleculesSection } from "@/sections/MoleculesSection";
 import { OrganismsSection } from "@/sections/OrganismsSection";
@@ -25,7 +26,7 @@ function App() {
   return (
     <TooltipProvider>
       <Toaster richColors position="top-right" />
-      <div className="min-h-screen bg-background text-foreground">
+      <div className="cds-mesh-bg min-h-screen text-foreground">
         {/* Top Bar */}
         <TopBar
           docTitle="CTS Design System"
@@ -57,17 +58,13 @@ function App() {
               <TabsTrigger value="foundation" className="gap-1.5">
                 <Palette className="h-4 w-4" /> Foundation
               </TabsTrigger>
-              <TabsTrigger value="atoms" className="gap-1.5">
-                <Atom className="h-4 w-4" /> Atoms
-                <Badge variant="subtle" className="ml-1 text-[10px] h-5 px-1.5">14</Badge>
+              <TabsTrigger value="components" className="gap-1.5">
+                <LayoutGrid className="h-4 w-4" /> Components
+                <Badge variant="subtle" className="ml-1 text-[10px] h-5 px-1.5">New</Badge>
               </TabsTrigger>
-              <TabsTrigger value="molecules" className="gap-1.5">
-                <Combine className="h-4 w-4" /> Molecules
-                <Badge variant="subtle" className="ml-1 text-[10px] h-5 px-1.5">10</Badge>
-              </TabsTrigger>
-              <TabsTrigger value="organisms" className="gap-1.5">
-                <Component className="h-4 w-4" /> Organisms
-                <Badge variant="subtle" className="ml-1 text-[10px] h-5 px-1.5">12</Badge>
+              <TabsTrigger value="showcase" className="gap-1.5">
+                <Sparkles className="h-4 w-4" /> Showcase
+                <Badge variant="subtle" className="ml-1 text-[10px] h-5 px-1.5">36</Badge>
               </TabsTrigger>
               <TabsTrigger value="templates" className="gap-1.5">
                 <LayoutTemplate className="h-4 w-4" /> Templates
@@ -83,15 +80,13 @@ function App() {
               <FoundationSection />
             </TabsContent>
 
-            <TabsContent value="atoms">
+            <TabsContent value="components">
+              <ComponentsSection />
+            </TabsContent>
+
+            <TabsContent value="showcase">
               <AtomsSection />
-            </TabsContent>
-
-            <TabsContent value="molecules">
               <MoleculesSection />
-            </TabsContent>
-
-            <TabsContent value="organisms">
               <OrganismsSection />
             </TabsContent>
 
