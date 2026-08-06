@@ -5,9 +5,8 @@
  * Use keyboard ← → or on-screen arrows to navigate slides.
  */
 
-import { useState, useEffect, useCallback, useRef } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { cn } from "@/lib/utils"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import {
@@ -17,7 +16,6 @@ import {
   Server,
   LayoutGrid,
   CheckCircle2,
-  ArrowRight,
   Code2,
   Cpu,
   FileText,
