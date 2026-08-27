@@ -275,6 +275,9 @@ Never put page-level navigation inside `<main>`. Never skip `TopBar` or `LeftNav
 | `BuilderLeftNav` | `builder-left-nav.tsx` | App builder entity tree sidebar — dark collapsible nav with form/report/page/workflow/stage items and user row |
 | `BuilderShell` | `builder-shell.tsx` | Full app builder layout shell — composes BuilderTopBar + BuilderLeftNav + viewport toolbar (Desktop/Tablet/Phone) + canvas + right properties panel slot |
 | `List` | `list.tsx` | Vertical list of data rows — optional checkbox, avatar, title + badge, meta text, action CTA, remove |
+| `PageHeader` | `page-header.tsx` | Top-level page heading with optional description + right-side action buttons — use on every dashboard screen |
+| `MicroserviceCard` | `microservice-card.tsx` | Interactive catalog card for microservice / resource listing grids — icon + title + subtitle + description + footer footer slot |
+| `FormField` | `form-field.tsx` | Standard form field wrapper: Label (+ required marker) → input slot → helper text / validation error |
 
 ---
 
@@ -314,6 +317,9 @@ When a design intent could map to multiple components, follow this table.
 | Sheet subtitle / description | `<div>` with `border-bottom` **below** `<SheetHeader>` | `SheetDescription` inside `<SheetHeader>` (causes inline layout, breaks title) |
 | Dropdown row actions with icons | `DropdownMenuItem` children: `<Icon size={13} /> Label` | bare label with no icon on some items but icon on others |
 | Dimmed scrim behind an overlay / panel | `Blanket` | custom `<div>` with a background color |
+| Page-level title + description + action buttons row | `PageHeader` | raw `<h1>` + `<p>` + flex `<div>` manually composed per screen |
+| Microservice / resource catalog grid card | `MicroserviceCard` | raw `<Card interactive>` with manually composed flex content |
+| Form field with label, helper text, or validation error | `FormField` | raw `<div className="space-y-2">` with `<Label>` + input + `<p>` error text |
 | Page-level loading state | future `Skeleton` or `Spinner` | `<div className="animate-spin">` |
 | Empty list / zero-data state | future `EmptyState` | raw centred `<p>` text |
 | User / entity photo | `Avatar` | `<img>` with manual border-radius |
@@ -644,6 +650,9 @@ export default function OperationsScreen() {
 - Do not skip the `TopBar` + `LeftNav` shell for full-page screen outputs
 - Do not compose raw `<span>` or `<div>` chips/pills — use `Tag`
 - Do not build a custom multi-value chip input — use `TagInput`
+- Do not compose raw `<h1>` / `<h2>` + `<p>` + flex actions div for page headers — use `PageHeader`
+- Do not compose raw `<div className="space-y-2">` label + input + error blocks — use `FormField`
+- Do not use `Card interactive` with manually composed flex content for microservice catalog cards — use `MicroserviceCard`
 
 ---
 
@@ -658,7 +667,7 @@ Do not generate a custom implementation — flag the gap in a code comment inste
 | `Skeleton` | `{/* TODO: replace with <Skeleton /> once built — ds-parity P1 */}` |
 | `EmptyState` | `{/* TODO: replace with <EmptyState /> once built — ds-parity P1 */}` |
 | `InlineAlert` | `{/* TODO: replace with <InlineAlert /> once built — ds-parity P1 */}` |
-| `FormField` | `{/* TODO: replace with <FormField /> once built — ds-parity P1 */}` |
+| ~~`FormField`~~ | Promoted — import from `@/components/ui/form-field` |
 | `Pagination` | `{/* TODO: replace with <Pagination /> once built — ds-parity P1 */}` |
 | `DatePicker` | `{/* TODO: replace with <DatePicker /> once built — ds-parity P2 */}` |
 | `Accordion` | `{/* TODO: replace with <Accordion /> once built — ds-parity P2 */}` |

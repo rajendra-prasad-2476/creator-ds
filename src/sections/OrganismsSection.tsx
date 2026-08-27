@@ -29,6 +29,9 @@ import { BuilderShell } from "@/components/ui/builder-shell";
 import type { BuilderViewport, BuilderNavItemType } from "@/components/ui/builder-shell";
 import { BuilderLeftNav } from "@/components/ui/builder-left-nav";
 import { ProductIllustration } from "@/components/ui/product-illustration";
+import { PageHeader } from "@/components/ui/page-header";
+import { MicroserviceCard } from "@/components/ui/microservice-card";
+import { FormField } from "@/components/ui/form-field";
 
 function FullPageDialogDemo() {
   const [navStyle, setNavStyle] = useState<"section" | "stepper">("section")
@@ -728,20 +731,27 @@ export function OrganismsSection() {
       <Card>
         <CardHeader>
           <CardTitle>Page Header / Dashboard Header</CardTitle>
-          <CardDescription>Top-level page heading with actions.</CardDescription>
+          <CardDescription>Top-level page heading with actions. Import from <code>@/components/ui/page-header</code>.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center justify-between border-b pb-4">
-            <div>
-              <h3 className="text-[var(--cds-text-h4)] font-semibold leading-[var(--cds-leading-h4)]">All Records</h3>
-              <p className="text-sm text-muted-foreground mt-1">Manage and view all your records in one place.</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm"><Filter className="mr-2 h-4 w-4" /> Filter</Button>
-              <Button variant="outline" size="sm"><ArrowUpDown className="mr-2 h-4 w-4" /> Sort</Button>
-              <Button size="sm"><Plus className="mr-2 h-4 w-4" /> Add Record</Button>
-            </div>
-          </div>
+        <CardContent>
+          <PageHeader
+            title="All Records"
+            description="Manage and view all your records in one place."
+            actions={
+              <>
+                <Button variant="outline" size="sm"><Filter className="mr-2 h-4 w-4" /> Filter</Button>
+                <Button variant="outline" size="sm"><ArrowUpDown className="mr-2 h-4 w-4" /> Sort</Button>
+                <Button size="sm"><Plus className="mr-2 h-4 w-4" /> Add Record</Button>
+              </>
+            }
+          />
+          {/* withBorder=false variant */}
+          <PageHeader
+            title="PDF Export Settings"
+            description="Configure watermarks applied to exported PDFs."
+            withBorder={false}
+            className="mb-0"
+          />
         </CardContent>
       </Card>
 
@@ -823,88 +833,75 @@ export function OrganismsSection() {
         <CardHeader>
           <CardTitle>Microservices Cards</CardTitle>
           <CardDescription>
-            Interactive cards for microservice catalog screens (AI-Model, Connection, Custom-API, AR-Library). Hover state turns the border blue via the <code>interactive</code> prop on <code>Card</code>.
+            Interactive catalog card for microservice / resource listing grids. Import from <code>@/components/ui/microservice-card</code>. Hover state turns the border blue.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-            {/* AI-Model card */}
-            <Card interactive className="flex flex-col gap-[var(--cds-space-16)] p-[var(--cds-space-24)] pb-[var(--cds-space-20)]">
-              <Avatar size="xl" shape="squircle">
-                <AvatarFallback color="primary">AI</AvatarFallback>
-              </Avatar>
-              <p className="text-[length:var(--cds-text-p1)] leading-[var(--cds-leading-p1)] font-medium text-[color:var(--cds-huegrey-text-dark)]">AI Models</p>
-              <p className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-huegrey-text-default)]">Subtext description for the AI model service.</p>
-              <div className="flex items-center justify-between pt-[var(--cds-space-4)]">
-                <div className="flex items-center gap-[var(--cds-gap-small)]">
-                  <Eye size={16} className="text-[color:var(--cds-huegrey-text-default)]" />
-                  <span className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-huegrey-text-dark)]">Prediction</span>
+            <MicroserviceCard
+              icon={<Avatar size="xl" shape="squircle"><AvatarFallback color="primary">AI</AvatarFallback></Avatar>}
+              title="AI Models"
+              description="Subtext description for the AI model service."
+              footer={
+                <>
+                  <div className="flex items-center gap-[var(--cds-gap-small)]">
+                    <Eye size={16} className="text-[color:var(--cds-huegrey-text-default)]" />
+                    <span className="text-[length:var(--cds-text-p2)] text-[color:var(--cds-huegrey-text-dark)]">Prediction</span>
+                  </div>
+                  <div className="flex items-center gap-[var(--cds-gap-small)]">
+                    <PenLine size={16} className="text-[color:var(--cds-huegrey-text-default)]" />
+                    <span className="text-[length:var(--cds-text-p2)] text-[color:var(--cds-huegrey-text-default)]">Draft</span>
+                  </div>
+                </>
+              }
+            />
+            <MicroserviceCard
+              icon={
+                <div className="flex size-10 items-center justify-center rounded-[var(--cds-radius-r)] bg-[var(--cds-primary-surface-subtle)]">
+                  <Link2 size={20} className="text-[color:var(--cds-primary-text-default)]" />
                 </div>
-                <div className="flex items-center gap-[var(--cds-gap-small)]">
-                  <PenLine size={16} className="text-[color:var(--cds-huegrey-text-default)]" />
-                  <span className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-huegrey-text-default)]">Draft</span>
-                </div>
-              </div>
-            </Card>
-
-            {/* Connection card */}
-            <Card interactive className="flex flex-col gap-[var(--cds-space-6)] p-[var(--cds-space-24)] pb-[var(--cds-space-20)]">
-              <div className="flex size-10 items-center justify-center rounded-[var(--cds-radius-r)] bg-[var(--cds-primary-surface-subtle)]">
-                <Link2 size={20} className="text-[color:var(--cds-primary-text-default)]" />
-              </div>
-              <p className="text-[length:var(--cds-text-p1)] leading-[var(--cds-leading-p1)] font-medium text-[color:var(--cds-huegrey-text-dark)]">Zoho Analytics</p>
-              <div className="flex items-center gap-[var(--cds-gap-tight)]">
-                <span className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-huegrey-text-default)]">zoho_analytics_connection</span>
-                <Copy size={14} className="text-[color:var(--cds-huegrey-text-default)] shrink-0" />
-              </div>
-              <div className="flex items-center justify-end gap-[var(--cds-gap-small)] pt-[var(--cds-space-4)]">
-                <CheckCircle2 size={16} className="text-[color:var(--cds-success-text-default)]" />
-                <span className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-success-text-default)]">Connected</span>
-              </div>
-            </Card>
-
-            {/* Custom-API card */}
-            <Card interactive className="flex flex-col gap-[var(--cds-space-12)] p-[var(--cds-space-24)] pb-[var(--cds-space-20)]">
-              <Avatar size="xl" shape="squircle">
-                <AvatarFallback color="avocado">CA</AvatarFallback>
-              </Avatar>
-              <p className="text-[length:var(--cds-text-p1)] leading-[var(--cds-leading-p1)] font-medium text-[color:var(--cds-huegrey-text-dark)]">After Trip Public</p>
-              <div className="flex items-center gap-[var(--cds-gap-tight)] flex-wrap">
-                <span className="text-[length:var(--cds-text-p2)] font-medium text-[color:var(--cds-primary-text-default)]">POST</span>
-                <span className="text-[length:var(--cds-text-p2)] text-[color:var(--cds-huegrey-text-default)]">zoho_analytics_connection</span>
-                <Copy size={14} className="text-[color:var(--cds-huegrey-text-default)] shrink-0" />
-              </div>
-              <div className="flex items-center justify-between pt-[var(--cds-space-4)]">
-                <div className="flex items-center gap-[var(--cds-gap-small)]">
-                  <Key size={16} className="text-[color:var(--cds-huegrey-text-default)]" />
-                  <span className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-huegrey-text-dark)]">Public Key</span>
-                </div>
-                <div className="flex items-center gap-[var(--cds-gap-small)]">
+              }
+              title="Zoho Analytics"
+              subtitle="zoho_analytics_connection"
+              footer={
+                <div className="flex items-center gap-[var(--cds-gap-small)] ml-auto">
                   <CheckCircle2 size={16} className="text-[color:var(--cds-success-text-default)]" />
-                  <span className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-success-text-default)]">Ready to invoke</span>
+                  <span className="text-[length:var(--cds-text-p2)] text-[color:var(--cds-success-text-default)]">Connected</span>
                 </div>
-              </div>
-            </Card>
-
-            {/* AR-Library card */}
-            <Card interactive className="flex flex-col gap-[var(--cds-space-16)] p-[var(--cds-space-24)] pb-[var(--cds-space-20)]">
-              <Avatar size="xl" shape="squircle">
-                <AvatarFallback color="russet">AR</AvatarFallback>
-              </Avatar>
-              <p className="text-[length:var(--cds-text-p1)] leading-[var(--cds-leading-p1)] font-medium text-[color:var(--cds-huegrey-text-dark)]">AR Library</p>
-              <div className="flex items-center justify-between pt-[var(--cds-space-4)]">
-                <div className="flex items-center gap-[var(--cds-gap-tight)]">
-                  <span className="flex items-center justify-center border border-[var(--cds-huegrey-border-fairish)] rounded-[var(--cds-radius-s)] px-[var(--cds-space-6)] py-[var(--cds-space-1)] text-[length:var(--cds-text-p2)] text-[color:var(--cds-huegrey-text-dark)] min-w-[21px]">3</span>
-                  <span className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-huegrey-text-dark)]">Elements</span>
-                </div>
-                <div className="flex items-center gap-[var(--cds-gap-small)]">
-                  <Eye size={16} className="text-[color:var(--cds-huegrey-text-default)]" />
-                  <span className="text-[length:var(--cds-text-p2)] leading-[var(--cds-leading-p2)] text-[color:var(--cds-huegrey-text-default)]">Mark-based</span>
-                </div>
-              </div>
-            </Card>
-
+              }
+            />
+            <MicroserviceCard
+              icon={<Avatar size="xl" shape="squircle"><AvatarFallback color="avocado">CA</AvatarFallback></Avatar>}
+              title="After Trip Public"
+              footer={
+                <>
+                  <div className="flex items-center gap-[var(--cds-gap-small)]">
+                    <Key size={16} className="text-[color:var(--cds-huegrey-text-default)]" />
+                    <span className="text-[length:var(--cds-text-p2)] text-[color:var(--cds-huegrey-text-dark)]">Public Key</span>
+                  </div>
+                  <div className="flex items-center gap-[var(--cds-gap-small)]">
+                    <CheckCircle2 size={16} className="text-[color:var(--cds-success-text-default)]" />
+                    <span className="text-[length:var(--cds-text-p2)] text-[color:var(--cds-success-text-default)]">Ready to invoke</span>
+                  </div>
+                </>
+              }
+            />
+            <MicroserviceCard
+              icon={<Avatar size="xl" shape="squircle"><AvatarFallback color="russet">AR</AvatarFallback></Avatar>}
+              title="AR Library"
+              footer={
+                <>
+                  <div className="flex items-center gap-[var(--cds-gap-tight)]">
+                    <span className="flex items-center justify-center border border-[var(--cds-huegrey-border-fairish)] rounded-[var(--cds-radius-s)] px-[var(--cds-space-6)] py-[var(--cds-space-1)] text-[length:var(--cds-text-p2)] text-[color:var(--cds-huegrey-text-dark)] min-w-[21px]">3</span>
+                    <span className="text-[length:var(--cds-text-p2)] text-[color:var(--cds-huegrey-text-dark)]">Elements</span>
+                  </div>
+                  <div className="flex items-center gap-[var(--cds-gap-small)]">
+                    <Eye size={16} className="text-[color:var(--cds-huegrey-text-default)]" />
+                    <span className="text-[length:var(--cds-text-p2)] text-[color:var(--cds-huegrey-text-default)]">Mark-based</span>
+                  </div>
+                </>
+              }
+            />
           </div>
         </CardContent>
       </Card>
@@ -1266,21 +1263,30 @@ export function OrganismsSection() {
       <Card>
         <CardHeader>
           <CardTitle>Form Pattern</CardTitle>
-          <CardDescription>Standard form layout with labels, inputs, and validation.</CardDescription>
+          <CardDescription>Standard form field wrapper: Label + input slot + helper/error text. Import from <code>@/components/ui/form-field</code>.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="max-w-lg space-y-4 border rounded-[var(--cds-radius-r)] p-6">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2"><Label>First Name</Label><Input placeholder="John" /></div>
-              <div className="space-y-2"><Label>Last Name</Label><Input placeholder="Doe" /></div>
+          <div className="max-w-lg flex flex-col gap-[var(--cds-gap-default)] border rounded-[var(--cds-radius-r)] p-[var(--cds-space-24)]">
+            <div className="grid grid-cols-2 gap-[var(--cds-gap-default)]">
+              <FormField id="first-name" label="First Name" required>
+                <Input id="first-name" placeholder="John" />
+              </FormField>
+              <FormField id="last-name" label="Last Name" required>
+                <Input id="last-name" placeholder="Doe" />
+              </FormField>
             </div>
-            <div className="space-y-2"><Label>Email</Label><Input type="email" placeholder="john@example.com" /></div>
-            <div className="space-y-2"><Label>Department</Label>
-              <Select><SelectTrigger><SelectValue placeholder="Select department" /></SelectTrigger><SelectContent><SelectItem value="eng">Engineering</SelectItem><SelectItem value="des">Design</SelectItem><SelectItem value="mkt">Marketing</SelectItem></SelectContent></Select>
-            </div>
-            <div className="flex items-center gap-2"><Checkbox id="form-terms" /><Label htmlFor="form-terms" className="font-normal text-sm">I agree to the terms and conditions</Label></div>
+            <FormField id="email" label="Email" description="We'll never share your email.">
+              <Input id="email" type="email" placeholder="john@example.com" />
+            </FormField>
+            <FormField id="email-error" label="Email" error="Please enter a valid email address.">
+              <Input id="email-error" type="email" defaultValue="not-an-email" />
+            </FormField>
+            <FormField id="dept" label="Department">
+              <Select><SelectTrigger id="dept"><SelectValue placeholder="Select department" /></SelectTrigger><SelectContent><SelectItem value="eng">Engineering</SelectItem><SelectItem value="des">Design</SelectItem><SelectItem value="mkt">Marketing</SelectItem></SelectContent></Select>
+            </FormField>
+            <div className="flex items-center gap-[var(--cds-gap-small)]"><Checkbox id="form-terms" /><Label htmlFor="form-terms" className="font-normal">I agree to the terms and conditions</Label></div>
             <Separator />
-            <div className="flex justify-end gap-2"><Button variant="outline">Cancel</Button><Button>Submit</Button></div>
+            <div className="flex justify-end gap-[var(--cds-gap-small)]"><Button variant="outline">Cancel</Button><Button>Submit</Button></div>
           </div>
         </CardContent>
       </Card>

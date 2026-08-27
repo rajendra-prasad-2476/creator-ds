@@ -2,7 +2,19 @@
 
 > Generated from `src/ds-changelog.ts` — do not edit by hand. Run `npm run ds:changelog`.
 
-Current version: **v1.15.0**
+Current version: **v1.17.0**
+
+## v1.17.0 — 2026-08-27
+
+### Added
+- **PageHeader** — New PageHeader organism: top-level page heading with title (H2), optional description (P2), optional right-side actions slot, and a bottom border separator (withBorder prop, default true). Promoted from the inline 'Page Header / Dashboard Header' showcase demo. Import from @/components/ui/page-header. _(ds-parity: PageHeader)_
+- **MicroserviceCard** — New MicroserviceCard organism: interactive catalog card for microservice / resource listing grids. Built on Card interactive (hover border turns blue). Props: icon (slot), title, subtitle, description, footer (slot), onClick, className. Promoted from the inline 'Microservices Cards' showcase demo. Import from @/components/ui/microservice-card. _(ds-parity: MicroserviceCard)_
+- **FormField** — New FormField organism: standard form field wrapper — Label (+ required asterisk) → input slot → helper text / validation error. Props: id, label, description, error, required, children, className. Closes the long-standing FormField parity gap. Import from @/components/ui/form-field. _(ds-parity: FormField)_
+
+## v1.16.0 — 2026-07-30
+
+### Added
+- **BuilderShell** — New BuilderShell organism + sub-components for the app builder layout. Includes: BuilderTopBar (dark top bar with app icon tile, Design/Workflow/Settings centre tabs, Upgrade pill, Access CTA), BuilderLeftNav (dark collapsible entity tree with form/report/page/workflow/stage item types, user row), BuilderViewportToolbar (Desktop/Tablet/Phone device switcher + theme/layout tool icons), and BuilderShell (full layout shell composing all zones — left nav auto-collapses on tablet/phone viewport). Right-hand PropertiesPanel is a named slot (propertiesPanel + propertiesPanelTitle props). _(ds-parity: BuilderShell)_
 
 ## v1.15.0 — 2026-07-30
 

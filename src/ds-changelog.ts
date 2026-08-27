@@ -33,10 +33,37 @@ export interface DSChangeEntry {
 }
 
 /** Current DS version — surfaced as the version badge in the showcase TopBar. */
-export const DS_VERSION = "1.16.0"
+export const DS_VERSION = "1.17.0"
 
 /** Newest entry first. */
 export const DS_CHANGELOG: DSChangeEntry[] = [
+  {
+    version: "1.17.0",
+    date: "2026-08-27",
+    changes: [
+      {
+        type: "added",
+        scope: "PageHeader",
+        summary:
+          "New PageHeader organism: top-level page heading with title (H2), optional description (P2), optional right-side actions slot, and a bottom border separator (withBorder prop, default true). Promoted from the inline 'Page Header / Dashboard Header' showcase demo. Import from @/components/ui/page-header.",
+        parity: "PageHeader",
+      },
+      {
+        type: "added",
+        scope: "MicroserviceCard",
+        summary:
+          "New MicroserviceCard organism: interactive catalog card for microservice / resource listing grids. Built on Card interactive (hover border turns blue). Props: icon (slot), title, subtitle, description, footer (slot), onClick, className. Promoted from the inline 'Microservices Cards' showcase demo. Import from @/components/ui/microservice-card.",
+        parity: "MicroserviceCard",
+      },
+      {
+        type: "added",
+        scope: "FormField",
+        summary:
+          "New FormField organism: standard form field wrapper — Label (+ required asterisk) → input slot → helper text / validation error. Props: id, label, description, error, required, children, className. Closes the long-standing FormField parity gap. Import from @/components/ui/form-field.",
+        parity: "FormField",
+      },
+    ],
+  },
   {
     version: "1.16.0",
     date: "2026-07-30",
