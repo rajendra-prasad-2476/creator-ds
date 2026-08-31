@@ -33,10 +33,31 @@ export interface DSChangeEntry {
 }
 
 /** Current DS version — surfaced as the version badge in the showcase TopBar. */
-export const DS_VERSION = "1.18.0"
+export const DS_VERSION = "1.18.1"
 
 /** Newest entry first. */
 export const DS_CHANGELOG: DSChangeEntry[] = [
+  {
+    version: "1.18.1",
+    date: "2026-08-31",
+    changes: [
+      {
+        type: "fixed",
+        scope: "SplitPanelTemplate — DropdownMenuTrigger asChild",
+        summary: "Removed invalid asChild prop from DropdownMenuTrigger (Base UI does not support Radix-style asChild composition). Header action dropdown buttons now use buttonVariants() className directly on the trigger.",
+      },
+      {
+        type: "fixed",
+        scope: "PdfExportSettingsScreen — PopoverTrigger asChild",
+        summary: "Removed invalid asChild prop from PopoverTrigger. Inner raw <button> merged into PopoverTrigger directly. Badge variant corrected from 'secondary' (non-existent) to 'subtle'.",
+      },
+      {
+        type: "fixed",
+        scope: "OrganismsSection — unused imports",
+        summary: "Removed unused Copy import and unused onBack parameter to resolve TypeScript TS6133 errors.",
+      },
+    ],
+  },
   {
     version: "1.18.0",
     date: "2026-08-31",

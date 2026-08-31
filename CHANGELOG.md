@@ -2,7 +2,14 @@
 
 > Generated from `src/ds-changelog.ts` — do not edit by hand. Run `npm run ds:changelog`.
 
-Current version: **v1.18.0**
+Current version: **v1.18.1**
+
+## v1.18.1 — 2026-08-31
+
+### Fixed
+- **SplitPanelTemplate — DropdownMenuTrigger asChild** — Removed invalid asChild prop from DropdownMenuTrigger (Base UI does not support Radix-style asChild composition). Header action dropdown buttons now use buttonVariants() className directly on the trigger.
+- **PdfExportSettingsScreen — PopoverTrigger asChild** — Removed invalid asChild prop from PopoverTrigger. Inner raw <button> merged into PopoverTrigger directly. Badge variant corrected from 'secondary' (non-existent) to 'subtle'.
+- **OrganismsSection — unused imports** — Removed unused Copy import and unused onBack parameter to resolve TypeScript TS6133 errors.
 
 ## v1.18.0 — 2026-08-31
 

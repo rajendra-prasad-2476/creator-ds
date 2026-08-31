@@ -22,7 +22,7 @@
 import * as React from "react"
 import { TopBar } from "@/components/ui/top-bar"
 import { LeftNav } from "@/components/ui/left-nav"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
   DropdownMenu,
@@ -326,10 +326,8 @@ export default function SplitPanelTemplate({
               {headerActions.map((action) =>
                 action.dropdownItems ? (
                   <DropdownMenu key={action.label}>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant={action.variant ?? "default"}>
-                        {action.label} <ChevronDown size={12} />
-                      </Button>
+                    <DropdownMenuTrigger className={buttonVariants({ variant: action.variant ?? "default" })}>
+                      {action.label} <ChevronDown size={12} />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       {action.dropdownItems.map((di) => (

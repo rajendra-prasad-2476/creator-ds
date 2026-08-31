@@ -229,9 +229,8 @@ function ContentSelector({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        {/* DS gap: no multi-select trigger chip DS component — raw <button> */}
-        <button
+      {/* DS gap: no multi-select trigger chip DS component — raw trigger styles */}
+      <PopoverTrigger
           style={{
             display: "inline-flex",
             alignItems: "center",
@@ -267,7 +266,7 @@ function ContentSelector({
           </span>
           {hasContent && (
             <Badge
-              variant="secondary"
+              variant="subtle"
               style={{
                 fontSize: 11,
                 padding: "0 var(--cds-space-6)",
@@ -282,7 +281,6 @@ function ContentSelector({
             color="var(--cds-huegrey-text-subtle)"
             style={{ flexShrink: 0 }}
           />
-        </button>
       </PopoverTrigger>
 
       <PopoverContent

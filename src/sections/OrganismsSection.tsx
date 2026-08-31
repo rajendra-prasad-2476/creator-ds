@@ -20,7 +20,7 @@ import { FullPageDialog } from "@/components/ui/full-page-dialog";
 import type { FullPageDialogStep } from "@/components/ui/full-page-dialog";
 import { List } from "@/components/ui/list";
 import type { ListItemData } from "@/components/ui/list";
-import { BarChart3, Plus, Filter, ArrowUpDown, Eye, Edit, Trash2, Database, Layers, Globe, PenLine, Link2, Key, Copy, CheckCircle2, LayoutGrid, GitFork, Lock, ChevronDown, User, Search } from "lucide-react";
+import { BarChart3, Plus, Filter, ArrowUpDown, Eye, Edit, Trash2, Database, Layers, Globe, PenLine, Link2, Key, CheckCircle2, LayoutGrid, GitFork, Lock, ChevronDown, User, Search } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useState } from "react";
 import { ContentSwitcher } from "@/components/ui/content-switcher";
@@ -673,7 +673,7 @@ function SettingsLandingCanvas({ onNavigate }: { onNavigate: (item: string) => v
   )
 }
 
-function SettingsDetailCanvas({ activeItem, onBack }: { activeItem: string; onBack: () => void }) {
+function SettingsDetailCanvas({ activeItem }: { activeItem: string; onBack: () => void }) {
   const PERMISSIONS_TABLE = [
     { name: "Driver", desc: "Driver Profile" },
     { name: "Owner",  desc: "Owner Profile" },
