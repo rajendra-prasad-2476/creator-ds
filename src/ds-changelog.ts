@@ -33,10 +33,41 @@ export interface DSChangeEntry {
 }
 
 /** Current DS version — surfaced as the version badge in the showcase TopBar. */
-export const DS_VERSION = "1.17.0"
+export const DS_VERSION = "1.18.0"
 
 /** Newest entry first. */
 export const DS_CHANGELOG: DSChangeEntry[] = [
+  {
+    version: "1.18.0",
+    date: "2026-08-31",
+    changes: [
+      {
+        type: "changed",
+        scope: "All templates — activeNavId",
+        summary: "All six page templates (CardGridTemplate, TabbedSectionsTemplate, SplitPanelTemplate, LinkCategoryTemplate, BreadcrumbDetailTemplate, BillingTemplate) now accept an activeNavId prop and pass it to LeftNav. Each template defaults to its canonical nav item (solutions, microservices, environments, operations, billing) so the left nav selection is correct out of the box.",
+      },
+      {
+        type: "changed",
+        scope: "SplitPanelTemplate — row-aligned grid layout",
+        summary: "Replaced the three-card flex layout with a CSS grid (240px left + 1fr per panel). Each app row now spans all columns at the same height. SplitPanelItem gains panelCells (Record<panelId, {label, sublabel, menuGroups}>) for per-app, per-environment cell data. SplitPanel now requires an id field. Search bar moved inside the left header cell. Column header height fixed with alignContent: start. Header action buttons unified to DS Button height via asChild.",
+      },
+      {
+        type: "changed",
+        scope: "BuilderShell — showViewportToolbar prop",
+        summary: "Added showViewportToolbar prop (default true) to BuilderShell. Setting false hides the Desktop/Tablet/Phone toolbar — used for the Settings tab where viewport switching is not applicable.",
+      },
+      {
+        type: "changed",
+        scope: "BuilderShellDemo — Settings tab",
+        summary: "BuilderShellDemo (Templates section showcase) now has full Settings tab interactivity: Settings Landing canvas (app icon + name/URL + category link grid) and Settings Detail canvas (DS LeftNav with app-settings sections + permissions table). Viewport switcher and properties panel are hidden when Settings is active.",
+      },
+      {
+        type: "added",
+        scope: "TemplatesSection — Builder Shell entry",
+        summary: "Builder Shell added to the Templates section picker. Renders BuilderShellDemo with Design / Workflow / Settings tab switching. Padded flag added to the template entry type so non-full-bleed components get section padding inside the preview frame.",
+      },
+    ],
+  },
   {
     version: "1.17.0",
     date: "2026-08-27",

@@ -1,12 +1,13 @@
 import * as React from "react"
 import CardGridTemplate from "@/templates/collection/CardGridTemplate"
 import TabbedSectionsTemplate from "@/templates/collection/TabbedSectionsTemplate"
-import SplitPanelTemplate from "@/templates/structure/SplitPanelTemplate"
+import SplitPanelTemplate, { DEFAULT_LIST_ITEMS, DEFAULT_PANELS_WITH_APP } from "@/templates/structure/SplitPanelTemplate"
 import LinkCategoryTemplate from "@/templates/structure/LinkCategoryTemplate"
 import BreadcrumbDetailTemplate from "@/templates/structure/BreadcrumbDetailTemplate"
 import BillingTemplate from "@/templates/domain/BillingTemplate"
 import ZiaSettingsScreen from "@/screens/zia-configuration/ZiaSettingsScreen"
 import ZiaProviderDetailScreen from "@/screens/zia-configuration/ZiaProviderDetailScreen"
+import { BuilderShellDemo } from "@/sections/OrganismsSection"
 
 const TEMPLATES = [
   {
@@ -23,9 +24,15 @@ const TEMPLATES = [
   },
   {
     id: "split-panel",
-    label: "Environments",
-    description: "Three-column split panel — list + stage + production",
+    label: "Environments (empty)",
+    description: "Three-column split panel — empty list state",
     component: <SplitPanelTemplate />,
+  },
+  {
+    id: "split-panel-with-app",
+    label: "Environments (with app)",
+    description: "Three-column split panel — Fleet Hub with Stage / Production columns",
+    component: <SplitPanelTemplate listItems={DEFAULT_LIST_ITEMS} panels={DEFAULT_PANELS_WITH_APP} />,
   },
   {
     id: "link-category",
@@ -56,6 +63,13 @@ const TEMPLATES = [
     label: "Zia Provider Detail",
     description: "001 · Zia Config — Provider detail with key management (Configuration tab) + Usage tab",
     component: <ZiaProviderDetailScreen />,
+  },
+  {
+    id: "builder-shell",
+    label: "Builder Shell",
+    description: "App builder layout — dark top bar + entity nav + viewport toolbar + canvas + properties panel",
+    component: <BuilderShellDemo />,
+    padded: true,
   },
 ]
 
@@ -117,7 +131,7 @@ export function TemplatesSection() {
           background: "var(--background)",
         }}
       >
-        <div style={{ height: "100%", overflow: "auto" }}>
+        <div style={{ height: "100%", overflow: "auto", padding: active.padded ? "var(--cds-padding-section-v) var(--cds-padding-section-h)" : 0 }}>
           {active.component}
         </div>
       </div>

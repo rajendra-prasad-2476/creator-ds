@@ -50,6 +50,8 @@ export interface TabbedSectionsTemplateProps {
   tabs?: TabbedTab[]
   defaultTabId?: string
   onCtaClick?: () => void
+  /** LeftNav activeId — which nav item should be highlighted */
+  activeNavId?: string
 }
 
 // ─── Default data ─────────────────────────────────────────────────────────────
@@ -236,6 +238,7 @@ export default function TabbedSectionsTemplate({
   tabs = DEFAULT_TABS,
   defaultTabId,
   onCtaClick,
+  activeNavId = "microservices",
 }: TabbedSectionsTemplateProps) {
   const firstTabId = defaultTabId ?? tabs[0]?.id ?? "all"
 
@@ -243,7 +246,7 @@ export default function TabbedSectionsTemplate({
     <div className="flex flex-col h-screen">
       <TopBar />
       <div className="flex flex-1 overflow-hidden">
-        <LeftNav />
+        <LeftNav activeId={activeNavId} />
         <main
           className="flex-1 overflow-y-auto"
           style={{

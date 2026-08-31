@@ -110,6 +110,8 @@ export interface BuilderShellProps {
    * to restore the Desktop/Tablet/Phone switcher.
    */
   tabSubNav?: BuilderTabSubNav
+  /** Hide the viewport toolbar entirely (e.g. Settings tab). Default true. */
+  showViewportToolbar?: boolean
   className?: string
 }
 
@@ -498,6 +500,7 @@ export function BuilderShell({
   megaMenuActiveId,
   onMegaMenuItemClick,
   tabSubNav,
+  showViewportToolbar = true,
   className,
 }: BuilderShellProps) {
   const [flyoutOpen, setFlyoutOpen] = React.useState(false)
@@ -545,12 +548,12 @@ export function BuilderShell({
           {/* Sub-nav OR viewport toolbar depending on active tab */}
           {tabSubNav ? (
             <BuilderSubNavBar subNav={tabSubNav} />
-          ) : (
+          ) : showViewportToolbar ? (
             <BuilderViewportToolbar
               viewport={viewport}
               onViewportChange={onViewportChange}
             />
-          )}
+          ) : null}
           <main
             className="flex-1 overflow-auto bg-[var(--cds-primary-surface-subtle,#f5f8fe)]"
             data-viewport={viewport}

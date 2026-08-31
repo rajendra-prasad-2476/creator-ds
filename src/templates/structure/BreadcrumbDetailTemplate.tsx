@@ -127,6 +127,8 @@ export interface BreadcrumbDetailTemplateProps {
   description?: string
   tabs?: DetailTab[]
   defaultTabId?: string
+  /** LeftNav activeId — which nav item should be highlighted */
+  activeNavId?: string
 }
 
 // ─── Default data ─────────────────────────────────────────────────────────────
@@ -506,6 +508,7 @@ export default function BreadcrumbDetailTemplate({
   description = "Manage outgoing email channels, sender email addresses, and domain authentication to control how emails are sent from your apps.",
   tabs = DEFAULT_TABS,
   defaultTabId,
+  activeNavId,
 }: BreadcrumbDetailTemplateProps) {
   const firstTabId = defaultTabId ?? tabs[0]?.id
 
@@ -513,7 +516,7 @@ export default function BreadcrumbDetailTemplate({
     <div className="flex flex-col h-screen">
       <TopBar />
       <div className="flex flex-1 overflow-hidden">
-        <LeftNav />
+        <LeftNav activeId={activeNavId} />
         <main
           className="flex-1 overflow-y-auto"
           style={{

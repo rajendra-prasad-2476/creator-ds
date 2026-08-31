@@ -932,24 +932,29 @@ export default function EnvironmentsScreen() {
               ],
             },
           ],
+          panelCells: {
+            stage: {
+              label: "1.2",
+              sublabel: "May 28, 2025",
+              menuGroups: [{ label: "Stage", items: [{ label: "Access" }, { label: "Settings" }, { label: "Logs" }, { label: "Export" }] }],
+            },
+            production: {
+              label: "1.2",
+              sublabel: "May 28, 2025",
+              menuGroups: [{ label: "Production", items: [{ label: "Access" }, { label: "Settings" }, { label: "Logs" }, { label: "Export" }] }],
+            },
+          },
         }))}
         panels={[
           {
+            id: "stage",
             label: "Stage",
             accentColor: "var(--cds-primary-surface-default)",
-            items: [
-              { id: "s1", label: "1.2", sublabel: "May 28, 2025" },
-              { id: "s2", label: "1.5", sublabel: "Oct 03, 2023" },
-            ],
           },
           {
+            id: "production",
             label: "Production",
             accentColor: "var(--cds-success-surface-default)",
-            items: [
-              { id: "p1", label: "1.2", sublabel: "May 28, 2025" },
-              { id: "p2", label: "1.5", sublabel: "Oct 03, 2023" },
-              { id: "p3", label: "1.0", sublabel: "Jan 04, 2024" },
-            ],
           },
         ]}
       />

@@ -2,7 +2,18 @@
 
 > Generated from `src/ds-changelog.ts` — do not edit by hand. Run `npm run ds:changelog`.
 
-Current version: **v1.17.0**
+Current version: **v1.18.0**
+
+## v1.18.0 — 2026-08-31
+
+### Added
+- **TemplatesSection — Builder Shell entry** — Builder Shell added to the Templates section picker. Renders BuilderShellDemo with Design / Workflow / Settings tab switching. Padded flag added to the template entry type so non-full-bleed components get section padding inside the preview frame.
+
+### Changed
+- **All templates — activeNavId** — All six page templates (CardGridTemplate, TabbedSectionsTemplate, SplitPanelTemplate, LinkCategoryTemplate, BreadcrumbDetailTemplate, BillingTemplate) now accept an activeNavId prop and pass it to LeftNav. Each template defaults to its canonical nav item (solutions, microservices, environments, operations, billing) so the left nav selection is correct out of the box.
+- **SplitPanelTemplate — row-aligned grid layout** — Replaced the three-card flex layout with a CSS grid (240px left + 1fr per panel). Each app row now spans all columns at the same height. SplitPanelItem gains panelCells (Record<panelId, {label, sublabel, menuGroups}>) for per-app, per-environment cell data. SplitPanel now requires an id field. Search bar moved inside the left header cell. Column header height fixed with alignContent: start. Header action buttons unified to DS Button height via asChild.
+- **BuilderShell — showViewportToolbar prop** — Added showViewportToolbar prop (default true) to BuilderShell. Setting false hides the Desktop/Tablet/Phone toolbar — used for the Settings tab where viewport switching is not applicable.
+- **BuilderShellDemo — Settings tab** — BuilderShellDemo (Templates section showcase) now has full Settings tab interactivity: Settings Landing canvas (app icon + name/URL + category link grid) and Settings Detail canvas (DS LeftNav with app-settings sections + permissions table). Viewport switcher and properties panel are hidden when Settings is active.
 
 ## v1.17.0 — 2026-08-27
 

@@ -198,7 +198,7 @@ export default function LinkCategoryTemplate({
   categories = DEFAULT_CATEGORIES,
   showSearch = true,
   onSearch,
-  activeNavId,
+  activeNavId = "operations",
   cardColumns = 3,
 }: LinkCategoryTemplateProps) {
   const [search, setSearch] = React.useState("")

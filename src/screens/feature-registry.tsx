@@ -34,9 +34,11 @@ import PortalPasswordPolicyScreen from "@/screens/portal-security/PortalPassword
 import PortalMFAScreen from "@/screens/portal-security/PortalMFAScreen"
 import PortalAllowedIPsScreen from "@/screens/portal-security/PortalAllowedIPsScreen"
 import PortalAdvancedSettingsScreen from "@/screens/portal-security/PortalAdvancedSettingsScreen"
+import PdfExportSettingsScreen from "@/screens/pdf-export/PdfExportSettingsScreen"
 import { type ScreenParams } from "@/screens/navigation"
 
 // Raw source imports (Vite ?raw) — used by "Copy for Figma" in the Feature Dashboard
+import PdfExportSettingsScreenRaw from "@/screens/pdf-export/PdfExportSettingsScreen.tsx?raw"
 import OperationsScreenRaw from "@/screens/zia-configuration/OperationsScreen.tsx?raw"
 import ZiaSettingsScreenRaw from "@/screens/zia-configuration/ZiaSettingsScreen.tsx?raw"
 import ZiaProviderDetailScreenRaw from "@/screens/zia-configuration/ZiaProviderDetailScreen.tsx?raw"
@@ -224,6 +226,76 @@ export const FEATURE_REGISTRY: FeatureEntry[] = [
   },
 
   // ── Add new features below this line ─────────────────────────────────────
+
+  {
+    id: "005",
+    name: "PDF Export Settings (Watermark Configuration)",
+    prdRef: "#005",
+    version: "v1.0",
+    status: "draft",
+    owner: "rajendra.prasad",
+    lastUpdated: "2026-08-27",
+    overview: {
+      tagline: "Protect exported PDFs by embedding identifying watermarks — configurable per application, applied automatically on every export.",
+      problemStatement: "Organizations exporting sensitive data from Creator applications had no built-in way to trace exported PDFs back to the person who generated them or discourage unauthorized distribution.",
+      painPoints: [
+        "No automatic watermarking on exported PDFs",
+        "No traceability — who exported which document and when",
+        "Confidentiality labels had to be applied manually",
+        "No per-application control; watermark settings were all-or-nothing",
+        "Dynamic user information (name, email, IP) not embeddable without custom tooling",
+      ],
+      solutionStatement: "Admins can enable PDF watermarking per application from a single Operations settings page, choose dynamic content (user identity, timestamp, IP), add custom text, and let the system apply it automatically on every PDF export.",
+      improvements: [
+        "Per-application enable/disable toggle",
+        "5 content types: Custom Text, Username, Email, Timestamp, IP Address",
+        "Auto-select Logged-in Email ID on first enable",
+        "Auto-disable if all watermark content is removed",
+        "250-character limit on custom text with inline validation",
+        "Fixed system-defined content ordering for consistency",
+      ],
+      navigationFlow: `Admin Dashboard → Operations → PDF Export Settings
+  └─ Applications table
+       ├─ Toggle Enable/Disable per app
+       └─ Configure watermark content (multi-select)
+            └─ Custom Text → inline text input (max 250 chars)`,
+      screenFlow: [
+        { id: "pdf-export-settings", label: "PDF Export Settings", type: "entry", leadsTo: [] },
+      ],
+    },
+    screens: [
+      {
+        id: "pdf-export-settings",
+        name: "PDF Export Settings",
+        factory: () => <PdfExportSettingsScreen />,
+        sourcePath: "src/screens/pdf-export/PdfExportSettingsScreen.tsx",
+        destPath: "features/005-pdf-export-settings/screens/PdfExportSettingsScreen.tsx",
+        rawSource: PdfExportSettingsScreenRaw,
+        customComponents: [
+          { element: "raw <button> multi-select trigger in Watermark Content column", reason: "DS component not available", dsAlternative: "MultiSelect DS component", parity: "P1" },
+          { element: "absolutely-positioned <Search> icon over <Input>", reason: "oversight", dsAlternative: "InputPrefix with prefixIcon", parity: undefined },
+          { element: "raw <div> info note at page bottom", reason: "DS component not available", dsAlternative: "Notes or InlineAlert component", parity: "P2" },
+          { element: "raw <td> empty state text", reason: "DS component not available", dsAlternative: "EmptyState", parity: "P1" },
+        ],
+      },
+    ],
+    versionHistory: [
+      {
+        version: "v1.0",
+        date: "2026-08-27",
+        notes: [
+          "Initial generation from PRD (PDF Export Settings — Watermark Configuration)",
+          "Single screen: application listing with Status toggle + Watermark Content multi-select",
+          "FR-6.3: Enable auto-selects Logged-in Email ID",
+          "FR-6.6: Removing all content auto-disables the application",
+          "FR-6.5: Custom Text inline input with 250-char limit + inline validation",
+          "FR-6.7: Fixed content ordering enforced in ContentSelector",
+          "8 demo applications with varied configurations",
+          "Component gaps flagged: MultiSelect (×1), EmptyState (×1), Notes/InlineAlert (×1), InputPrefix (×1)",
+        ],
+      },
+    ],
+  },
 
   {
     id: "004",

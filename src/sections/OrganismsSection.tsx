@@ -626,31 +626,131 @@ function WorkflowCanvas() {
   )
 }
 
-function BuilderShellDemo() {
+const SETTINGS_NAV = [
+  { section: "PERMISSIONS",    items: ["User Permissions", "Portal User Permissions"] },
+  { section: "PERSONALIZATION", items: ["Localization", "Contextual Messages", "Record Templates"] },
+  { section: "DEVELOPER TOOLS", items: ["Schema Builder", "Application IDE", "Widgets", "Variables"] },
+]
+
+function SettingsLandingCanvas({ onNavigate }: { onNavigate: (item: string) => void }) {
+  return (
+    <div className="flex h-full flex-col overflow-y-auto bg-[#F7F8FA] p-[var(--cds-padding-section-h)]">
+      {/* App identity row */}
+      <div className="mb-8 flex items-center gap-6">
+        <div className="flex h-[80px] w-[80px] shrink-0 items-center justify-center rounded-[16px] bg-[#E91E8C]"
+          style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "22px", fontWeight: 700, color: "white" }}>
+          FH
+        </div>
+        <div className="flex flex-col gap-1">
+          <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "22px", fontWeight: 600, color: "#26282B" }}>Fleet Hub</span>
+          <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "13px", color: "#696C74" }}>
+            URL : <span style={{ color: "#696C74" }}>...:rajendra.prasad/</span>
+          </span>
+        </div>
+        <div className="ml-auto flex flex-col gap-0.5">
+          <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "12px", color: "#696C74" }}>Date and Time Settings</span>
+          <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "13px", color: "#0D4EF2", cursor: "pointer" }}>
+            IST / dd-MMM-yyyy / 24-Hour
+          </span>
+        </div>
+      </div>
+      {/* Category link grid */}
+      <div className="grid grid-cols-3 gap-8">
+        {SETTINGS_NAV.map(({ section, items }) => (
+          <div key={section} className="flex flex-col gap-3">
+            <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "13px", fontWeight: 600, color: "#26282B" }}>{section.charAt(0) + section.slice(1).toLowerCase()}</span>
+            {items.map(item => (
+              <button key={item} type="button" onClick={() => onNavigate(item)}
+                className="text-left"
+                style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "13px", color: "#26282B", background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+                {item}
+              </button>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function SettingsDetailCanvas({ activeItem, onBack }: { activeItem: string; onBack: () => void }) {
+  const PERMISSIONS_TABLE = [
+    { name: "Driver", desc: "Driver Profile" },
+    { name: "Owner",  desc: "Owner Profile" },
+    { name: "User",   desc: "This profile only have add and view permission." },
+  ]
+
+  const settingsSections = SETTINGS_NAV.map(({ section, items }) => ({
+    id: section,
+    label: section,
+    items: items.map(item => ({
+      id: item,
+      label: item,
+      icon: <span className="w-0" />,
+    })),
+  }))
+
+  return (
+    <div className="flex h-full overflow-hidden bg-white">
+      {/* Settings left nav — reuses the DS LeftNav component */}
+      <LeftNav
+        sections={settingsSections}
+        activeId={activeItem}
+        className="relative border-r border-[var(--border)] w-[220px] shrink-0"
+      />
+      {/* Detail content */}
+      <div className="flex flex-1 flex-col overflow-y-auto p-6">
+        <div className="mb-1" style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "18px", fontWeight: 600, color: "#26282B" }}>Users</div>
+        <div className="mb-4" style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "13px", color: "#696C74" }}>
+          Add and manage users' permissions and roles in the application. Define the visibility of records for each users.
+        </div>
+        {/* Tabs */}
+        <div className="mb-4 flex gap-0 border-b border-[var(--border)]">
+          {["Permissions", "Roles", "Data Sharing"].map((tab, i) => (
+            <div key={tab} className="px-4 pb-2 pt-1 cursor-pointer"
+              style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "13px", color: i === 0 ? "#0D4EF2" : "#696C74", borderBottom: i === 0 ? "2px solid #0D4EF2" : "2px solid transparent" }}>
+              {tab}
+            </div>
+          ))}
+        </div>
+        {/* Add button */}
+        <div className="mb-4 flex justify-end">
+          <button type="button" className="rounded-[var(--cds-radius-r)] border border-[var(--cds-primary-border-default)] px-4 py-1.5 text-[var(--cds-primary-text-default)]"
+            style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "13px", background: "white", cursor: "pointer" }}>
+            Add Permission
+          </button>
+        </div>
+        {/* Table */}
+        <div className="overflow-hidden rounded-[var(--cds-radius-r)] border border-[var(--border)]">
+          <div className="grid grid-cols-2 bg-[#F7F8FA] px-4 py-2">
+            {["Name", "Description"].map(h => (
+              <span key={h} style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "12px", fontWeight: 600, color: "#696C74" }}>{h}</span>
+            ))}
+          </div>
+          {PERMISSIONS_TABLE.map(({ name, desc }) => (
+            <div key={name} className="grid grid-cols-2 border-t border-[var(--border)] px-4 py-3">
+              <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "13px", color: "#26282B" }}>{name}</span>
+              <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "13px", color: "#26282B" }}>{desc}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function BuilderShellDemo() {
   const [viewport, setViewport] = useState<BuilderViewport>("web")
   const [activeTab, setActiveTab] = useState<"design" | "workflow" | "settings">("design")
   const [activeSubTab, setActiveSubTab] = useState(WORKFLOW_SUB_TABS[0].id)
+  const [activeSettingsItem, setActiveSettingsItem] = useState<string | null>(null)
 
   const viewportLabel = viewport === "web" ? "Web" : viewport === "tablet" ? "Tablet" : "Phone"
   const isWorkflow = activeTab === "workflow"
+  const isSettings = activeTab === "settings"
 
   return (
     <div className="flex flex-col gap-[var(--cds-gap-default)]">
-      {/* Controls */}
-      <div className="flex items-center gap-[var(--cds-gap-default)]">
-        <span
-          className="text-[length:var(--cds-text-p3)] text-[var(--cds-huegrey-text-default)]"
-          style={{ fontFamily: "'Zoho Puvi', sans-serif" }}
-        >
-          Viewport:
-        </span>
-        <ContentSwitcher
-          value={viewport === "web" ? "Web" : viewport === "tablet" ? "Tablet" : "Phone"}
-          items={["Web", "Tablet", "Phone"]}
-          onValueChange={(v) => setViewport(v === "Tablet" ? "tablet" : v === "Phone" ? "phone" : "web")}
-        />
-      </div>
-
       {/* Shell preview — constrained height */}
       <div className="overflow-hidden rounded-[var(--cds-radius-r)] border border-[var(--border)]">
         <BuilderShell
@@ -658,12 +758,12 @@ function BuilderShellDemo() {
           viewport={viewport}
           onViewportChange={setViewport}
           topBar={{
-            appName: "Figma Plugin Test",
-            appInitials: "FPT",
-            appIconColor: "#5C2D91",
-            activePageName: isWorkflow ? "Workflow" : "Design Work Items Report",
+            appName: "Fleet Hub",
+            appInitials: "FH",
+            appIconColor: "#E91E8C",
+            activePageName: isWorkflow ? "Workflow" : isSettings ? "Settings" : "Design Work Items Report",
             activeTab,
-            onTabChange: setActiveTab,
+            onTabChange: (t) => { setActiveTab(t); setActiveSettingsItem(null) },
           }}
           megaMenuColumns={MEGA_MENU_COLUMNS}
           megaMenuActiveId="form-1"
@@ -673,14 +773,12 @@ function BuilderShellDemo() {
             onTabChange: setActiveSubTab,
             actions: (
               <div className="flex items-center gap-[var(--cds-gap-small)]">
-                {/* Search */}
                 <div className="flex h-8 items-center gap-[var(--cds-gap-tight)] rounded-[var(--cds-radius-s)] border border-[var(--border)] bg-white px-[var(--cds-space-8)]" style={{ width: 200 }}>
                   <Search size={13} className="text-[var(--cds-huegrey-text-default)] shrink-0" />
                   <span style={{ fontFamily: "'Zoho Puvi', sans-serif", fontSize: "13px", color: "#9EA1A9" }}>
                     Search for Workflows or Acti...
                   </span>
                 </div>
-                {/* New Workflow */}
                 <button
                   type="button"
                   className="flex h-8 items-center rounded-[var(--cds-radius-s)] bg-[var(--cds-primary-surface-default,#0D4EF2)] px-[var(--cds-space-12)] text-white"
@@ -691,11 +789,19 @@ function BuilderShellDemo() {
               </div>
             ),
           } : undefined}
-          showPropertiesPanel={!isWorkflow}
+          showPropertiesPanel={!isWorkflow && !isSettings}
+          showViewportToolbar={!isSettings}
           propertiesPanelTitle={`Report Customization · ${viewportLabel}`}
           propertiesPanel={<PropertiesPanelContent viewport={viewport} />}
         >
-          {isWorkflow ? <WorkflowCanvas /> : <CanvasContent viewport={viewport} />}
+          {isSettings
+            ? activeSettingsItem
+              ? <SettingsDetailCanvas activeItem={activeSettingsItem} onBack={() => setActiveSettingsItem(null)} />
+              : <SettingsLandingCanvas onNavigate={setActiveSettingsItem} />
+            : isWorkflow
+              ? <WorkflowCanvas />
+              : <CanvasContent viewport={viewport} />
+          }
         </BuilderShell>
       </div>
     </div>

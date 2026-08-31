@@ -72,6 +72,8 @@ export interface BillingTemplateProps {
   usageDetailsContent?: React.ReactNode
   /** Default active tab */
   defaultTab?: "subscription" | "usage-details"
+  /** LeftNav activeId — which nav item should be highlighted */
+  activeNavId?: string
 }
 
 // ─── Demo data ─────────────────────────────────────────────────────────────────
@@ -376,12 +378,13 @@ export default function BillingTemplate({
   planDetails = DEMO_PLAN_DETAILS,
   usageDetailsContent,
   defaultTab = "subscription",
+  activeNavId = "billing",
 }: BillingTemplateProps) {
   return (
     <div className="flex flex-col h-screen">
       <TopBar />
       <div className="flex flex-1 overflow-hidden">
-        <LeftNav />
+        <LeftNav activeId={activeNavId} />
         <main
           className="flex-1 overflow-y-auto"
           style={{

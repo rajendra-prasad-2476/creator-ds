@@ -63,6 +63,8 @@ export interface CardGridTemplateProps {
   filterOptions?: { value: string; label: string }[]
   onCtaClick?: () => void
   onSearch?: (query: string) => void
+  /** LeftNav activeId — which nav item should be highlighted */
+  activeNavId?: string
 }
 
 // ─── Default data ─────────────────────────────────────────────────────────────
@@ -234,6 +236,7 @@ export default function CardGridTemplate({
   filterOptions = DEFAULT_FILTER_OPTIONS,
   onCtaClick,
   onSearch,
+  activeNavId = "solutions",
 }: CardGridTemplateProps) {
   const [search, setSearch] = React.useState("")
 
@@ -246,7 +249,7 @@ export default function CardGridTemplate({
     <div className="flex flex-col h-screen">
       <TopBar />
       <div className="flex flex-1 overflow-hidden">
-        <LeftNav />
+        <LeftNav activeId={activeNavId} />
         <main
           className="flex-1 overflow-y-auto"
           style={{

@@ -53,18 +53,20 @@ export interface SplitPanelItem {
   accentColor?: string
   /** Grouped menu items for the ··· overflow menu */
   menuGroups?: SplitPanelMenuGroup[]
+  /** Per-panel cell data keyed by SplitPanel.id */
+  panelCells?: Record<string, { label?: string; sublabel?: string; menuGroups?: SplitPanelMenuGroup[] }>
   /** Called when any menu item label is clicked */
   onMenuAction?: (label: string) => void
   onClick?: () => void
 }
 
 export interface SplitPanel {
+  /** Unique id used to match SplitPanelItem.panelCells */
+  id: string
   /** Column header label, e.g. "Stage" */
   label: string
   /** Header background color (hex or CSS var) */
   accentColor?: string
-  /** Items in this stage column */
-  items?: SplitPanelItem[]
   emptyMessage?: string
 }
 
@@ -106,96 +108,125 @@ const DEFAULT_HEADER_ACTIONS: HeaderAction[] = [
 
 const DEFAULT_PANELS: SplitPanel[] = [
   {
+    id: "stage",
     label: "Stage",
     accentColor: "var(--cds-primary-surface-default)",
-    items: [],
     emptyMessage: "No applications in Stage yet",
   },
   {
+    id: "production",
     label: "Production",
     accentColor: "var(--cds-success-surface-default)",
-    items: [],
     emptyMessage: "No applications in Production yet",
   },
 ]
 
-// ─── PanelColumn ──────────────────────────────────────────────────────────────
+// Pre-populated dataset matching the Fleet Hub scenario in the screenshot
+export const DEFAULT_LIST_ITEMS: SplitPanelItem[] = [
+  {
+    id: "fleet-hub",
+    label: "Fleet Hub",
+    accentColor: "#DC2626",
+    sublabel: "No changes available",
+    sublabelColor: "var(--cds-huegrey-text-default)",
+    menuGroups: [
+      {
+        label: "Development",
+        items: [
+          { label: "Edit" },
+          { label: "Access" },
+          { label: "Settings" },
+          { label: "Logs" },
+          { label: "Export" },
+        ],
+      },
+    ],
+    panelCells: {
+      stage: {
+        label: "1.0",
+        sublabel: "Aug 31, 2026",
+        menuGroups: [{
+          label: "Stage",
+          items: [{ label: "Access" }, { label: "Settings" }, { label: "Logs" }, { label: "Export" }],
+        }],
+      },
+      production: {
+        label: "1.0",
+        sublabel: "Aug 31, 2026",
+        menuGroups: [{
+          label: "Production",
+          items: [{ label: "Access" }, { label: "Settings" }, { label: "Logs" }, { label: "Export" }],
+        }],
+      },
+    },
+  },
+]
 
-function PanelColumn({ panel }: { panel: SplitPanel }) {
-  const accent = panel.accentColor ?? "var(--cds-primary-surface-default)"
-  const hasItems = panel.items && panel.items.length > 0
+export const DEFAULT_PANELS_WITH_APP = DEFAULT_PANELS
 
+// ─── PanelCell ────────────────────────────────────────────────────────────────
+
+function PanelCell({ cell, item, isLast }: {
+  cell: { label?: string; sublabel?: string; menuGroups?: SplitPanelMenuGroup[] } | undefined
+  item: SplitPanelItem
+  isLast: boolean
+}) {
   return (
     <div
       style={{
-        flex: 1,
         display: "flex",
-        flexDirection: "column",
-        border: "1px solid var(--border)",
-        borderRadius: "var(--cds-radius-r)",
-        overflow: "hidden",
-        backgroundColor: "var(--cds-white)",
-        minHeight: 400,
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: "var(--cds-gap-small)",
+        padding: "var(--cds-space-12) var(--cds-padding-card)",
+        borderLeft: "1px solid var(--border)",
+        borderBottom: isLast ? "none" : "1px solid var(--border)",
+        minHeight: 56,
       }}
     >
-      {/* Column header */}
-      <div
-        style={{
-          backgroundColor: accent,
-          padding: "var(--cds-space-12) var(--cds-padding-card)",
-          color: "var(--cds-white)",
-          fontWeight: 600,
-          fontSize: "var(--cds-text-p2)",
-          lineHeight: "var(--cds-leading-p2)",
-        }}
-      >
-        {panel.label}
-      </div>
-
-      {/* Column body */}
-      <div
-        style={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: hasItems ? "flex-start" : "center",
-          padding: "var(--cds-padding-card)",
-          gap: "var(--cds-gap-default)",
-        }}
-      >
-        {hasItems ? (
-          <ul style={{ width: "100%", listStyle: "none", padding: 0, margin: 0 }}>
-            {panel.items!.map((item) => (
-              <li
-                key={item.id}
-                style={{
-                  padding: "var(--cds-space-8) var(--cds-space-12)",
-                  borderBottom: "1px solid var(--border)",
-                  fontSize: "var(--cds-text-p2)",
-                  color: "var(--cds-huegrey-text-dark)",
-                }}
+      {cell ? (
+        <>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: "var(--cds-text-p2)", color: "var(--cds-huegrey-text-dark)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              {cell.label}
+            </div>
+            {cell.sublabel && (
+              <div style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>{cell.sublabel}</div>
+            )}
+          </div>
+          {cell.menuGroups && cell.menuGroups.length > 0 && (
+            <DropdownMenu modal={false}>
+              <DropdownMenuTrigger
+                onClick={(e) => e.stopPropagation()}
+                style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "2px 6px", background: "transparent", border: "none", borderRadius: "var(--cds-radius-s)", cursor: "pointer", color: "var(--cds-huegrey-text-default)", flexShrink: 0 }}
               >
-                {item.label}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <>
-            {/* TODO: replace with <EmptyState /> once built — ds-parity P1 */}
-            <p
-              style={{
-                fontSize: "var(--cds-text-p2)",
-                lineHeight: "var(--cds-leading-p2)",
-                color: "var(--cds-huegrey-text-default)",
-                textAlign: "center",
-              }}
-            >
-              {panel.emptyMessage ?? `No items in ${panel.label}`}
-            </p>
-          </>
-        )}
-      </div>
+                <MoreHorizontal size={14} />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {cell.menuGroups.map((group, gi) => (
+                  <React.Fragment key={gi}>
+                    {gi > 0 && <DropdownMenuSeparator />}
+                    <DropdownMenuGroup>
+                      {group.label && <DropdownMenuLabel>{group.label}</DropdownMenuLabel>}
+                      {group.items.map(mi => (
+                        <DropdownMenuItem
+                          key={mi.label}
+                          onClick={(e) => { e.stopPropagation(); mi.onSelect?.(); item.onMenuAction?.(mi.label) }}
+                          style={mi.destructive ? { color: "var(--cds-error-text-default)" } : undefined}
+                        >
+                          {mi.label}
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuGroup>
+                  </React.Fragment>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </>
+      ) : (
+        <span style={{ fontSize: "var(--cds-text-p3)", color: "var(--cds-huegrey-text-default)" }}>—</span>
+      )}
     </div>
   )
 }
@@ -210,7 +241,7 @@ export default function SplitPanelTemplate({
   listItems = [],
   panels = DEFAULT_PANELS,
   onSearch,
-  activeNavId,
+  activeNavId = "environments",
 }: SplitPanelTemplateProps) {
   const [search, setSearch] = React.useState("")
 
@@ -219,7 +250,6 @@ export default function SplitPanelTemplate({
     onSearch?.(e.target.value)
   }
 
-  const hasListItems = listItems.length > 0
   const filteredList = listItems.filter((i) =>
     i.label.toLowerCase().includes(search.toLowerCase())
   )
@@ -243,7 +273,6 @@ export default function SplitPanelTemplate({
               justifyContent: "space-between",
               gap: "var(--cds-gap-default)",
               marginBottom: "var(--cds-space-24)",
-              flexWrap: "wrap",
             }}
           >
             <div style={{ display: "flex", flexDirection: "column", gap: "var(--cds-gap-tight)" }}>
@@ -297,24 +326,10 @@ export default function SplitPanelTemplate({
               {headerActions.map((action) =>
                 action.dropdownItems ? (
                   <DropdownMenu key={action.label}>
-                    <DropdownMenuTrigger
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 4,
-                        fontSize: "var(--cds-text-p2)",
-                        padding: "0 var(--cds-space-12)",
-                        height: 32,
-                        borderRadius: "var(--cds-radius-r)",
-                        border: action.variant === "outline" ? "1px solid var(--border)" : "none",
-                        background: action.variant === "outline" ? "var(--cds-white)" : "var(--cds-primary-surface-default)",
-                        color: action.variant === "outline" ? "var(--cds-huegrey-text-dark)" : "var(--cds-white)",
-                        fontFamily: "inherit",
-                        fontWeight: 500,
-                        cursor: "pointer",
-                      }}
-                    >
-                      {action.label} <ChevronDown size={12} />
+                    <DropdownMenuTrigger asChild>
+                      <Button variant={action.variant ?? "default"}>
+                        {action.label} <ChevronDown size={12} />
+                      </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       {action.dropdownItems.map((di) => (
@@ -341,91 +356,78 @@ export default function SplitPanelTemplate({
             </div>
           </div>
 
-          {/* ── Search ── */}
-          <div style={{ position: "relative", width: 240, marginBottom: "var(--cds-space-16)" }}>
-            <Search
-              size={14}
-              style={{
-                position: "absolute",
-                left: 10,
-                top: "50%",
-                transform: "translateY(-50%)",
-                color: "var(--cds-huegrey-text-default)",
-                pointerEvents: "none",
-              }}
-            />
-            <Input
-              value={search}
-              onChange={handleSearch}
-              placeholder="Search"
-              style={{ paddingLeft: 30 }}
-            />
-          </div>
+          {/* ── Grid layout ── */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: `240px repeat(${panels.length}, 1fr)`,
+              alignContent: "start",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--cds-radius-r)",
+              overflow: "hidden",
+              backgroundColor: "var(--cds-white)",
+              minHeight: 400,
+            }}
+          >
+            {/* Header row: search in left cell + panel headers */}
+            <div style={{ borderBottom: "1px solid var(--border)", padding: "var(--cds-space-8) var(--cds-padding-card)", display: "flex", alignItems: "center" }}>
+              <div style={{ position: "relative", width: "100%" }}>
+                <Search size={14} style={{ position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", color: "var(--cds-huegrey-text-default)", pointerEvents: "none" }} />
+                <Input value={search} onChange={handleSearch} placeholder="Search" style={{ paddingLeft: 28 }} />
+              </div>
+            </div>
+            {panels.map((panel) => (
+              <div
+                key={panel.id}
+                style={{
+                  backgroundColor: panel.accentColor ?? "var(--cds-primary-surface-default)",
+                  padding: "var(--cds-space-12) var(--cds-padding-card)",
+                  color: "var(--cds-white)",
+                  fontWeight: 600,
+                  fontSize: "var(--cds-text-p2)",
+                  borderLeft: "1px solid rgba(255,255,255,0.2)",
+                  borderBottom: "1px solid var(--border)",
+                }}
+              >
+                {panel.label}
+              </div>
+            ))}
 
-          {/* ── Split layout ── */}
-          <div style={{ display: "flex", gap: "var(--cds-space-16)", alignItems: "stretch" }}>
-            {/* Left pane — application list */}
-            <div
-              style={{
-                width: 240,
-                flexShrink: 0,
-                border: "1px solid var(--border)",
-                borderRadius: "var(--cds-radius-r)",
-                backgroundColor: "var(--cds-white)",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: hasListItems ? "flex-start" : "center",
-                justifyContent: hasListItems ? "flex-start" : "center",
-                padding: hasListItems ? 0 : "var(--cds-padding-card)",
-                gap: "var(--cds-gap-default)",
-                minHeight: 400,
-              }}
-            >
-              {filteredList.length > 0 ? (
-                <ul style={{ width: "100%", listStyle: "none", padding: 0, margin: 0 }}>
-                  {filteredList.map((item) => (
-                    <li
-                      key={item.id}
+            {/* App rows */}
+            {filteredList.length > 0 ? (
+              filteredList.map((item, idx) => {
+                const isLast = idx === filteredList.length - 1
+                return (
+                  <React.Fragment key={item.id}>
+                    {/* Left cell — app info */}
+                    <div
                       onClick={item.onClick}
                       style={{
                         display: "flex",
                         alignItems: "center",
                         gap: "var(--cds-gap-default)",
-                        padding: "var(--cds-space-10, 10px) var(--cds-padding-card)",
-                        borderBottom: "1px solid var(--border)",
+                        padding: "var(--cds-space-12) var(--cds-padding-card)",
+                        borderBottom: isLast ? "none" : "1px solid var(--border)",
                         cursor: item.onClick ? "pointer" : "default",
+                        minHeight: 56,
                       }}
                     >
-                      {/* App icon circle */}
                       {item.accentColor && (
                         <div style={{ width: 32, height: 32, borderRadius: "var(--cds-radius-s)", background: item.accentColor, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--cds-white)", fontSize: "var(--cds-text-p3)", fontWeight: 700 }}>
-                          {item.label[0]}
+                          {item.label.slice(0, 2).toUpperCase()}
                         </div>
                       )}
-                      {/* Label + sublabel */}
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ fontSize: "var(--cds-text-p2)", fontWeight: 500, color: "var(--cds-huegrey-text-dark)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.label}</div>
                         {item.sublabel && (
                           <div style={{ fontSize: "var(--cds-text-p3)", color: item.sublabelColor ?? "var(--cds-huegrey-text-default)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.sublabel}</div>
                         )}
                       </div>
-                      {/* ··· overflow menu */}
                       {item.menuGroups && item.menuGroups.length > 0 && (
                         <DropdownMenu modal={false}>
                           <DropdownMenuTrigger
                             onClick={(e) => e.stopPropagation()}
-                            style={{
-                              display: "inline-flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              padding: "2px 6px",
-                              flexShrink: 0,
-                              background: "transparent",
-                              border: "none",
-                              borderRadius: "var(--cds-radius-s)",
-                              cursor: "pointer",
-                              color: "var(--cds-huegrey-text-default)",
-                            }}
+                            style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "2px 6px", flexShrink: 0, background: "transparent", border: "none", borderRadius: "var(--cds-radius-s)", cursor: "pointer", color: "var(--cds-huegrey-text-default)" }}
                           >
                             <MoreHorizontal size={14} />
                           </DropdownMenuTrigger>
@@ -450,49 +452,49 @@ export default function SplitPanelTemplate({
                           </DropdownMenuContent>
                         </DropdownMenu>
                       )}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <>
-                  {/* TODO: replace with <EmptyState /> once built — ds-parity P1 */}
-                  <div
-                    style={{
-                      width: 48,
-                      height: 48,
-                      borderRadius: "var(--cds-radius-r)",
-                      backgroundColor: "var(--cds-huegrey-surface-subtle)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden>
-                      <rect x="2" y="2" width="8" height="8" rx="1" fill="var(--cds-huegrey-text-default)" opacity="0.3" />
-                      <rect x="12" y="2" width="8" height="8" rx="1" fill="var(--cds-huegrey-text-default)" opacity="0.3" />
-                      <rect x="2" y="12" width="8" height="8" rx="1" fill="var(--cds-huegrey-text-default)" opacity="0.3" />
-                      <rect x="12" y="12" width="8" height="8" rx="1" fill="var(--cds-huegrey-text-default)" opacity="0.3" />
-                    </svg>
-                  </div>
-                  <p
-                    style={{
-                      fontSize: "var(--cds-text-p3)",
-                      lineHeight: "var(--cds-leading-p3)",
-                      color: "var(--cds-huegrey-text-default)",
-                      textAlign: "center",
-                    }}
-                  >
-                    There are no applications added to the environment
-                  </p>
-                  <Button size="sm">Add Application</Button>
-                </>
-              )}
-            </div>
+                    </div>
 
-            {/* Stage / Production panels */}
-            {panels.map((panel) => (
-              <PanelColumn key={panel.label} panel={panel} />
-            ))}
+                    {/* Panel cells — one per panel column */}
+                    {panels.map((panel) => (
+                      <PanelCell
+                        key={panel.id}
+                        cell={item.panelCells?.[panel.id]}
+                        item={item}
+                        isLast={isLast}
+                      />
+                    ))}
+                  </React.Fragment>
+                )
+              })
+            ) : (
+              <React.Fragment>
+                {/* TODO: replace with <EmptyState /> once built — ds-parity P1 */}
+                <div
+                style={{
+                  gridColumn: `1 / ${panels.length + 2}`,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "var(--cds-gap-default)",
+                  padding: "var(--cds-space-48) var(--cds-padding-card)",
+                }}
+              >
+                <div style={{ width: 48, height: 48, borderRadius: "var(--cds-radius-r)", backgroundColor: "var(--cds-huegrey-surface-subtle)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden>
+                    <rect x="2" y="2" width="8" height="8" rx="1" fill="var(--cds-huegrey-text-default)" opacity="0.3" />
+                    <rect x="12" y="2" width="8" height="8" rx="1" fill="var(--cds-huegrey-text-default)" opacity="0.3" />
+                    <rect x="2" y="12" width="8" height="8" rx="1" fill="var(--cds-huegrey-text-default)" opacity="0.3" />
+                    <rect x="12" y="12" width="8" height="8" rx="1" fill="var(--cds-huegrey-text-default)" opacity="0.3" />
+                  </svg>
+                </div>
+                <p style={{ fontSize: "var(--cds-text-p3)", lineHeight: "var(--cds-leading-p3)", color: "var(--cds-huegrey-text-default)", textAlign: "center" }}>
+                  There are no applications added to the environment
+                </p>
+                <Button size="sm">Add Application</Button>
+              </div>
+              </React.Fragment>
+            )}
           </div>
         </main>
       </div>
