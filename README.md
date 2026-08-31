@@ -221,12 +221,37 @@ npm run dev -- --port 5177
 
 ---
 
-## VS Code + Copilot setup
+## AI agent setup
 
-Install:
-- **GitHub Copilot** + **GitHub Copilot Chat**
+The repo ships instruction files for every major AI coding tool. After cloning, each tool picks up DS rules, component lists, templates, and token constraints **automatically — no manual briefing needed.**
 
-`AGENTS.md` in the repo root is automatically picked up by Copilot as context — it tells the AI which components to use, which tokens to apply, and how to wire navigation. **You do not need to brief Copilot manually** — just share the PRD.
+| Tool | Instruction file | Auto-loaded? |
+|---|---|---|
+| **GitHub Copilot** (VS Code) | `.github/copilot-instructions.md` | ✅ Yes — on workspace open |
+| **OpenAI Codex** CLI | `AGENTS.md` | ✅ Yes — Codex native format |
+| **Claude** (Anthropic CLI) | `CLAUDE.md` | ✅ Yes — on repo open |
+| **Cursor** | `.cursor/rules/creator-ds.mdc` | ✅ Yes — applied as project rule |
+| **Windsurf** (Codeium) | `.windsurfrules` | ✅ Yes — on workspace open |
+
+All five files are mirrors of `AGENTS.md`. When you update `AGENTS.md`, run the sync:
+
+```bash
+cp AGENTS.md .github/copilot-instructions.md
+cp AGENTS.md CLAUDE.md
+cp AGENTS.md .windsurfrules
+cp AGENTS.md .cursor/rules/creator-ds.mdc
+```
+
+### MCP server (optional — richer tool-call context)
+
+The repo also ships an MCP server that exposes DS knowledge as structured tool calls. AI agents that support MCP (Copilot, Claude, Cursor) can call `list_components`, `find_tokens`, `list_templates`, etc. at generation time.
+
+```bash
+cd mcp && npm install && npm run build
+# then configure your AI tool to connect to: node dist/server.js
+```
+
+See `mcp/src/server.ts` for the full tool list.
 
 ---
 

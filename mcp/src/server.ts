@@ -1,18 +1,21 @@
 /**
  * server.ts — Creator DS MCP Server
  *
- * Exposes 7 tools that AI agents (Copilot, Cursor, Claude, etc.) can call at
+ * Exposes 7 tools that AI agents (Copilot, Cursor, Claude, Codex, Windsurf) can call at
  * code-generation time so they always produce DS-compliant screens:
  *
- *   list_components          → all 42 DS components with import paths + categories
- *   get_component            → full usage info for one component
- *   find_tokens              → search --cds-* design tokens by keyword / group
- *   list_templates           → all 6 page templates with use-cases
+ *   list_components           → all 42 DS components with import paths + categories
+ *   get_component             → full usage info for one component
+ *   find_tokens               → search --cds-* design tokens by keyword / group
+ *   list_templates            → all 6 page templates with use-cases
  *   creator_coding_guidelines → full AGENTS.md hard rules as structured text
- *   list_screens             → all registered feature screens with source paths
- *   validate_component_usage → static lint of a code snippet against DS rules
+ *   list_screens              → all registered feature screens with source paths
+ *   validate_component_usage  → static lint of a code snippet against DS rules
  *
- * Run: npx tsx mcp/src/server.ts
+ * Supported AI tools:
+ *   GitHub Copilot (VS Code) · Claude (Anthropic) · Cursor · OpenAI Codex · Windsurf
+ *
+ * Run:   npx tsx mcp/src/server.ts
  * Build: cd mcp && npm run build && node dist/server.js
  */
 
@@ -33,7 +36,7 @@ import { findTokens, listTokenGroups, TOKENS } from "./tokens.js"
 
 const server = new McpServer({
   name: "Creator DS",
-  version: "0.1.0",
+  version: "0.2.0",
 })
 
 // ─── Tool: list_components ────────────────────────────────────────────────────
